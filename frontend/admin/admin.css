@@ -475,3 +475,18 @@ select.input { cursor: pointer; }
     cursor: pointer;
     color: var(--text-secondary);
 }
+/* Change Password Modal extra styles */
+#changePasswordModal .login-input {
+    margin-bottom: 12px;
+}
+
+#changePasswordModal .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+#changePasswordModal .modal-actions .btn {
+    flex: 1;
+    justify-content: center;
+    padding: 12px;
+}
