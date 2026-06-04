@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohammed Asif | Full Stack & AI Developer</title>
+    <meta name="description" content="Portfolio of Mohammed Asif — Full Stack & AI Developer specializing in React, Node.js, LangChain, RAG, Gemini AI.">
+    <meta name="keywords" content="Mohammed Asif, Full Stack Developer, AI Developer, React, Node.js, LangChain, RAG, Gemini AI">
+    <meta name="author" content="Mohammed Asif">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],serif:['Playfair Display','serif']}}}}</script>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        ::selection{background:rgba(255,255,255,0.2);color:#fff}
+        ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#050505}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.12);border-radius:3px}
+        body{font-family:'Inter',sans-serif;background:#050505;color:#fff;overflow-x:hidden;cursor:none}
+
+        #loader{position:fixed;inset:0;z-index:9999;background:#050505;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px}
+        #loader .letter{display:inline-block;opacity:0;transform:translateY(50px) rotateX(90deg);font-family:'Playfair Display',serif;font-size:clamp(26px,5vw,54px);font-weight:600;color:#fff;letter-spacing:0.12em}
+        #loader .subtitle-loader{opacity:0;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(255,255,255,0.35)}
+        .loader-bar{width:100px;height:1px;background:rgba(255,255,255,0.08);position:relative;overflow:hidden;opacity:0}
+        .loader-bar::after{content:'';position:absolute;left:0;top:0;height:100%;width:0;background:#fff;animation:loaderFill 2.2s ease forwards}
+        @keyframes loaderFill{to{width:100%}}
+
+        .cursor-dot{width:5px;height:5px;background:#fff;border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:10000;mix-blend-mode:difference}
+        .cursor-ring{width:44px;height:44px;border:1px solid rgba(255,255,255,0.35);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:10000;transition:width .35s cubic-bezier(.23,1,.32,1),height .35s cubic-bezier(.23,1,.32,1),border-color .3s,background .3s;mix-blend-mode:difference}
+        .cursor-ring.hover{width:72px;height:72px;border-color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.03)}
+
+        #three-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+        .noise-overlay{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:128px}
+
+        .glass{background:rgba(255,255,255,0.025);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.07)}
+        .glass-strong{background:rgba(255,255,255,0.05);backdrop-filter:blur(36px);-webkit-backdrop-filter:blur(36px);border:1px solid rgba(255,255,255,0.1)}
+
+        .profile-3d-system{perspective:1200px;perspective-origin:center center;transform-style:preserve-3d;position:relative;width:320px;height:320px}
+        .profile-glow{position:absolute;inset:-70px;background:radial-gradient(ellipse at center,rgba(255,255,255,0.08) 0%,rgba(255,255,255,0.02) 40%,transparent 70%);border-radius:50%;animation:pulseGlow 4s ease-in-out infinite alternate;filter:blur(15px)}
+        @keyframes pulseGlow{from{opacity:.5;transform:scale(.92)}to{opacity:1;transform:scale(1.1)}}
+
+        .orbit-ring{position:absolute;border-radius:50%;transform-style:preserve-3d}
+        .orbit-ring-1{inset:-30px;border:1.5px solid rgba(255,255,255,0.18);animation:os1 8s linear infinite}
+        .orbit-ring-2{inset:-55px;border:1px solid rgba(255,255,255,0.1);animation:os2 12s linear infinite}
+        .orbit-ring-3{inset:-80px;border:.5px solid rgba(255,255,255,0.05);animation:os3 18s linear infinite}
+        .orbit-ring-4{inset:-15px;border:1px dashed rgba(255,255,255,0.06);animation:os4 25s linear infinite}
+        @keyframes os1{from{transform:rotateX(75deg) rotateY(0deg)}to{transform:rotateX(75deg) rotateY(360deg)}}
+        @keyframes os2{from{transform:rotateX(65deg) rotateY(0deg) rotateZ(45deg)}to{transform:rotateX(65deg) rotateY(360deg) rotateZ(45deg)}}
+        @keyframes os3{from{transform:rotateX(80deg) rotateY(0deg) rotateZ(-30deg)}to{transform:rotateX(80deg) rotateY(-360deg) rotateZ(-30deg)}}
+        @keyframes os4{from{transform:rotateX(50deg) rotateY(0deg) rotateZ(90deg)}to{transform:rotateX(50deg) rotateY(360deg) rotateZ(90deg)}}
+
+        .orbit-dot{position:absolute;width:5px;height:5px;background:#fff;border-radius:50%;box-shadow:0 0 10px rgba(255,255,255,0.6),0 0 25px rgba(255,255,255,0.15)}
+        .orbit-ring-1 .orbit-dot{top:-2px;left:50%}
+        .orbit-ring-1 .orbit-dot:nth-child(2){top:auto;bottom:-2px;left:50%;width:3px;height:3px;opacity:.5}
+        .orbit-ring-2 .orbit-dot{top:50%;right:-2px;width:4px;height:4px;opacity:.7}
+        .orbit-ring-2 .orbit-dot:nth-child(2){top:50%;left:-2px;width:3px;height:3px;opacity:.4}
+        .orbit-ring-3 .orbit-dot{top:-1.5px;left:30%;width:3px;height:3px;opacity:.35}
+
+        .profile-img-wrap{position:relative;z-index:10;width:100%;height:100%;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.12);box-shadow:0 0 0 1px rgba(255,255,255,0.05),0 25px 70px rgba(0,0,0,0.6),0 0 120px rgba(255,255,255,0.04),inset 0 0 50px rgba(0,0,0,0.3);transition:transform .6s cubic-bezier(.23,1,.32,1),box-shadow .6s}
+        .profile-img-wrap:hover{transform:scale(1.05);box-shadow:0 0 0 1px rgba(255,255,255,0.12),0 35px 90px rgba(0,0,0,0.7),0 0 160px rgba(255,255,255,0.06),inset 0 0 50px rgba(0,0,0,0.3)}
+
+        .floating-tag{position:absolute;padding:6px 14px;border-radius:20px;font-size:10px;font-weight:500;letter-spacing:.08em;white-space:nowrap;pointer-events:none;border:1px solid rgba(255,255,255,0.08);background:rgba(10,10,10,0.75);backdrop-filter:blur(14px);color:rgba(255,255,255,0.6);animation:floatTag 6s ease-in-out infinite alternate}
+        .floating-tag:nth-child(1){top:-10px;right:-75px;animation-delay:0s}
+        .floating-tag:nth-child(2){bottom:20px;left:-85px;animation-delay:-2s}
+        .floating-tag:nth-child(3){top:40%;right:-95px;animation-delay:-4s}
+        .floating-tag:nth-child(4){bottom:-15px;right:-30px;animation-delay:-1s}
+        @keyframes floatTag{0%{transform:translateY(0) translateZ(0)}100%{transform:translateY(-14px) translateZ(15px)}}
+
+        .typing-cursor{display:inline-block;width:2px;height:1em;background:#fff;margin-left:4px;vertical-align:text-bottom;animation:blink 1s step-end infinite}
+        @keyframes blink{50%{opacity:0}}
+
+        .float-shape{position:fixed;z-index:1;pointer-events:none;border:1px solid rgba(255,255,255,0.04)}
+        .float-shape:nth-child(1){width:70px;height:70px;top:12%;left:6%;transform:rotate(45deg);animation:fS 22s ease-in-out infinite}
+        .float-shape:nth-child(2){width:45px;height:45px;top:55%;right:8%;border-radius:50%;animation:fS 18s ease-in-out infinite -5s}
+        .float-shape:nth-child(3){width:90px;height:90px;bottom:18%;left:12%;transform:rotate(30deg);animation:fS 25s ease-in-out infinite -10s}
+        .float-shape:nth-child(4){width:35px;height:35px;top:28%;right:18%;border-radius:50%;animation:fS 20s ease-in-out infinite -7s}
+        .float-shape:nth-child(5){width:55px;height:55px;bottom:30%;right:22%;transform:rotate(60deg);animation:fS 24s ease-in-out infinite -13s}
+        .float-shape:nth-child(6){width:25px;height:25px;top:75%;left:30%;border-radius:50%;animation:fS 16s ease-in-out infinite -3s}
+        @keyframes fS{0%,100%{transform:translateY(0) rotate(45deg);opacity:.3}25%{transform:translateY(-25px) rotate(90deg);opacity:.7}50%{transform:translateY(-15px) rotate(135deg);opacity:.3}75%{transform:translateY(-30px) rotate(180deg);opacity:.6}}
+
+        .tilt-card{transform-style:preserve-3d;transition:transform .1s ease-out}
+        .tilt-card .tilt-inner{transform:translateZ(0);transition:transform .4s cubic-bezier(.23,1,.32,1),box-shadow .4s}
+        .tilt-card:hover .tilt-inner{box-shadow:0 30px 60px rgba(0,0,0,0.4),0 0 0 1px rgba(255,255,255,0.08)}
+        .tilt-card .tilt-shine{position:absolute;inset:0;border-radius:inherit;background:radial-gradient(circle at var(--sx,50%) var(--sy,50%),rgba(255,255,255,0.1) 0%,transparent 60%);opacity:0;transition:opacity .4s;pointer-events:none}
+        .tilt-card:hover .tilt-shine{opacity:1}
+
+        .project-card{transform-style:preserve-3d;transition:transform .5s cubic-bezier(.23,1,.32,1),box-shadow .5s}
+        .project-card:hover{transform:translateY(-16px) rotateX(2deg);box-shadow:0 50px 100px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.1)}
+        .project-card .project-img{transition:transform 1s cubic-bezier(.23,1,.32,1)}
+        .project-card:hover .project-img{transform:scale(1.1)}
+        .project-card .project-overlay{opacity:0;transition:opacity .5s}
+        .project-card:hover .project-overlay{opacity:1}
+
+        .timeline-line{position:absolute;left:50%;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,rgba(255,255,255,0.12),transparent);transform:translateX(-50%)}
+        @media(max-width:768px){.timeline-line{left:24px}}
+        .timeline-dot{width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-radius:50%;background:#050505;position:absolute;left:50%;transform:translateX(-50%);transition:all .4s cubic-bezier(.23,1,.32,1)}
+        @media(max-width:768px){.timeline-dot{left:24px}}
+        .timeline-item:hover .timeline-dot{border-color:#fff;background:#fff;box-shadow:0 0 30px rgba(255,255,255,0.5),0 0 60px rgba(255,255,255,0.15);transform:translateX(-50%) scale(1.4)}
+
+        .reveal{opacity:0;transform:translateY(50px)}
+        .reveal-scale{opacity:0;transform:scale(.85) rotateX(10deg)}
+        .gradient-text{background:linear-gradient(135deg,#fff 0%,rgba(255,255,255,0.55) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+        .nav-link{position:relative}
+        .nav-link::after{content:'';position:absolute;bottom:-4px;left:50%;right:50%;height:1px;background:#fff;transition:all .3s}
+        .nav-link:hover::after,.nav-link.active::after{left:0;right:0}
+
+        .btn-shine{position:relative;overflow:hidden}
+        .btn-shine::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transition:left .7s}
+        .btn-shine:hover::before{left:100%}
+
+        .mobile-menu{transform:translateX(100%);transition:transform .5s cubic-bezier(.23,1,.32,1)}
+        .mobile-menu.open{transform:translateX(0)}
+
+        .section-divider{height:1px;background:linear-gradient(to right,transparent,rgba(255,255,255,0.08),transparent)}
+        .contact-glow{position:absolute;width:350px;height:350px;border-radius:50%;filter:blur(140px);opacity:.035;background:#fff}
+        .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(100px);z-index:9999;padding:14px 28px;border-radius:14px;font-size:13px;transition:transform .4s cubic-bezier(.23,1,.32,1)}
+        .toast.show{transform:translateX(-50%) translateY(0)}
+        .parallax-layer{will-change:transform;transition:transform .15s ease-out}
+        .depth-section{perspective:1500px;transform-style:preserve-3d}
+        @keyframes scrollDot{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(8px);opacity:.2}}
+        .stat-number{font-variant-numeric:tabular-nums}
+
+        .whatsapp-float{position:fixed;bottom:24px;right:24px;z-index:9000;width:56px;height:56px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.35);transition:transform .3s,box-shadow .3s;cursor:none}
+        .whatsapp-float:hover{transform:scale(1.12);box-shadow:0 6px 30px rgba(37,211,102,0.5)}
+        .whatsapp-float::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(37,211,102,0.3);animation:waPulse 2s ease-in-out infinite}
+        @keyframes waPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.25);opacity:0}}
+
+        @media(max-width:768px){body{cursor:auto}.cursor-dot,.cursor-ring{display:none}.profile-3d-system{width:240px;height:240px}.floating-tag{display:none}.whatsapp-float{cursor:pointer}}
+    </style>
+</head>
+<body>
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<a href="https://wa.me/919677988241" target="_blank" rel="noopener" class="whatsapp-float hoverable" aria-label="Chat on WhatsApp"><iconify-icon icon="logos:whatsapp-icon" width="30" height="30"></iconify-icon></a>
+
+<div id="loader">
+    <div><span class="letter">M</span><span class="letter">O</span><span class="letter">H</span><span class="letter">A</span><span class="letter">M</span><span class="letter">M</span><span class="letter">E</span><span class="letter">D</span><span style="display:inline-block;width:18px"></span><span class="letter">A</span><span class="letter">S</span><span class="letter">I</span><span class="letter">F</span></div>
+    <div class="subtitle-loader">Full Stack & AI Developer</div>
+    <div class="loader-bar"></div>
+</div>
+
+<canvas id="three-canvas"></canvas>
+<div class="noise-overlay"></div>
+<div class="float-shape"></div><div class="float-shape"></div><div class="float-shape"></div><div class="float-shape"></div><div class="float-shape"></div><div class="float-shape"></div>
+
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" style="opacity:0">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+        <div class="flex items-center justify-between h-16 md:h-20">
+            <a href="#home" class="font-serif text-lg md:text-xl font-semibold tracking-wider text-white hoverable">MA</a>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#home" class="nav-link text-[11px] font-medium uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors hoverable">Home</a>
+                <a href="#about" class="nav-link text-[11px] font-medium uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors hoverable">About</a>
+                <a href="#skills" class="nav-link text-[11px] font-medium uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors hoverable">Skills</a>
+                <a href="#projects" class="nav-link text-[11px] font-medium uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors hoverable">Projects</a>
+                <a href="#experience" class="nav-link text-[11px] font-medium uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors hoverable">Experience</a>
+                <a href="#contact" class="nav-link text-[11px] font-medium uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors hoverable">Contact</a>
+            </div>
+            <button id="menuBtn" class="md:hidden flex flex-col gap-1.5 p-2 hoverable" aria-label="Menu">
+                <span class="w-6 h-px bg-white transition-all duration-300" id="menuLine1"></span>
+                <span class="w-4 h-px bg-white transition-all duration-300 ml-auto" id="menuLine2"></span>
+                <span class="w-6 h-px bg-white transition-all duration-300" id="menuLine3"></span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<div class="mobile-menu fixed inset-0 z-40 glass-strong flex flex-col items-center justify-center gap-8" id="mobileMenu">
+    <a href="#home" class="text-2xl font-serif text-white/80 hover:text-white transition-colors mobile-nav-link">Home</a>
+    <a href="#about" class="text-2xl font-serif text-white/80 hover:text-white transition-colors mobile-nav-link">About</a>
+    <a href="#skills" class="text-2xl font-serif text-white/80 hover:text-white transition-colors mobile-nav-link">Skills</a>
+    <a href="#projects" class="text-2xl font-serif text-white/80 hover:text-white transition-colors mobile-nav-link">Projects</a>
+    <a href="#experience" class="text-2xl font-serif text-white/80 hover:text-white transition-colors mobile-nav-link">Experience</a>
+    <a href="#contact" class="text-2xl font-serif text-white/80 hover:text-white transition-colors mobile-nav-link">Contact</a>
+    <a href="https://wa.me/919677988241" target="_blank" class="text-2xl font-serif text-green-400/80 hover:text-green-400 transition-colors mobile-nav-link flex items-center gap-3"><iconify-icon icon="logos:whatsapp-icon" width="24"></iconify-icon> WhatsApp</a>
+</div>
+
+<main id="mainContent" style="opacity:0">
+
+    <section id="home" class="relative min-h-screen flex items-center justify-center px-6 md:px-12 pt-20 depth-section" style="z-index:2">
+        <div class="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div class="order-2 lg:order-1 text-center lg:text-left parallax-layer" data-speed="0.02">
+                <div class="mb-5"><span class="inline-block text-[10px] md:text-xs font-medium uppercase tracking-[0.3em] text-white/35 reveal" id="heroSubtitle">Full Stack & AI Developer</span></div>
+                <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-semibold tracking-tight leading-[1.05] mb-6 reveal" style="transform-style:preserve-3d">
+                    <span class="gradient-text block">MOHAMMED</span><span class="gradient-text block">ASIF</span>
+                </h1>
+                <div class="flex flex-wrap justify-center lg:justify-start gap-2 mb-8 reveal" id="heroTags"></div>
+                <div class="h-8 mb-10 reveal"><span id="typingText" class="text-sm md:text-base text-white/50 font-light"></span><span class="typing-cursor"></span></div>
+                <div class="flex flex-wrap gap-4 justify-center lg:justify-start reveal">
+                    <a href="#projects" class="btn-shine inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-full text-[11px] font-semibold uppercase tracking-[0.15em] hover:bg-white/90 transition-colors hoverable">View Projects <iconify-icon icon="lucide:arrow-right" width="14"></iconify-icon></a>
+                    <a href="https://wa.me/919677988241?text=Hi%20Mohammed%20Asif%2C%20I%20visited%20your%20portfolio!" target="_blank" class="inline-flex items-center gap-2 px-8 py-4 rounded-full text-[11px] font-semibold uppercase tracking-[0.15em] border border-green-500/30 text-green-400/80 hover:bg-green-500/10 hover:border-green-500/50 transition-all hoverable"><iconify-icon icon="logos:whatsapp-icon" width="18"></iconify-icon> Get in Touch</a>
+                </div>
+            </div>
+            <div class="order-1 lg:order-2 flex justify-center reveal-scale parallax-layer" data-speed="-0.03">
+                <div class="profile-3d-system">
+                    <div class="profile-glow"></div>
+                    <div class="orbit-ring orbit-ring-1"><div class="orbit-dot"></div><div class="orbit-dot"></div></div>
+                    <div class="orbit-ring orbit-ring-2"><div class="orbit-dot"></div><div class="orbit-dot"></div></div>
+                    <div class="orbit-ring orbit-ring-3"><div class="orbit-dot"></div></div>
+                    <div class="orbit-ring orbit-ring-4"></div>
+                    <div class="floating-tag">React.js</div><div class="floating-tag">Gemini AI</div><div class="floating-tag">RAG</div><div class="floating-tag">Node.js</div>
+                    <div class="profile-img-wrap hoverable">
+                        <img src="https://z-cdn-media.chatglm.cn/files/100e83a3-16b3-45bb-8005-8a02944e5564.jpg?auth_key=1880335580-2b4a6a8e5f94407faa08f6e6b010af63-0-c7e6577984afce8874453df81bcd8291" alt="Mohammed Asif" class="w-full h-full object-cover object-center" style="filter:grayscale(100%) contrast(1.08) brightness(1.08);">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 reveal">
+            <span class="text-[9px] uppercase tracking-[0.25em] text-white/25">Scroll</span>
+            <div class="w-5 h-9 rounded-full border border-white/15 flex justify-center pt-2"><div class="w-0.5 h-2 bg-white/35 rounded-full" style="animation:scrollDot 2s ease-in-out infinite"></div></div>
+        </div>
+    </section>
+    <div class="section-divider max-w-4xl mx-auto"></div>
+
+    <section id="about" class="relative py-24 md:py-36 px-6 md:px-12 depth-section" style="z-index:2">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16"><span class="text-[10px] md:text-xs font-medium uppercase tracking-[0.3em] text-white/35 reveal">About Me</span><h2 class="font-serif text-3xl md:text-5xl tracking-tight mt-4 reveal"><span class="gradient-text">Who I Am</span></h2></div>
+            <div class="glass rounded-3xl p-8 md:p-14 reveal" style="transform-style:preserve-3d">
+                <div class="grid md:grid-cols-3 gap-8 md:gap-12 items-start">
+                    <div class="md:col-span-2" id="aboutText"></div>
+                    <div class="flex flex-col gap-4" id="aboutStats"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="section-divider max-w-4xl mx-auto"></div>
+
+    <section id="skills" class="relative py-24 md:py-36 px-6 md:px-12 depth-section" style="z-index:2">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16"><span class="text-[10px] md:text-xs font-medium uppercase tracking-[0.3em] text-white/35 reveal">Tech Stack</span><h2 class="font-serif text-3xl md:text-5xl tracking-tight mt-4 reveal"><span class="gradient-text">Skills & Tools</span></h2></div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-5" id="skillsGrid"></div>
+        </div>
+    </section>
+    <div class="section-divider max-w-4xl mx-auto"></div>
+
+    <section id="projects" class="relative py-24 md:py-36 px-6 md:px-12 depth-section" style="z-index:2">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16"><span class="text-[10px] md:text-xs font-medium uppercase tracking-[0.3em] text-white/35 reveal">Portfolio</span><h2 class="font-serif text-3xl md:text-5xl tracking-tight mt-4 reveal"><span class="gradient-text">Featured Projects</span></h2></div>
+            <div class="grid md:grid-cols-2 gap-6 md:gap-8" id="projectsGrid"></div>
+        </div>
+    </section>
+    <div class="section-divider max-w-4xl mx-auto"></div>
+
+    <section id="experience" class="relative py-24 md:py-36 px-6 md:px-12 depth-section" style="z-index:2">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16"><span class="text-[10px] md:text-xs font-medium uppercase tracking-[0.3em] text-white/35 reveal">Journey</span><h2 class="font-serif text-3xl md:text-5xl tracking-tight mt-4 reveal"><span class="gradient-text">Experience</span></h2></div>
+            <div class="relative" id="timeline"><div class="timeline-line"></div></div>
+        </div>
+    </section>
+    <div class="section-divider max-w-4xl mx-auto"></div>
+
+    <section class="relative py-24 md:py-32 px-6 md:px-12 depth-section" style="z-index:2">
+        <div class="max-w-5xl mx-auto"><div class="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-7" id="statsGrid"></div></div>
+    </section>
+    <div class="section-divider max-w-4xl mx-auto"></div>
+
+    <!-- CONTACT — Form removed, CTA only -->
+    <section id="contact" class="relative py-24 md:py-36 px-6 md:px-12 overflow-hidden depth-section" style="z-index:2">
+        <div class="contact-glow" style="top:-120px;left:-120px"></div>
+        <div class="contact-glow" style="bottom:-120px;right:-120px"></div>
+        <div class="max-w-4xl mx-auto relative">
+            <div class="text-center mb-16">
+                <span class="text-[10px] md:text-xs font-medium uppercase tracking-[0.3em] text-white/35 reveal">Get in Touch</span>
+                <h2 class="font-serif text-3xl md:text-5xl tracking-tight mt-4 reveal"><span class="gradient-text">Let's Connect</span></h2>
+                <p class="text-sm md:text-base text-white/45 font-light mt-4 max-w-lg mx-auto reveal">Have a project in mind or want to collaborate? Reach out to me directly.</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mb-12" id="contactCards"></div>
+            <div class="text-center reveal">
+                <a href="https://wa.me/919677988241?text=Hi%20Mohammed%20Asif%2C%20I%20would%20like%20to%20discuss%20a%20project!" target="_blank" rel="noopener" class="inline-flex items-center gap-3 bg-[#25D366] text-white px-12 py-4 rounded-full text-[11px] font-semibold uppercase tracking-[0.15em] hover:bg-[#20bd5a] transition-all hover:scale-105 hoverable" style="box-shadow:0 4px 25px rgba(37,211,102,0.35)">
+                    <iconify-icon icon="logos:whatsapp-icon" width="22"></iconify-icon>
+                    Chat on WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="relative border-t border-white/4 py-12 px-6 md:px-12" style="z-index:2">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="font-serif text-lg tracking-wider text-white/30">MA</div>
+            <div class="text-xs text-white/25 font-light">© 2025 Mohammed Asif. Crafted with precision.</div>
+            <div class="flex items-center gap-5" id="footerLinks"></div>
+        </div>
+    </footer>
+</main>
+
+<div class="toast glass-strong rounded-xl text-white/90" id="toast"></div>
+
+<script>
+// ─── CONFIG ──────────────────────────────────────────────
+const API_BASE = window.location.origin + '/api';
+
+// ─── FETCH DATA FROM BACKEND ────────────────────────────
+let portfolioData = null;
+
+async function fetchPortfolio() {
+    try {
+        const res = await fetch(API_BASE + '/portfolio');
+        if (!res.ok) throw new Error('API error');
+        portfolioData = await res.json();
+        console.log('✅ Loaded portfolio data from API');
+    } catch (err) {
+        console.warn('⚠️ API unavailable, using fallback defaults');
+        portfolioData = getFallbackData();
+    }
+    return portfolioData;
+}
+
+function getFallbackData() {
+    return {
+        about:{subtitle:'Full Stack & AI Developer',tags:['React','Node.js','MongoDB','LangChain','RAG','Gemini AI'],text1:'I am a passionate <span class="text-white font-normal">Full Stack & AI Developer</span> specializing in modern web applications, AI chatbots, <span class="text-white font-normal">Retrieval-Augmented Generation (RAG)</span>, Vector Databases, and scalable cloud-based solutions.',text2:'With expertise spanning the entire development stack — from crafting pixel-perfect frontends to architecting intelligent AI backends — I bring ideas to life with clean code and thoughtful design.',stats:[{value:'20+',label:'Projects'},{value:'14+',label:'Technologies'},{value:'AI/ML',label:'Specialization'}]},
+        skills:[{name:'HTML5',icon:'logos:html-5',type:'img'},{name:'CSS3',icon:'logos:css-3',type:'img'},{name:'JavaScript',icon:'logos:javascript',type:'img'},{name:'React.js',icon:'logos:react',type:'img'},{name:'Node.js',icon:'logos:nodejs-icon',type:'img'},{name:'Express.js',icon:'simple-icons:express',type:'icon',color:'rgba(255,255,255,0.65)'},{name:'MongoDB',icon:'logos:mongodb-icon',type:'img'},{name:'Firebase',icon:'logos:firebase',type:'img'},{name:'Cloudinary',icon:'logos:cloudinary-icon',type:'img'},{name:'Git & GitHub',icon:'logos:git-icon',type:'img'},{name:'LangChain',icon:'simple-icons:langchain',type:'icon',color:'rgba(255,255,255,0.65)'},{name:'Vector DBs',icon:'lucide:database',type:'icon',color:'rgba(255,255,255,0.65)'},{name:'RAG',icon:'lucide:brain-circuit',type:'icon',color:'rgba(255,255,255,0.65)'},{name:'Gemini AI',icon:'logos:google-gemini',type:'img'}],
+        projects:[{title:'AI Document Chatbot',category:'AI / NLP',description:'Intelligent chatbot using RAG architecture with vector similarity search.',tags:['LangChain','RAG','Vector DB','Gemini AI'],image:'https://picsum.photos/seed/ai-doc-v7/800/500.jpg',wide:false},{title:'VMart Marketplace',category:'Full Stack',description:'MERN stack marketplace for students.',tags:['React','Node.js','MongoDB','Express'],image:'https://picsum.photos/seed/vmart-v7/800/500.jpg',wide:false},{title:'AI Resume Analyzer',category:'AI / SaaS',description:'AI-powered resume analysis and scoring tool.',tags:['React','Node.js','Gemini AI'],image:'https://picsum.photos/seed/ai-resume-v7/800/500.jpg',wide:false},{title:'Dental Clinic Website',category:'Web Design',description:'Modern responsive business website.',tags:['HTML5','CSS3','JavaScript','Responsive'],image:'https://picsum.photos/seed/dental-v7/800/500.jpg',wide:false},{title:'Spotify Clone',category:'Frontend',description:'Pixel-perfect Spotify clone with API integration.',tags:['React','API','Tailwind CSS'],image:'https://picsum.photos/seed/spotify-v7/800/600.jpg',wide:true}],
+        experience:[{label:'Ongoing',title:'Full Stack Development',description:'Building production-ready web applications with React, Node.js, and MongoDB.',side:'left'},{label:'Recent Focus',title:'AI Development',description:'Specializing in LangChain, RAG pipelines, Vector Databases, and Gemini AI.',side:'right'},{label:'Parallel',title:'Freelance Projects',description:'Delivered custom websites and web applications for clients.',side:'left'},{label:'Continuous',title:'Personal Projects',description:'Building and open-sourcing projects to explore new technologies.',side:'right'}],
+        stats:[{value:20,label:'Projects Completed'},{value:14,label:'Technologies Learned'},{value:500,label:'GitHub Contributions'},{value:10,label:'Happy Clients'}],
+        contact:[{icon:'lucide:mail',label:'Email',value:'asihfibrahim600@gmail.com',href:'mailto:asihfibrahim600@gmail.com',isWhatsApp:false},{icon:'logos:whatsapp-icon',label:'WhatsApp',value:'+91 96779 88241',href:'https://wa.me/919677988241',isWhatsApp:true},{icon:'lucide:linkedin',label:'LinkedIn',value:'mohamad-asif',href:'https://www.linkedin.com/in/mohamad-asif',isWhatsApp:false},{icon:'lucide:github',label:'GitHub',value:'mohammed-asif',href:'https://github.com/mohammed-asif',isWhatsApp:false}]
+    };
+}
+
+// ─── RENDER FROM DATA ───────────────────────────────────
+function renderPortfolio(d) {
+    // Hero
+    document.getElementById('heroSubtitle').textContent = d.about.subtitle;
+    document.getElementById('heroTags').innerHTML = d.about.tags.map(t => `<span class="text-[11px] text-white/45 px-3 py-1.5 rounded-full border border-white/8 hover:border-white/20 hover:text-white/70 transition-all">${t}</span>`).join('');
+
+    // About
+    document.getElementById('aboutText').innerHTML = `<p class="text-base md:text-lg font-light leading-[1.8] text-white/60">${d.about.text1}</p><p class="text-base md:text-lg font-light leading-[1.8] text-white/60 mt-6">${d.about.text2}</p>`;
+    document.getElementById('aboutStats').innerHTML = d.about.stats.map(s => `<div class="tilt-card glass rounded-2xl p-5 text-center relative overflow-hidden hoverable"><div class="tilt-shine rounded-2xl"></div><div class="tilt-inner relative z-10"><div class="text-2xl font-serif font-semibold text-white">${s.value}</div><div class="text-[10px] text-white/35 mt-1 uppercase tracking-wider">${s.label}</div></div></div>`).join('');
+
+    // Skills
+    document.getElementById('skillsGrid').innerHTML = d.skills.map(s => {
+        const ic = s.type === 'img' ? `<iconify-icon icon="${s.icon}" width="34" height="34" class="inline-block"></iconify-icon>` : `<iconify-icon icon="${s.icon}" width="34" height="34" style="color:${s.color||'rgba(255,255,255,0.65)'}" class="inline-block"></iconify-icon>`;
+        return `<div class="tilt-card reveal relative overflow-hidden"><div class="tilt-shine rounded-2xl"></div><div class="tilt-inner glass rounded-2xl p-5 md:p-6 text-center group hover:border-white/15 transition-colors cursor-default relative z-10"><div class="text-3xl md:text-4xl mb-3 transition-transform duration-300 group-hover:scale-115">${ic}</div><span class="text-[11px] font-medium text-white/60">${s.name}</span></div></div>`;
+    }).join('');
+
+    // Projects
+    document.getElementById('projectsGrid').innerHTML = d.projects.map(p => {
+        const wc = p.wide ? 'md:col-span-2' : '';
+        const inner = p.wide ? `<div class="grid md:grid-cols-2"><div class="relative h-52 md:h-auto overflow-hidden rounded-t-3xl md:rounded-l-3xl md:rounded-tr-none"><img src="${p.image}" alt="${p.title}" class="project-img w-full h-full object-cover" style="filter:grayscale(85%)"><div class="project-overlay absolute inset-0 bg-black/60 flex items-center justify-center gap-4"><a href="#" class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors"><iconify-icon icon="lucide:external-link" width="18" style="color:#fff"></iconify-icon></a><a href="#" class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors"><iconify-icon icon="lucide:github" width="18" style="color:#fff"></iconify-icon></a></div></div><div class="p-6 md:p-8 flex flex-col justify-center"><div class="flex items-center gap-2 mb-3"><span class="w-2 h-2 rounded-full bg-white/35"></span><span class="text-[10px] uppercase tracking-widest text-white/35">${p.category}</span></div><h3 class="font-serif text-xl md:text-2xl font-medium mb-3">${p.title}</h3><p class="text-sm text-white/45 font-light leading-relaxed mb-4">${p.description}</p><div class="flex flex-wrap gap-2">${p.tags.map(t=>`<span class="text-[10px] px-2.5 py-1 rounded-full border border-white/8 text-white/45">${t}</span>`).join('')}</div></div></div>` : `<div class="relative h-52 md:h-60 overflow-hidden rounded-t-3xl"><img src="${p.image}" alt="${p.title}" class="project-img w-full h-full object-cover" style="filter:grayscale(85%)"><div class="project-overlay absolute inset-0 bg-black/60 flex items-center justify-center gap-4"><a href="#" class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors"><iconify-icon icon="lucide:external-link" width="18" style="color:#fff"></iconify-icon></a><a href="#" class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors"><iconify-icon icon="lucide:github" width="18" style="color:#fff"></iconify-icon></a></div></div><div class="p-6 md:p-8"><div class="flex items-center gap-2 mb-3"><span class="w-2 h-2 rounded-full bg-white/35"></span><span class="text-[10px] uppercase tracking-widest text-white/35">${p.category}</span></div><h3 class="font-serif text-xl md:text-2xl font-medium mb-3">${p.title}</h3><p class="text-sm text-white/45 font-light leading-relaxed mb-4">${p.description}</p><div class="flex flex-wrap gap-2">${p.tags.map(t=>`<span class="text-[10px] px-2.5 py-1 rounded-full border border-white/8 text-white/45">${t}</span>`).join('')}</div></div>`;
+        return `<div class="project-card glass rounded-3xl overflow-hidden group hoverable ${wc} reveal">${inner}</div>`;
+    }).join('');
+
+    // Timeline
+    const tl = document.getElementById('timeline');
+    tl.innerHTML = '<div class="timeline-line"></div>';
+    d.experience.forEach((t, i) => {
+        const ml = i === d.experience.length - 1 ? '' : 'mb-16';
+        const content = t.side === 'left' ? `<div class="md:w-1/2 md:pr-16 md:text-right pl-12 md:pl-0"><span class="text-[10px] uppercase tracking-widest text-white/35">${t.label}</span><h3 class="font-serif text-lg md:text-xl font-medium mt-1">${t.title}</h3><p class="text-sm text-white/45 font-light leading-relaxed mt-2">${t.description}</p></div><div class="md:w-1/2"></div>` : `<div class="md:w-1/2"></div><div class="md:w-1/2 md:pl-16 pl-12"><span class="text-[10px] uppercase tracking-widest text-white/35">${t.label}</span><h3 class="font-serif text-lg md:text-xl font-medium mt-1">${t.title}</h3><p class="text-sm text-white/45 font-light leading-relaxed mt-2">${t.description}</p></div>`;
+        tl.innerHTML += `<div class="timeline-item relative flex flex-col md:flex-row items-start ${ml} reveal"><div class="timeline-dot" style="top:8px"></div>${content}</div>`;
+    });
+
+    // Stats
+    document.getElementById('statsGrid').innerHTML = d.stats.map(s => `<div class="tilt-card glass rounded-2xl p-6 md:p-8 text-center reveal relative overflow-hidden"><div class="tilt-shine rounded-2xl"></div><div class="tilt-inner relative z-10"><div class="stat-number font-serif text-3xl md:text-4xl font-semibold text-white" data-target="${s.value}">0</div><div class="text-[10px] md:text-xs uppercase tracking-widest text-white/35 mt-2">${s.label}</div></div></div>`).join('');
+
+    // Contact cards
+    document.getElementById('contactCards').innerHTML = d.contact.map(c => {
+        const ic = c.isWhatsApp ? `<iconify-icon icon="${c.icon}" width="22"></iconify-icon>` : `<iconify-icon icon="${c.icon}" width="20" style="color:rgba(255,255,255,0.65)"></iconify-icon>`;
+        const wc = c.isWhatsApp ? 'hover:border-green-500/20' : 'hover:border-white/15';
+        const target = c.href.startsWith('http') ? 'target="_blank" rel="noopener"' : '';
+        return `<a href="${c.href}" ${target} class="tilt-card glass rounded-2xl p-5 md:p-6 text-center group ${wc} transition-all hoverable reveal relative overflow-hidden"><div class="tilt-shine rounded-2xl"></div><div class="tilt-inner relative z-10"><div class="w-11 h-11 rounded-full glass-strong flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">${ic}</div><div class="text-[10px] uppercase tracking-widest text-white/35 mb-1">${c.label}</div><div class="text-sm text-white/60 font-light break-all">${c.value}</div></div></a>`;
+    }).join('');
+
+    // Footer
+    document.getElementById('footerLinks').innerHTML = d.contact.filter(c => c.href.startsWith('http')).map(c => {
+        const cls = c.isWhatsApp ? 'text-green-400/40 hover:text-green-400' : 'text-white/25 hover:text-white';
+        return `<a href="${c.href}" target="_blank" rel="noopener" class="${cls} transition-colors hoverable"><iconify-icon icon="${c.icon}" width="20"></iconify-icon></a>`;
+    }).join('');
+
+    setTimeout(() => { initScrollAnimations(); initTiltCards(); }, 100);
+}
+
+// ─── LOADER ──────────────────────────────────────────────
+(async function(){
+    const data = await fetchPortfolio();
+    const letters=document.querySelectorAll('#loader .letter');
+    const sub=document.querySelector('#loader .subtitle-loader');
+    const bar=document.querySelector('.loader-bar');
+    const loader=document.getElementById('loader');
+    const main=document.getElementById('mainContent');
+    const nav=document.getElementById('navbar');
+
+    gsap.timeline()
+    .to(letters,{opacity:1,y:0,rotateX:0,duration:0.6,stagger:0.05,ease:'back.out(1.7)'})
+    .to(sub,{opacity:1,duration:0.8,ease:'power2.out'},'-=0.3')
+    .to(bar,{opacity:1,duration:0.3},'-=0.5')
+    .to({},({duration:2.2}))
+    .to(loader,{clipPath:'inset(0 0 100% 0)',duration:1,ease:'power4.inOut'})
+    .set(loader,{display:'none'})
+    .to(nav,{opacity:1,duration:0.6,ease:'power2.out'},'-=0.4')
+    .to(main,{opacity:1,duration:1,ease:'power2.out'},'-=0.5')
+    .call(()=>{renderPortfolio(data);initTypingAnimation()});
+})();
+
+// ─── THREE.JS ────────────────────────────────────────────
+(function(){
+    const canvas=document.getElementById('three-canvas');const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(70,innerWidth/innerHeight,0.1,1000);const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+    const p1c=innerWidth<768?900:2500,p1g=new THREE.BufferGeometry(),p1p=new Float32Array(p1c*3);for(let i=0;i<p1c*3;i+=3){p1p[i]=(Math.random()-.5)*28;p1p[i+1]=(Math.random()-.5)*28;p1p[i+2]=(Math.random()-.5)*28;}p1g.setAttribute('position',new THREE.BufferAttribute(p1p,3));scene.add(new THREE.Points(p1g,new THREE.PointsMaterial({color:0xffffff,size:0.012,transparent:true,opacity:0.3,sizeAttenuation:true})));
+    const p2c=innerWidth<768?300:700,p2g=new THREE.BufferGeometry(),p2p=new Float32Array(p2c*3);for(let i=0;i<p2c*3;i+=3){p2p[i]=(Math.random()-.5)*50;p2p[i+1]=(Math.random()-.5)*50;p2p[i+2]=(Math.random()-.5)*50-15;}p2g.setAttribute('position',new THREE.BufferAttribute(p2p,3));const pts2=new THREE.Points(p2g,new THREE.PointsMaterial({color:0xffffff,size:0.005,transparent:true,opacity:0.12,sizeAttenuation:true}));scene.add(pts2);
+    const shapes=[];[{g:new THREE.IcosahedronGeometry(0.8,0),p:[-7,4,-8],o:0.06},{g:new THREE.OctahedronGeometry(0.6,0),p:[8,-3,-6],o:0.055},{g:new THREE.TetrahedronGeometry(0.5,0),p:[-5,-6,-9],o:0.05},{g:new THREE.TorusGeometry(0.55,0.18,8,24),p:[6,5,-10],o:0.04},{g:new THREE.IcosahedronGeometry(0.4,1),p:[-9,-1,-7],o:0.055},{g:new THREE.OctahedronGeometry(0.7,0),p:[4,-7,-11],o:0.03},{g:new THREE.TorusKnotGeometry(0.35,0.1,60,8),p:[-3,8,-12],o:0.025},{g:new THREE.DodecahedronGeometry(0.45,0),p:[9,2,-9],o:0.04}].forEach(c=>{const m=new THREE.Mesh(c.g,new THREE.MeshBasicMaterial({color:0xffffff,wireframe:true,transparent:true,opacity:c.o}));m.position.set(...c.p);m.userData={rx:(Math.random()-.5)*.007,ry:(Math.random()-.5)*.007,rz:(Math.random()-.5)*.004,fs:Math.random()*.002+.001,fo:Math.random()*Math.PI*2,by:c.p[1]};scene.add(m);shapes.push(m)});
+    const gridH=new THREE.GridHelper(40,40,0x111111,0x080808);gridH.position.y=-10;gridH.material.transparent=true;gridH.material.opacity=0.3;scene.add(gridH);
+    const oc=new THREE.EllipseCurve(0,0,4,4,0,Math.PI*2,false,0),op=oc.getPoints(80);const ol1=new THREE.Line(new THREE.BufferGeometry().setFromPoints(op.map(p=>new THREE.Vector3(p.x,0,p.y))),new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:0.04}));ol1.rotation.x=Math.PI*0.35;ol1.rotation.z=Math.PI*0.1;scene.add(ol1);
+    camera.position.z=5;let mx=0,my=0;document.addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*.7;my=(e.clientY/innerHeight-.5)*.7});
+    function animate(){requestAnimationFrame(animate);const t=Date.now()*.001;scene.children[0].rotation.y+=.0002;scene.children[0].rotation.x+=.0001;pts2.rotation.y-=.00012;pts2.rotation.z+=.00005;shapes.forEach(s=>{s.rotation.x+=s.userData.rx;s.rotation.y+=s.userData.ry;s.rotation.z+=s.userData.rz;s.position.y=s.userData.by+Math.sin(t+s.userData.fo)*.9});ol1.rotation.y+=.001;camera.position.x+=(mx*.7-camera.position.x)*.012;camera.position.y+=(-my*.7-camera.position.y)*.012;camera.lookAt(scene.position);renderer.render(scene,camera)}
+    animate();addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+})();
+
+// ─── CURSOR ─────────────────────────────────────────────
+(function(){const d=document.getElementById('cursorDot'),r=document.getElementById('cursorRing');if(!d||!r||innerWidth<768)return;let mx=0,my=0,rx=0,ry=0;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;d.style.transform=`translate(${mx-2.5}px,${my-2.5}px)`});(function loop(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;r.style.transform=`translate(${rx-22}px,${ry-22}px)`;requestAnimationFrame(loop)})();function bind(){document.querySelectorAll('.hoverable,a,button').forEach(el=>{if(!el.dataset.cb){el.dataset.cb='1';el.addEventListener('mouseenter',()=>r.classList.add('hover'));el.addEventListener('mouseleave',()=>r.classList.remove('hover'))}})}bind();new MutationObserver(bind).observe(document.body,{childList:true,subtree:true})})();
+
+// ─── TYPING ─────────────────────────────────────────────
+function initTypingAnimation(){const texts=['Building Intelligent Web Experiences','Creating AI-Powered Applications','Full Stack Development & Innovation'];const el=document.getElementById('typingText');let ti=0,ci=0,del=false;(function type(){const c=texts[ti];if(del){el.textContent=c.substring(0,ci-1);ci--}else{el.textContent=c.substring(0,ci+1);ci++}let sp=del?25:55;if(!del&&ci===c.length){sp=2500;del=true}else if(del&&ci===0){del=false;ti=(ti+1)%texts.length;sp=400}setTimeout(type,sp)})()}
+
+// ─── 3D TILT ────────────────────────────────────────────
+function initTiltCards(){if(innerWidth<768)return;document.querySelectorAll('.tilt-card').forEach(card=>{card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect();const x=e.clientX-r.left,y=e.clientY-r.top;const cx=r.width/2,cy=r.height/2;card.style.transform=`perspective(800px) rotateX(${((y-cy)/cy)*-10}deg) rotateY(${((x-cx)/cx)*10}deg) scale3d(1.04,1.04,1.04)`;card.style.setProperty('--sx',(x/r.width*100)+'%');card.style.setProperty('--sy',(y/r.height*100)+'%')});card.addEventListener('mouseleave',()=>{card.style.transform='perspective(800px) rotateX(0) rotateY(0) scale3d(1,1,1)'})})}
+
+// ─── PARALLAX ───────────────────────────────────────────
+document.addEventListener('mousemove',e=>{const mx=(e.clientX/innerWidth-.5),my=(e.clientY/innerHeight-.5);document.querySelectorAll('.parallax-layer').forEach(l=>{const s=parseFloat(l.dataset.speed)||.02;l.style.transform=`translate(${mx*s*100}px,${my*s*100}px)`})});
+
+// ─── SCROLL ANIMATIONS ──────────────────────────────────
+function initScrollAnimations(){gsap.registerPlugin(ScrollTrigger);gsap.utils.toArray('.reveal').forEach((el,i)=>{gsap.to(el,{opacity:1,y:0,duration:0.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none none'},delay:(i%6)*.06})});gsap.utils.toArray('.reveal-scale').forEach(el=>{gsap.to(el,{opacity:1,scale:1,rotateX:0,duration:1.2,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 85%'}})});document.querySelectorAll('.stat-number').forEach(stat=>{const target=parseInt(stat.dataset.target);ScrollTrigger.create({trigger:stat,start:'top 85%',onEnter:()=>{gsap.to({val:0},{val:target,duration:2.2,ease:'power2.out',onUpdate:function(){stat.textContent=Math.round(this.targets()[0].val)+'+'}})},once:true})});ScrollTrigger.create({start:50,onUpdate:self=>{const nb=document.getElementById('navbar');if(self.scroll()>50){nb.style.background='rgba(5,5,5,0.75)';nb.style.backdropFilter='blur(24px)';nb.style.webkitBackdropFilter='blur(24px)';nb.style.borderBottom='1px solid rgba(255,255,255,0.04)'}else{nb.style.background='transparent';nb.style.backdropFilter='none';nb.style.webkitBackdropFilter='none';nb.style.borderBottom='none'}}});['home','about','skills','projects','experience','contact'].forEach(id=>{ScrollTrigger.create({trigger:`#${id}`,start:'top center',end:'bottom center',onEnter:()=>setNav(id),onEnterBack:()=>setNav(id)})});document.querySelectorAll('.depth-section').forEach(sec=>{gsap.to(sec,{rotateX:0.5,scrollTrigger:{trigger:sec,start:'top bottom',end:'bottom top',scrub:1}})})}
+function setNav(id){document.querySelectorAll('.nav-link').forEach(l=>{l.classList.remove('active');l.style.color='';if(l.getAttribute('href')===`#${id}`){l.classList.add('active');l.style.color='#fff'}})}
+
+// ─── MOBILE MENU ────────────────────────────────────────
+(function(){const btn=document.getElementById('menuBtn'),menu=document.getElementById('mobileMenu');const l1=document.getElementById('menuLine1'),l2=document.getElementById('menuLine2'),l3=document.getElementById('menuLine3');let open=false;btn.addEventListener('click',()=>{open=!open;menu.classList.toggle('open',open);if(open){l1.style.transform='rotate(45deg) translateY(5px)';l2.style.opacity='0';l2.style.width='0';l3.style.transform='rotate(-45deg) translateY(-5px)';document.body.style.overflow='hidden'}else{l1.style.transform='';l2.style.opacity='1';l2.style.width='16px';l3.style.transform='';document.body.style.overflow=''}});document.querySelectorAll('.mobile-nav-link').forEach(l=>{l.addEventListener('click',()=>{open=false;menu.classList.remove('open');l1.style.transform='';l2.style.opacity='1';l2.style.width='16px';l3.style.transform='';document.body.style.overflow=''})})})();
+
+// ─── SMOOTH SCROLL ─────────────────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',function(e){e.preventDefault();const t=document.querySelector(this.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})});
+</script>
+</body>
+</html>
