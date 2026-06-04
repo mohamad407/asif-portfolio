@@ -1,0 +1,54 @@
+{
+  "about": {
+    "subtitle": "Full Stack & AI Developer",
+    "tags": ["React", "Node.js", "MongoDB", "LangChain", "RAG", "Gemini AI"],
+    "text1": "I am a passionate <span class=\"text-white font-normal\">Full Stack & AI Developer</span> specializing in modern web applications, AI chatbots, <span class=\"text-white font-normal\">Retrieval-Augmented Generation (RAG)</span>, Vector Databases, and scalable cloud-based solutions. I enjoy building innovative products that solve real-world problems.",
+    "text2": "With expertise spanning the entire development stack — from crafting pixel-perfect frontends to architecting intelligent AI backends — I bring ideas to life with clean code and thoughtful design.",
+    "stats": [
+      { "id": "a1", "value": "20+", "label": "Projects" },
+      { "id": "a2", "value": "14+", "label": "Technologies" },
+      { "id": "a3", "value": "AI/ML", "label": "Specialization" }
+    ]
+  },
+  "skills": [
+    { "id": "s1", "name": "HTML5", "icon": "logos:html-5", "type": "img" },
+    { "id": "s2", "name": "CSS3", "icon": "logos:css-3", "type": "img" },
+    { "id": "s3", "name": "JavaScript", "icon": "logos:javascript", "type": "img" },
+    { "id": "s4", "name": "React.js", "icon": "logos:react", "type": "img" },
+    { "id": "s5", "name": "Node.js", "icon": "logos:nodejs-icon", "type": "img" },
+    { "id": "s6", "name": "Express.js", "icon": "simple-icons:express", "type": "icon", "color": "rgba(255,255,255,0.65)" },
+    { "id": "s7", "name": "MongoDB", "icon": "logos:mongodb-icon", "type": "img" },
+    { "id": "s8", "name": "Firebase", "icon": "logos:firebase", "type": "img" },
+    { "id": "s9", "name": "Cloudinary", "icon": "logos:cloudinary-icon", "type": "img" },
+    { "id": "s10", "name": "Git & GitHub", "icon": "logos:git-icon", "type": "img" },
+    { "id": "s11", "name": "LangChain", "icon": "simple-icons:langchain", "type": "icon", "color": "rgba(255,255,255,0.65)" },
+    { "id": "s12", "name": "Vector DBs", "icon": "lucide:database", "type": "icon", "color": "rgba(255,255,255,0.65)" },
+    { "id": "s13", "name": "RAG", "icon": "lucide:brain-circuit", "type": "icon", "color": "rgba(255,255,255,0.65)" },
+    { "id": "s14", "name": "Gemini AI", "icon": "logos:google-gemini", "type": "img" }
+  ],
+  "projects": [
+    { "id": "p1", "title": "AI Document Chatbot", "category": "AI / NLP", "description": "Intelligent chatbot answering questions from uploaded documents using RAG architecture with vector similarity search.", "tags": ["LangChain", "RAG", "Vector DB", "Gemini AI"], "image": "https://picsum.photos/seed/ai-doc-chatbot-v6/800/500.jpg", "wide": false },
+    { "id": "p2", "title": "VMart Marketplace", "category": "Full Stack", "description": "Full-featured MERN stack marketplace for students to buy, sell, and trade products within their campus community.", "tags": ["React", "Node.js", "MongoDB", "Express"], "image": "https://picsum.photos/seed/vmart-market-v6/800/500.jpg", "wide": false },
+    { "id": "p3", "title": "AI Resume Analyzer", "category": "AI / SaaS", "description": "AI-powered tool that analyzes resumes, provides scoring, suggests improvements, and matches with job descriptions.", "tags": ["React", "Node.js", "Gemini AI"], "image": "https://picsum.photos/seed/ai-resume-v6/800/500.jpg", "wide": false },
+    { "id": "p4", "title": "Dental Clinic Website", "category": "Web Design", "description": "Modern responsive business website featuring appointment booking, service showcase, and patient testimonials.", "tags": ["HTML5", "CSS3", "JavaScript", "Responsive"], "image": "https://picsum.photos/seed/dental-clinic-v6/800/500.jpg", "wide": false },
+    { "id": "p5", "title": "Spotify Clone", "category": "Frontend", "description": "Pixel-perfect Spotify clone with real-time API integration, music player, playlist management, and responsive design.", "tags": ["React", "API", "Tailwind CSS"], "image": "https://picsum.photos/seed/spotify-clone-v6/800/600.jpg", "wide": true }
+  ],
+  "experience": [
+    { "id": "e1", "label": "Ongoing", "title": "Full Stack Development", "description": "Building production-ready web applications with React, Node.js, and MongoDB. Focused on clean architecture, scalable solutions, and exceptional user experiences.", "side": "left" },
+    { "id": "e2", "label": "Recent Focus", "title": "AI Development", "description": "Specializing in LangChain, RAG pipelines, Vector Databases, and Gemini AI integration. Building intelligent chatbots and AI-powered SaaS products.", "side": "right" },
+    { "id": "e3", "label": "Parallel", "title": "Freelance Projects", "description": "Delivered custom websites and web applications for clients including business sites, e-commerce platforms, and specialized tools with timely delivery.", "side": "left" },
+    { "id": "e4", "label": "Continuous", "title": "Personal Projects", "description": "Continuously building and open-sourcing projects to explore new technologies, sharpen skills, and contribute to the developer community.", "side": "right" }
+  ],
+  "stats": [
+    { "id": "st1", "value": 20, "label": "Projects Completed" },
+    { "id": "st2", "value": 14, "label": "Technologies Learned" },
+    { "id": "st3", "value": 500, "label": "GitHub Contributions" },
+    { "id": "st4", "value": 10, "label": "Happy Clients" }
+  ],
+  "contact": [
+    { "id": "c1", "icon": "lucide:mail", "label": "Email", "value": "asihfibrahim600@gmail.com", "href": "mailto:asihfibrahim600@gmail.com", "isWhatsApp": false },
+    { "id": "c2", "icon": "logos:whatsapp-icon", "label": "WhatsApp", "value": "+91 96779 88241", "href": "https://wa.me/919677988241", "isWhatsApp": true },
+    { "id": "c3", "icon": "lucide:linkedin", "label": "LinkedIn", "value": "mohamad-asif", "href": "https://www.linkedin.com/in/mohamad-asif", "isWhatsApp": false },
+    { "id": "c4", "icon": "lucide:github", "label": "GitHub", "value": "mohammed-asif", "href": "https://github.com/mohammed-asif", "isWhatsApp": false }
+  ]
+}
