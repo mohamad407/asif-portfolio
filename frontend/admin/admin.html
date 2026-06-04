@@ -18,11 +18,18 @@
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
             </div>
             <h2 class="login-title">Admin Access</h2>
-            <p class="login-subtitle">Enter password to manage portfolio</p>
+            <p class="login-subtitle">Enter credentials to manage portfolio</p>
             <form id="loginForm" class="login-form">
-                <input type="password" id="loginPassword" class="login-input" placeholder="Password" autocomplete="current-password">
-                <p id="loginError" class="login-error hidden">Incorrect password</p>
-                <button type="submit" class="login-btn">Login</button>
+                <div class="input-group" style="margin-bottom:12px">
+                    <label class="input-label">Username</label>
+                    <input type="text" id="loginUsername" class="login-input" placeholder="Enter username" autocomplete="username" required>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Password</label>
+                    <input type="password" id="loginPassword" class="login-input" placeholder="Enter password" autocomplete="current-password" required>
+                </div>
+                <p id="loginError" class="login-error hidden"></p>
+                <button type="submit" class="login-btn" id="loginBtn">Login</button>
             </form>
             <a href="/" class="login-back">← Back to Portfolio</a>
         </div>
@@ -41,11 +48,11 @@
                     <span>Overview</span>
                 </a>
                 <a href="#" class="sidebar-link" data-section="about">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 15v2m0 0v2m0 0h.01M9 21v-2a4 4 0 01-4-4H5a4 4 0 01-4-4v-2m14 0V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/><circle cx="12" cy="7" r="4"/></svg>
                     <span>About</span>
                 </a>
                 <a href="#" class="sidebar-link" data-section="skills">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 13 10 13 2"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 14 11 22 21 10 13 10 13 2"/></svg>
                     <span>Skills</span>
                 </a>
                 <a href="#" class="sidebar-link" data-section="projects">
@@ -53,7 +60,7 @@
                     <span>Projects</span>
                 </a>
                 <a href="#" class="sidebar-link" data-section="experience">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12 12 23 12"/></svg>
                     <span>Experience</span>
                 </a>
                 <a href="#" class="sidebar-link" data-section="stats">
@@ -61,7 +68,7 @@
                     <span>Stats</span>
                 </a>
                 <a href="#" class="sidebar-link" data-section="contact">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2h4z"/><polyline points="22 6 12 13 2 6"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                     <span>Contact</span>
                 </a>
             </nav>
@@ -76,6 +83,9 @@
 
         <main class="main-content" id="mainContent">
             <header class="main-header">
+                <button class="mobile-toggle" id="mobileToggle" style="display:none" aria-label="Toggle menu">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
                 <h1 id="pageTitle" class="page-title">Dashboard Overview</h1>
                 <div class="header-actions">
                     <button id="resetBtn" class="btn btn-ghost btn-sm">
@@ -96,6 +106,24 @@
 
     <!-- Toast -->
     <div id="toast" class="toast"></div>
+
+    <!-- Change Password Modal (in dashboard) -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-backdrop" onclick="closeChangePasswordModal()"></div>
+        <div class="modal-content">
+            <h3 class="modal-title">Change Password</h3>
+            <form id="changePasswordForm" class="login-form">
+                <div class="input-group"><label class="input-label">Current Password</label><input type="password" id="cpCurrent" class="login-input" placeholder="Enter current password" required autocomplete="current-password"></div>
+                <div class="input-group"><label class="input-label">New Password</label><input type="password" id="cpNew" class="login-input" placeholder="Min 8 characters" required autocomplete="new-password" minlength="8"></div>
+                <div class="input-group"><label class="input-label">Confirm New Password</label><input type="password" id="cpConfirm" class="login-input" placeholder="Repeat new password" required autocomplete="new-password"></div>
+                <p id="cpError" class="login-error hidden"></p>
+                <div class="modal-actions" style="margin-top:20px">
+                    <button type="button" class="btn btn-ghost" onclick="closeChangePasswordModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script src="admin.js"></script>
 </body>
