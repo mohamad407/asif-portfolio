@@ -289,9 +289,13 @@
 
 <div class="toast glass-strong rounded-xl text-white/90" id="toast"></div>
 
+<script src="config.js"></script>
 <script>
 // ─── CONFIG ──────────────────────────────────────────────
-const API_BASE = "https://asif-portfolio-egl8.onrender.com";
+// See config.js — set window.PORTFOLIO_API_BASE there if your
+// backend is hosted on a different domain than this page (e.g.
+// frontend on Vercel, backend on Render).
+const API_BASE = (window.PORTFOLIO_API_BASE || window.location.origin) + '/api';
 
 // ─── FETCH DATA FROM BACKEND ────────────────────────────
 let portfolioData = null;
