@@ -1,5 +1,7 @@
 // ─── CONFIG ──────────────────────────────────────────────
-const API_BASE = window.location.origin + '/api';
+// See ../config.js — set window.PORTFOLIO_API_BASE there if your
+// backend is hosted on a different domain than this admin page.
+const API_BASE = (window.PORTFOLIO_API_BASE || window.location.origin) + '/api';
 let token = localStorage.getItem('admin_token') || '';
 let portfolioData = null;
 
@@ -40,13 +42,17 @@ function closeModal() {
 document.getElementById('modalBackdrop').addEventListener('click', closeModal);
 
 // ─── AUTH ──────────────────────────────────────────────
-async function login(password) {
+let currentUsername = localStorage.getItem('admin_username') || '';
+
+async function login(username, password) {
     const data = await api('/admin/login', {
         method: 'POST',
-        body: JSON.stringify({ password })
+        body: JSON.stringify({ username, password })
     });
     token = data.token;
+    currentUsername = data.username;
     localStorage.setItem('admin_token', token);
+    localStorage.setItem('admin_username', currentUsername);
     return data;
 }
 
@@ -59,7 +65,9 @@ async function verifyToken() {
 
 function logout() {
     token = '';
+    currentUsername = '';
     localStorage.removeItem('admin_token');
+    localStorage.removeItem('admin_username');
     document.getElementById('dashboard').classList.add('hidden');
     document.getElementById('loginScreen').classList.remove('hidden');
 }
@@ -73,29 +81,77 @@ async function loadData() {
 // ─── LOGIN FORM ────────────────────────────────────────
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+    const uname = document.getElementById('loginUsername').value;
     const pw = document.getElementById('loginPassword').value;
     const errEl = document.getElementById('loginError');
     try {
-        await login(pw);
+        await login(uname, pw);
         errEl.classList.add('hidden');
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('dashboard').classList.remove('hidden');
         await initDashboard();
-    } catch {
+    } catch (err) {
+        errEl.textContent = err.message || 'Invalid username or password.';
         errEl.classList.remove('hidden');
     }
 });
 
 document.getElementById('logoutBtn').addEventListener('click', logout);
 
+// ─── CHANGE PASSWORD MODAL ──────────────────────────────
+function openChangePasswordModal() {
+    document.getElementById('cpCurrent').value = '';
+    document.getElementById('cpNew').value = '';
+    document.getElementById('cpConfirm').value = '';
+    document.getElementById('cpError').classList.add('hidden');
+    document.getElementById('changePasswordModal').classList.add('open');
+}
+function closeChangePasswordModal() {
+    document.getElementById('changePasswordModal').classList.remove('open');
+}
+document.getElementById('changePasswordBtn')?.addEventListener('click', openChangePasswordModal);
+
+document.getElementById('changePasswordForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const currentPassword = document.getElementById('cpCurrent').value;
+    const newPassword = document.getElementById('cpNew').value;
+    const confirmPassword = document.getElementById('cpConfirm').value;
+    const errEl = document.getElementById('cpError');
+    errEl.classList.add('hidden');
+
+    if (newPassword.length < 8) {
+        errEl.textContent = 'New password must be at least 8 characters.';
+        errEl.classList.remove('hidden');
+        return;
+    }
+    if (newPassword !== confirmPassword) {
+        errEl.textContent = 'New password and confirmation do not match.';
+        errEl.classList.remove('hidden');
+        return;
+    }
+    try {
+        const data = await api('/admin/change-password', {
+            method: 'POST',
+            body: JSON.stringify({ currentPassword, newPassword })
+        });
+        token = data.token;
+        localStorage.setItem('admin_token', token);
+        closeChangePasswordModal();
+        showToast('Password updated successfully!');
+    } catch (err) {
+        errEl.textContent = err.message || 'Failed to change password.';
+        errEl.classList.remove('hidden');
+    }
+});
+
 // ─── MOBILE SIDEBAR TOGGLE ───────────────────────────
-document.querySelector('.main-header')?.insertAdjacentHTML('afterbegin', `
-    <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-    </button>
-`);
+// (button already exists in admin.html — just wire it up)
 document.getElementById('mobileToggle')?.addEventListener('click', () => {
     document.getElementById('sidebar').classList.toggle('open');
+});
+document.getElementById('sidebar')?.addEventListener('click', (e) => {
+    // tapping outside the nav links (e.g. the dimmed backdrop area) closes it on mobile
+    if (e.target === e.currentTarget) document.getElementById('sidebar').classList.remove('open');
 });
 
 // ─── RESET BUTTON ──────────────────────────────────────
@@ -114,6 +170,11 @@ document.getElementById('resetBtn').addEventListener('click', async () => {
 // ─── DASHBOARD INIT ────────────────────────────────────
 async function initDashboard() {
     try {
+        const v = await api('/admin/verify');
+        currentUsername = v.username;
+        localStorage.setItem('admin_username', currentUsername);
+        const unameEl = document.getElementById('sidebarUsername');
+        if (unameEl) unameEl.textContent = `Signed in as ${currentUsername}`;
         await loadData();
         switchSection('overview');
     } catch (err) {
@@ -170,7 +231,7 @@ function renderOverview(el) {
             <div class="card stat-card"><div class="stat-value">${d.stats.length}</div><div class="stat-label">Stats</div></div>
         </div>
         <div class="info-box">💡 Click any section in the sidebar to manage content. All changes save to <code>data/portfolio.json</code> and appear on your portfolio instantly.</div>
-        <div class="info-box">🔐 Admin Password: <code>admin123</code> — Change this in <code>server.js</code> → <code>ADMIN_PASSWORD</code></div>
+        <div class="info-box">🔐 Logged in as <code>${escHtml(currentUsername)}</code> — use the "Change Password" button up top to update your credentials anytime.</div>
         <div class="info-box">🌐 Portfolio URL: <code><a href="/" style="color:rgba(255,255,255,0.6);text-decoration:underline">${window.location.origin}</a></code></div>
     `;
 }
