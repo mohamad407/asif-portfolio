@@ -120,6 +120,7 @@ async function getDefaults() {
     const defaults = {
         about: {
             subtitle: 'Full Stack & AI Developer',
+            profileImage: 'https://z-cdn-media.chatglm.cn/files/100e83a3-16b3-45bb-8005-8a02944e5564.jpg?auth_key=1880335580-2b4a6a8e5f94407faa08f6e6b010af63-0-c7e6577984afce8874453df81bcd8291',
             tags: ['React', 'Node.js', 'MongoDB', 'LangChain', 'RAG', 'Gemini AI'],
             text1: 'I am a passionate <span class="text-white font-normal">Full Stack & AI Developer</span> specializing in modern web applications, AI chatbots, <span class="text-white font-normal">Retrieval-Augmented Generation (RAG)</span>, Vector Databases, and scalable cloud-based solutions. I enjoy building innovative products that solve real-world problems.',
             text2: 'With expertise spanning the entire development stack — from crafting pixel-perfect frontends to architecting intelligent AI backends — I bring ideas to life with clean code and thoughtful design.',
@@ -177,7 +178,7 @@ async function getDefaults() {
 
 // ─── MIDDLEWARE ─────────────────────────────────────────────
 app.use(cors());
-app.use(express.json({ limit: '2mb' }));
+app.use(express.json({ limit: '12mb' }));
 
 app.get('/admin', (req, res) => {
     res.sendFile(path.join(ADMIN_DIR, 'admin.html'));
