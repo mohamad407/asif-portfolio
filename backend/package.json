@@ -1,19 +1,19 @@
 {
   "name": "mohammed-asif-portfolio",
-  "version": "1.0.0",
-  "description": "Portfolio backend with MongoDB admin auth",
+  "version": "3.0.0",
+  "description": "Portfolio backend — MongoDB Atlas storage, config-driven admin auth (no hardcoded credentials)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "setup": "node setup.js"
+    "reset-admin": "node setup.js"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
     "express": "^4.18.2",
-    "mongodb": "^6.3.0",
-    "uuid": "^9.0.0"
+    "cors": "^2.8.5",
+    "bcryptjs": "^2.4.3",
+    "uuid": "^9.0.0",
+    "dotenv": "^16.4.5",
+    "mongodb": "^6.9.0"
   }
 }
