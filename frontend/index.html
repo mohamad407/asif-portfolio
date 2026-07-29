@@ -347,11 +347,22 @@ function renderPortfolio(d) {
     document.getElementById('projectsGrid').innerHTML = d.projects.map(p => {
         const wc = p.wide ? 'md:col-span-2' : '';
         const overlayIcons = `<div class="project-overlay absolute inset-0 bg-black/60 flex items-center justify-center gap-4">${p.liveUrl ? `<span class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center"><iconify-icon icon="lucide:external-link" width="18" style="color:#fff"></iconify-icon></span>` : ''}</div>`;
-        const inner = p.wide ? `<div class="grid md:grid-cols-2"><div class="relative h-52 md:h-auto overflow-hidden rounded-t-3xl md:rounded-l-3xl md:rounded-tr-none"><img src="${p.image}" alt="${p.title}" class="project-img w-full h-full object-cover" style="filter:grayscale(85%)">${overlayIcons}</div><div class="p-6 md:p-8 flex flex-col justify-center"><div class="flex items-center gap-2 mb-3"><span class="w-2 h-2 rounded-full bg-white/35"></span><span class="text-[10px] uppercase tracking-widest text-white/35">${p.category}</span></div><h3 class="font-serif text-xl md:text-2xl font-medium mb-3">${p.title}</h3><p class="text-sm text-white/45 font-light leading-relaxed mb-4">${p.description}</p><div class="flex flex-wrap gap-2">${p.tags.map(t=>`<span class="text-[10px] px-2.5 py-1 rounded-full border border-white/8 text-white/45">${t}</span>`).join('')}</div></div></div>` : `<div class="relative h-52 md:h-60 overflow-hidden rounded-t-3xl"><img src="${p.image}" alt="${p.title}" class="project-img w-full h-full object-cover" style="filter:grayscale(85%)">${overlayIcons}</div><div class="p-6 md:p-8"><div class="flex items-center gap-2 mb-3"><span class="w-2 h-2 rounded-full bg-white/35"></span><span class="text-[10px] uppercase tracking-widest text-white/35">${p.category}</span></div><h3 class="font-serif text-xl md:text-2xl font-medium mb-3">${p.title}</h3><p class="text-sm text-white/45 font-light leading-relaxed mb-4">${p.description}</p><div class="flex flex-wrap gap-2">${p.tags.map(t=>`<span class="text-[10px] px-2.5 py-1 rounded-full border border-white/8 text-white/45">${t}</span>`).join('')}</div></div>`;
-        const tag = p.liveUrl ? 'a' : 'div';
-        const linkAttrs = p.liveUrl ? `href="${p.liveUrl}" target="_blank" rel="noopener"` : '';
-        return `<${tag} ${linkAttrs} class="project-card glass rounded-3xl overflow-hidden group hoverable ${wc} reveal block">${inner}</${tag}>`;
+        const inner = p.wide ? `<div class="grid md:grid-cols-2"><div class="relative overflow-hidden rounded-t-3xl md:rounded-l-3xl md:rounded-tr-none" style="aspect-ratio:8/5"><img src="${p.image}" alt="${p.title}" class="project-img w-full h-full object-cover" style="filter:grayscale(85%)">${overlayIcons}</div><div class="p-6 md:p-8 flex flex-col justify-center"><div class="flex items-center gap-2 mb-3"><span class="w-2 h-2 rounded-full bg-white/35"></span><span class="text-[10px] uppercase tracking-widest text-white/35">${p.category}</span></div><h3 class="font-serif text-xl md:text-2xl font-medium mb-3">${p.title}</h3><p class="text-sm text-white/45 font-light leading-relaxed mb-4">${p.description}</p><div class="flex flex-wrap gap-2">${p.tags.map(t=>`<span class="text-[10px] px-2.5 py-1 rounded-full border border-white/8 text-white/45">${t}</span>`).join('')}</div></div></div>` : `<div class="relative overflow-hidden rounded-t-3xl" style="aspect-ratio:8/5"><img src="${p.image}" alt="${p.title}" class="project-img w-full h-full object-cover" style="filter:grayscale(85%)">${overlayIcons}</div><div class="p-6 md:p-8"><div class="flex items-center gap-2 mb-3"><span class="w-2 h-2 rounded-full bg-white/35"></span><span class="text-[10px] uppercase tracking-widest text-white/35">${p.category}</span></div><h3 class="font-serif text-xl md:text-2xl font-medium mb-3">${p.title}</h3><p class="text-sm text-white/45 font-light leading-relaxed mb-4">${p.description}</p><div class="flex flex-wrap gap-2">${p.tags.map(t=>`<span class="text-[10px] px-2.5 py-1 rounded-full border border-white/8 text-white/45">${t}</span>`).join('')}</div></div>`;
+        const clickable = p.liveUrl ? 'style="cursor:pointer"' : '';
+        return `<div ${p.liveUrl ? `data-live-url="${p.liveUrl}"` : ''} ${clickable} class="project-card glass rounded-3xl overflow-hidden group hoverable ${wc} reveal">${inner}</div>`;
     }).join('');
+
+    // Make clicking anywhere on a project card (that has a live link) open it —
+    // uses a plain click handler rather than relying solely on native <a> nesting,
+    // so it can't be swallowed by any hover/overlay effect above it.
+    const projectsGridEl = document.getElementById('projectsGrid');
+    if (!projectsGridEl.dataset.clickBound) {
+        projectsGridEl.dataset.clickBound = '1';
+        projectsGridEl.addEventListener('click', function(e) {
+            const card = e.target.closest('[data-live-url]');
+            if (card) window.open(card.dataset.liveUrl, '_blank', 'noopener');
+        });
+    }
 
     // Timeline
     const tl = document.getElementById('timeline');
