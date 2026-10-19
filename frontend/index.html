@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mohamad Asihf | Full Stack & AI Developer</title>
+    <title>Mohammed Asif | Full Stack & AI Developer</title>
     <meta name="theme-color" content="#050505">
     <meta name="description" content="Portfolio of Mohammed Asif — Full Stack & AI Developer specializing in React, Node.js, LangChain, RAG, Gemini AI.">
     <meta name="keywords" content="Mohammed Asif, Full Stack Developer, AI Developer, React, Node.js, LangChain, RAG, Gemini AI">
@@ -198,6 +198,44 @@
             .pm-stage{order:2;padding:12px}
             .pm-bar{padding:10px 14px}.pm-btn span.lbl{display:none}.pm-seg button{padding:0 12px}
         }
+
+        /* ===== DARK LUXURY THEME ===== */
+        :root{--gold:#c9a96e;--gold-2:#e6cf9f;--ivory:#f4efe6}
+        body{background:#070707;color:var(--ivory)}
+        ::selection{background:var(--gold);color:#000}
+        ::-webkit-scrollbar-thumb{background:rgba(201,169,110,.35)}
+        .gradient-text{background:linear-gradient(135deg,#fbf7ee 0%,var(--gold-2) 55%,var(--gold) 120%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        #three-canvas{opacity:.45}
+        .float-shape,.floating-tag,.orbit-ring-3,.orbit-ring-4{display:none!important}
+        .orbit-ring-1{border-color:rgba(201,169,110,.4)}.orbit-ring-2{border-color:rgba(201,169,110,.2)}
+        .orbit-dot{background:var(--gold);box-shadow:0 0 12px rgba(201,169,110,.7)}
+        .profile-img-wrap{border-color:rgba(201,169,110,.4)!important}
+        .profile-glow{background:radial-gradient(ellipse at center,rgba(201,169,110,.14) 0%,transparent 70%)}
+        .bg-white.text-black{background:linear-gradient(135deg,var(--gold-2),var(--gold))!important;color:#0a0a0a!important;box-shadow:0 8px 30px rgba(201,169,110,.25)}
+        .bg-white.text-black:hover{filter:brightness(1.08)}
+        .btn-ghost-gold{display:inline-flex;align-items:center;gap:8px;padding:16px 28px;border-radius:99px;border:1px solid rgba(201,169,110,.45);color:var(--gold-2);font-size:11px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;transition:all .4s}
+        .btn-ghost-gold:hover{background:rgba(201,169,110,.12);border-color:var(--gold)}
+        #progressBar{background:linear-gradient(90deg,var(--gold),var(--gold-2))}
+        .cursor-ring{border-color:rgba(201,169,110,.6)}
+        .sec-label{color:var(--gold)!important;opacity:.85}
+        .sec-label::before,.sec-label::after{background:var(--gold)!important}
+        .nav-link::after{background:var(--gold)!important}
+        .nav-link.active{color:var(--gold-2)!important}
+        .mobile-nav-link{padding:10px 24px}
+        .mobile-nav-link:hover{color:var(--gold-2)!important}
+        .stat-number{color:var(--gold-2)!important}
+        .section-divider{background:linear-gradient(to right,transparent,rgba(201,169,110,.3),transparent)}
+        .timeline-item:hover .timeline-dot{background:var(--gold);border-color:var(--gold);box-shadow:0 0 30px rgba(201,169,110,.6)}
+        .pcard:hover{border-color:rgba(201,169,110,.5)}
+        .pcard::before,.pcard::after{border-color:var(--gold)}
+        .pcard .pnum{color:var(--gold)}.pcard:hover .pview{color:var(--gold-2)}
+        .skill-tile:hover{border-color:rgba(201,169,110,.5)!important;box-shadow:0 14px 40px rgba(0,0,0,.4)}
+        .pm-btn:hover{background:var(--gold);border-color:var(--gold)}
+        .pm-seg .pill{background:linear-gradient(135deg,var(--gold-2),var(--gold))}
+        .spin{border-top-color:var(--gold)}
+        .fchip{padding:9px 20px;border-radius:99px;border:1px solid rgba(255,255,255,.12);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.55);transition:all .4s;min-height:40px}
+        .fchip:hover{border-color:rgba(201,169,110,.5);color:var(--gold-2)}
+        .fchip.on{background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#0a0a0a;border-color:transparent;font-weight:600}
         @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
         @media(max-width:768px){body{cursor:auto}.cursor-dot,.cursor-ring{display:none}.profile-3d-system{width:240px;height:240px}.floating-tag{display:none}.whatsapp-float{cursor:pointer}}
@@ -290,8 +328,8 @@
                 </h1>
                 <div class="flex flex-wrap justify-center lg:justify-start gap-2 mb-8 reveal" id="heroTags"></div>
                 <div class="h-8 mb-10 reveal"><span id="typingText" class="text-sm md:text-base text-white/50 font-light"></span><span class="typing-cursor"></span></div>
-                <div class="flex flex-wrap gap-4 justify-center lg:justify-start reveal">
-                    <a href="#projects" class="btn-shine inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-full text-[11px] font-semibold uppercase tracking-[0.15em] hover:bg-white/90 transition-colors hoverable">View Projects <iconify-icon icon="lucide:arrow-right" width="14"></iconify-icon></a>
+                <div class="flex flex-wrap gap-4 justify-center lg:justify-start reveal" id="heroCtas">
+                    <a href="#projects" class="btn-shine inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-full text-[11px] font-semibold uppercase tracking-[0.15em] hover:bg-white/90 transition-colors hoverable">View Work <iconify-icon icon="lucide:arrow-right" width="14"></iconify-icon></a>
                     <a href="https://wa.me/919677988241?text=Hi%20Mohammed%20Asif%2C%20I%20visited%20your%20portfolio!" target="_blank" class="inline-flex items-center gap-2 px-8 py-4 rounded-full text-[11px] font-semibold uppercase tracking-[0.15em] border border-green-500/30 text-green-400/80 hover:bg-green-500/10 hover:border-green-500/50 transition-all hoverable"><iconify-icon icon="logos:whatsapp-icon" width="18"></iconify-icon> Get in Touch</a>
                 </div>
             </div>
@@ -340,6 +378,7 @@
     <section id="projects" class="relative py-24 md:py-36 px-6 md:px-12 depth-section" style="z-index:2">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-16"><span class="text-[10px] md:text-xs font-medium uppercase tracking-[0.3em] text-white/35 reveal">Portfolio</span><h2 class="font-serif text-3xl md:text-5xl tracking-tight mt-4 reveal"><span class="gradient-text">Featured Projects</span></h2></div>
+            <div class="flex flex-wrap justify-center gap-2 md:gap-3 mb-12 reveal" id="projectFilters"></div>
             <div class="grid md:grid-cols-2 gap-6 md:gap-8" id="projectsGrid"></div>
         </div>
     </section>
@@ -461,13 +500,31 @@ function renderPortfolio(d) {
         const body = `<div class="${p.wide ? 'p-6 md:p-10 flex flex-col justify-center' : 'p-6 pb-7'}"><div class="flex items-center justify-between mb-4"><span class="pnum">No. ${num}</span><span class="text-[10px] uppercase tracking-[0.25em] text-white/35">${p.category}</span></div><h3 class="font-serif text-2xl md:text-3xl font-medium mb-3 tracking-tight">${p.title}</h3><p class="text-sm text-white/45 font-light leading-relaxed mb-5">${p.description}</p><div class="flex flex-wrap gap-2 mb-6">${tags}</div><span class="pview">View project <iconify-icon icon="lucide:arrow-up-right" width="14"></iconify-icon></span></div>`;
         const frame = `<div class="pframe"><img class="pimg" src="${p.image}" alt="${p.title}" loading="lazy"><span class="pbadge"><iconify-icon icon="lucide:eye" width="12"></iconify-icon>Open</span></div>`;
         const inner = p.wide ? `<div class="grid md:grid-cols-2 gap-0 md:gap-4 items-center">${frame}${body}</div>` : frame + body;
-        return `<article class="pcard hoverable ${wc} reveal" data-idx="${i}" tabindex="0" role="button" aria-label="Open ${p.title}">${inner}</article>`;
+        return `<article class="pcard hoverable ${wc} reveal" data-idx="${i}" data-cat="${p.category}" tabindex="0" role="button" aria-label="Open ${p.title}">${inner}</article>`;
     }).join('');
     const pg = document.getElementById('projectsGrid');
     if (!pg.dataset.clickBound) {
         pg.dataset.clickBound = '1';
         pg.addEventListener('click', e => { const c = e.target.closest('.pcard'); if (c) openProject(+c.dataset.idx); });
         pg.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('pcard')) { e.preventDefault(); openProject(+e.target.dataset.idx); } });
+    }
+
+    // Project filters
+    const fbar=document.getElementById('projectFilters');
+    const cats=['All',...new Set(d.projects.map(p=>p.category))];
+    fbar.innerHTML=cats.length>2?cats.map((c,i)=>`<button class="fchip hoverable ${i?'':'on'}" data-cat="${c}">${c}</button>`).join(''):'';
+    fbar.onclick=e=>{
+        const b=e.target.closest('.fchip');if(!b)return;
+        fbar.querySelectorAll('.fchip').forEach(x=>x.classList.toggle('on',x===b));
+        const all=[...pg.querySelectorAll('.pcard')];
+        gsap.to(all,{opacity:0,y:20,duration:.25,overwrite:true,onComplete:()=>{
+            const vis=all.filter(c=>{const ok=b.dataset.cat==='All'||c.dataset.cat===b.dataset.cat;c.style.display=ok?'':'none';return ok});
+            gsap.fromTo(vis,{opacity:0,y:36},{opacity:1,y:0,duration:.7,stagger:.1,ease:'power3.out'});
+        }});
+    };
+    // Résumé button (optional, set in config.js)
+    if(window.PORTFOLIO_RESUME&&!document.getElementById('cvBtn')){
+        document.getElementById('heroCtas').insertAdjacentHTML('beforeend',`<a id="cvBtn" href="${window.PORTFOLIO_RESUME}" download class="btn-ghost-gold hoverable"><iconify-icon icon="lucide:download" width="14"></iconify-icon> Download CV</a>`);
     }
 
     // Timeline
@@ -524,8 +581,9 @@ function renderPortfolio(d) {
     function render(i,dir){
         const P=window.__projects||[];const p=P[i];if(!p)return;cur=i;
         $('pmCount').textContent=String(i+1).padStart(2,'0')+' / '+String(P.length).padStart(2,'0');
+        const cs=[['Challenge',p.problem],['Solution',p.solution],['Result',p.result]].filter(x=>x[1]).map(x=>`<div class="mb-5"><div class="text-[10px] uppercase tracking-[0.25em] mb-2" style="color:var(--gold)">${x[0]}</div><p class="text-sm text-white/55 font-light leading-[1.8]">${x[1]}</p></div>`).join('');
         const tags=(p.tags||[]).map(t=>`<span class="text-[10px] px-2.5 py-1 rounded-full border border-white/10 text-white/55">${t}</span>`).join('');
-        info.innerHTML=`<div class="pm-in"><span class="text-[10px] uppercase tracking-[0.3em] text-white/35">${p.category}</span><h3 class="font-serif text-3xl md:text-4xl font-medium tracking-tight mt-3 mb-5 gradient-text">${p.title}</h3><div class="h-px w-12 bg-white/25 mb-5"></div><p class="text-sm text-white/55 font-light leading-[1.8] mb-6">${p.description}</p><div class="flex flex-wrap gap-2 mb-8">${tags}</div>${p.liveUrl?`<a href="${p.liveUrl}" target="_blank" rel="noopener" class="btn-shine inline-flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full text-[11px] font-semibold uppercase tracking-[0.15em]">Visit live site <iconify-icon icon="lucide:arrow-up-right" width="14"></iconify-icon></a>`:`<span class="text-[11px] text-white/30 italic font-serif">Preview image — live link coming soon.</span>`}</div>`;
+        info.innerHTML=`<div class="pm-in"><span class="text-[10px] uppercase tracking-[0.3em] text-white/35">${p.category}</span><h3 class="font-serif text-3xl md:text-4xl font-medium tracking-tight mt-3 mb-5 gradient-text">${p.title}</h3><div class="h-px w-12 bg-white/25 mb-5"></div><p class="text-sm text-white/55 font-light leading-[1.8] mb-6">${p.description}</p>${cs}<div class="flex flex-wrap gap-2 mb-8">${tags}</div>${p.liveUrl?`<a href="${p.liveUrl}" target="_blank" rel="noopener" class="btn-shine inline-flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full text-[11px] font-semibold uppercase tracking-[0.15em]">Visit live site <iconify-icon icon="lucide:arrow-up-right" width="14"></iconify-icon></a>`:`<span class="text-[11px] text-white/30 italic font-serif">Preview image — live link coming soon.</span>`}</div>`;
         const open=$('pmOpen');if(p.liveUrl){open.href=p.liveUrl;open.style.display=''}else{open.style.display='none'}
         $('pmUrl').textContent=p.liveUrl?p.liveUrl.replace(/^https?:\/\//,''):'preview';
         clearTimeout(hintT);hint.classList.remove('show');
@@ -558,6 +616,7 @@ function renderPortfolio(d) {
     $('pmClose').onclick=close;$('pmPrev').onclick=()=>step(-1);$('pmNext').onclick=()=>step(1);
     document.querySelectorAll('#pmSeg button').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
     addEventListener('keydown',e=>{if(!pm.classList.contains('open'))return;if(e.key==='Escape')close();if(e.key==='ArrowRight')step(1);if(e.key==='ArrowLeft')step(-1)});
+    let tx=0;pm.addEventListener('touchstart',e=>{tx=e.changedTouches[0].clientX},{passive:true});pm.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>90)step(dx<0?1:-1)},{passive:true});
     addEventListener('resize',()=>{if(pm.classList.contains('open')){layout();pill()}});
 })();
 
