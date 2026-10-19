@@ -10,3 +10,7 @@
 // Confirm this is YOUR actual Render backend URL (check your Render
 // dashboard) before deploying — update or clear it if it's wrong/unused.
 window.PORTFOLIO_API_BASE = "https://asif-portfolio-egl8.onrender.com";
+
+// Optional: path or URL of your résumé PDF. When set, a "Download CV" button appears in the hero.
+// Example: window.PORTFOLIO_RESUME = "resume.pdf";
+window.PORTFOLIO_RESUME = "";
