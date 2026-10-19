@@ -557,8 +557,8 @@ function renderProjects(el) {
 let projectDraft = null;
 
 function openProjectModal(id) {
-    const p = id ? portfolioData.projects.find(x => x.id === id) : { title: '', category: '', description: '', tags: [], image: '', liveUrl: '', wide: false };
-    projectDraft = { id, title: p.title, category: p.category, description: p.description, tags: p.tags, image: p.image, liveUrl: p.liveUrl || '', wide: p.wide };
+    const p = id ? portfolioData.projects.find(x => x.id === id) : { title: '', category: '', description: '', tags: [], image: '', liveUrl: '', wide: false, problem: '', solution: '', result: '' };
+    projectDraft = { id, title: p.title, category: p.category, description: p.description, tags: p.tags, image: p.image, liveUrl: p.liveUrl || '', wide: p.wide, problem: p.problem || '', solution: p.solution || '', result: p.result || '' };
     renderProjectModalBody();
 }
 
@@ -583,8 +583,11 @@ function renderProjectModalBody() {
         <div class="input-group">
             <label class="input-label">Live Link (optional)</label>
             <input class="input" id="mProjLive" value="${p.liveUrl}" placeholder="https://your-live-project.com" oninput="projectDraft.liveUrl=this.value">
-            <div style="font-size:11px;color:var(--text-secondary);margin-top:6px">If set, clicking this project on your portfolio opens this link in a new tab.</div>
+            <div style="font-size:11px;color:var(--text-secondary);margin-top:6px">If set, the project opens in a Desktop/Mobile preview window on your portfolio.</div>
         </div>
+        <div class="input-group"><label class="input-label">Case study — Challenge (optional)</label><textarea class="input" rows="2" placeholder="What problem did this solve?" oninput="projectDraft.problem=this.value">${p.problem}</textarea></div>
+        <div class="input-group"><label class="input-label">Case study — Solution (optional)</label><textarea class="input" rows="2" placeholder="What did you build and how?" oninput="projectDraft.solution=this.value">${p.solution}</textarea></div>
+        <div class="input-group"><label class="input-label">Case study — Result (optional)</label><textarea class="input" rows="2" placeholder="Outcome, numbers, learnings..." oninput="projectDraft.result=this.value">${p.result}</textarea></div>
         <label class="checkbox-label" style="margin-bottom:24px">
             <input type="checkbox" id="mProjWide" ${p.wide ? 'checked' : ''} onchange="projectDraft.wide=this.checked">
             Wide layout (spans full width)
@@ -617,6 +620,9 @@ async function addProject() {
         tags: projectDraft.tags,
         image: projectDraft.image,
         liveUrl: projectDraft.liveUrl || undefined,
+        problem: projectDraft.problem || undefined,
+        solution: projectDraft.solution || undefined,
+        result: projectDraft.result || undefined,
         wide: projectDraft.wide
     })});
     projectDraft = null;
@@ -631,6 +637,9 @@ async function saveProject(id) {
         tags: projectDraft.tags,
         image: projectDraft.image,
         liveUrl: projectDraft.liveUrl || undefined,
+        problem: projectDraft.problem || undefined,
+        solution: projectDraft.solution || undefined,
+        result: projectDraft.result || undefined,
         wide: projectDraft.wide
     })});
     projectDraft = null;
