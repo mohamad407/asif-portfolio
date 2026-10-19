@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mohammed Asif | Full Stack & AI Developer</title>
+    <meta name="theme-color" content="#050505">
     <meta name="description" content="Portfolio of Mohammed Asif — Full Stack & AI Developer specializing in React, Node.js, LangChain, RAG, Gemini AI.">
     <meta name="keywords" content="Mohammed Asif, Full Stack Developer, AI Developer, React, Node.js, LangChain, RAG, Gemini AI">
     <meta name="author" content="Mohammed Asif">
@@ -130,10 +131,109 @@
         .whatsapp-float::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(37,211,102,0.3);animation:waPulse 2s ease-in-out infinite}
         @keyframes waPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.25);opacity:0}}
 
+
+        /* ===== v4 UI/UX additions ===== */
+        :focus-visible{outline:1px solid rgba(255,255,255,.7);outline-offset:3px;border-radius:6px}
+        #progressBar{position:fixed;top:0;left:0;height:2px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,rgba(255,255,255,.2),#fff);z-index:10001}
+        .h-line{display:inline-block;overflow:hidden;vertical-align:top}
+        .h-line>span{display:inline-block;transform:translateY(110%)}
+        .sec-label{display:inline-flex;align-items:center;gap:14px}
+        .sec-label::before,.sec-label::after{content:'';width:0;height:1px;background:rgba(255,255,255,.25);transition:width 1s cubic-bezier(.23,1,.32,1) .3s}
+        .sec-label.in::before,.sec-label.in::after{width:36px}
+        .magnetic{will-change:transform}
+        .skill-tile{transition:transform .4s cubic-bezier(.23,1,.32,1)}
+
+        /* classic project cards */
+        .pcard{position:relative;cursor:pointer;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.012));border:1px solid rgba(255,255,255,.08);border-radius:4px;padding:14px 14px 0;transition:transform .6s cubic-bezier(.23,1,.32,1),border-color .5s,box-shadow .6s}
+        .pcard::before,.pcard::after{content:'';position:absolute;width:18px;height:18px;border:1px solid rgba(255,255,255,.4);opacity:0;transition:all .5s cubic-bezier(.23,1,.32,1);pointer-events:none;z-index:3}
+        .pcard::before{top:6px;left:6px;border-right:0;border-bottom:0;transform:translate(8px,8px)}
+        .pcard::after{bottom:6px;right:6px;border-left:0;border-top:0;transform:translate(-8px,-8px)}
+        .pcard:hover{transform:translateY(-10px);border-color:rgba(255,255,255,.22);box-shadow:0 40px 80px rgba(0,0,0,.55)}
+        .pcard:hover::before,.pcard:hover::after{opacity:1;transform:none}
+        .pcard .pframe{position:relative;overflow:hidden;aspect-ratio:8/5;border:1px solid rgba(255,255,255,.08);background:#0a0a0a}
+        .pcard .pimg{width:100%;height:100%;object-fit:cover;filter:grayscale(90%) contrast(1.05);transform:scale(1.04);transition:transform 1.2s cubic-bezier(.23,1,.32,1),filter .8s}
+        .pcard:hover .pimg{transform:scale(1.12);filter:grayscale(0%) contrast(1.05)}
+        .pcard .pnum{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:rgba(255,255,255,.35)}
+        .pcard .pview{display:inline-flex;align-items:center;gap:8px;font-size:10px;text-transform:uppercase;letter-spacing:.22em;color:rgba(255,255,255,.55);transition:gap .4s,color .4s}
+        .pcard:hover .pview{gap:16px;color:#fff}
+        .pcard .pbadge{position:absolute;right:12px;bottom:12px;z-index:2;display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;background:rgba(5,5,5,.7);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);font-size:9px;letter-spacing:.2em;text-transform:uppercase;transform:translateY(14px);opacity:0;transition:all .5s cubic-bezier(.23,1,.32,1)}
+        .pcard:hover .pbadge{transform:none;opacity:1}
+        @media(hover:none){.pcard .pbadge{transform:none;opacity:1}.pcard .pimg{filter:grayscale(40%)}}
+
+        /* project viewer modal */
+        .pm{position:fixed;inset:0;z-index:9500;display:none;background:rgba(3,3,3,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+        .pm.open{display:block}
+        .pm,.pm *{cursor:auto}.pm button,.pm a{cursor:pointer}
+        .pm-wrap{position:absolute;inset:0;display:grid;grid-template-columns:minmax(300px,380px) 1fr;grid-template-rows:auto 1fr}
+        .pm-bar{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 22px;border-bottom:1px solid rgba(255,255,255,.07)}
+        .pm-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:38px;min-width:38px;padding:0 14px;border-radius:99px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);color:rgba(255,255,255,.75);font-size:10px;letter-spacing:.18em;text-transform:uppercase;transition:all .3s}
+        .pm-btn:hover{background:#fff;color:#000;border-color:#fff}
+        .pm-seg{display:inline-flex;padding:3px;border-radius:99px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);position:relative}
+        .pm-seg button{position:relative;z-index:1;height:32px;padding:0 16px;border-radius:99px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.5);display:inline-flex;align-items:center;gap:7px;transition:color .3s}
+        .pm-seg button.on{color:#000}
+        .pm-seg .pill{position:absolute;top:3px;bottom:3px;left:3px;border-radius:99px;background:#fff;transition:all .45s cubic-bezier(.23,1,.32,1)}
+        .pm-info{overflow-y:auto;padding:30px 26px;border-right:1px solid rgba(255,255,255,.07)}
+        .pm-stage{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:22px;background:radial-gradient(ellipse at 50% 40%,rgba(255,255,255,.05),transparent 70%)}
+        .dev{position:absolute;left:50%;top:50%;transform-origin:0 0;transition:width .6s cubic-bezier(.23,1,.32,1),height .6s cubic-bezier(.23,1,.32,1),border-radius .6s,opacity .4s;background:#0b0b0b;border:1px solid rgba(255,255,255,.14);box-shadow:0 40px 120px rgba(0,0,0,.8);overflow:hidden;display:flex;flex-direction:column}
+        .dev.desktop{border-radius:12px}
+        .dev.mobile{border-radius:44px;border:10px solid #1a1a1a;box-shadow:0 0 0 1px rgba(255,255,255,.15),0 40px 120px rgba(0,0,0,.8)}
+        .dev-chrome{flex:0 0 38px;display:flex;align-items:center;gap:7px;padding:0 14px;background:#141414;border-bottom:1px solid rgba(255,255,255,.07)}
+        .dev.mobile .dev-chrome{display:none}
+        .dev-chrome i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.18)}
+        .dev-url{flex:1;margin-left:10px;height:22px;border-radius:99px;background:rgba(255,255,255,.06);font-size:10px;color:rgba(255,255,255,.4);display:flex;align-items:center;padding:0 12px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+        .dev-notch{display:none;position:absolute;top:8px;left:50%;transform:translateX(-50%);width:90px;height:22px;border-radius:99px;background:#000;z-index:5}
+        .dev.mobile .dev-notch{display:block}
+        .dev-screen{position:relative;flex:1;background:#fff}
+        .dev-screen iframe,.dev-screen img{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
+        .dev-screen img{object-fit:cover;object-position:top}
+        .dev-load{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#0b0b0b;color:rgba(255,255,255,.5);font-size:10px;letter-spacing:.25em;text-transform:uppercase;transition:opacity .5s}
+        .spin{width:26px;height:26px;border-radius:50%;border:1px solid rgba(255,255,255,.15);border-top-color:#fff;animation:spin .9s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .pm-hint{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:6;max-width:90%;text-align:center;font-size:11px;color:rgba(255,255,255,.5);padding:8px 16px;border-radius:99px;background:rgba(10,10,10,.85);border:1px solid rgba(255,255,255,.08);opacity:0;pointer-events:none;transition:opacity .5s}
+        .pm-hint.show{opacity:1;pointer-events:auto}
+        .pm-hint a{color:#fff;text-decoration:underline}
+        @media(max-width:900px){
+            .pm-wrap{grid-template-columns:1fr;grid-template-rows:auto auto 1fr}
+            .pm-info{order:3;border-right:0;border-top:1px solid rgba(255,255,255,.07);padding:20px;max-height:34vh}
+            .pm-stage{order:2;padding:12px}
+            .pm-bar{padding:10px 14px}.pm-btn span.lbl{display:none}.pm-seg button{padding:0 12px}
+        }
+        @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
         @media(max-width:768px){body{cursor:auto}.cursor-dot,.cursor-ring{display:none}.profile-3d-system{width:240px;height:240px}.floating-tag{display:none}.whatsapp-float{cursor:pointer}}
     </style>
 </head>
 <body>
+<div id="progressBar"></div>
+<div class="pm" id="pm" role="dialog" aria-modal="true" aria-label="Project viewer">
+  <div class="pm-wrap" id="pmWrap">
+    <div class="pm-bar">
+      <div class="flex items-center gap-2">
+        <button class="pm-btn" id="pmPrev" aria-label="Previous project"><iconify-icon icon="lucide:arrow-left" width="14"></iconify-icon></button>
+        <button class="pm-btn" id="pmNext" aria-label="Next project"><iconify-icon icon="lucide:arrow-right" width="14"></iconify-icon></button>
+        <span class="font-serif italic text-white/40 text-sm ml-2" id="pmCount"></span>
+      </div>
+      <div class="pm-seg" id="pmSeg">
+        <span class="pill" id="pmPill"></span>
+        <button class="on" data-mode="desktop"><iconify-icon icon="lucide:monitor" width="14"></iconify-icon><span class="lbl">Desktop</span></button>
+        <button data-mode="mobile"><iconify-icon icon="lucide:smartphone" width="14"></iconify-icon><span class="lbl">Mobile</span></button>
+      </div>
+      <div class="flex items-center gap-2">
+        <a class="pm-btn" id="pmOpen" target="_blank" rel="noopener"><iconify-icon icon="lucide:external-link" width="14"></iconify-icon><span class="lbl">Open site</span></a>
+        <button class="pm-btn" id="pmClose" aria-label="Close"><iconify-icon icon="lucide:x" width="16"></iconify-icon></button>
+      </div>
+    </div>
+    <aside class="pm-info" id="pmInfo"></aside>
+    <div class="pm-stage" id="pmStage">
+      <div class="dev desktop" id="pmDev">
+        <div class="dev-chrome"><i></i><i></i><i></i><div class="dev-url" id="pmUrl"></div></div>
+        <div class="dev-notch"></div>
+        <div class="dev-screen" id="pmScreen"></div>
+      </div>
+      <div class="pm-hint" id="pmHint"></div>
+    </div>
+  </div>
+</div>
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 <a href="https://wa.me/919677988241" target="_blank" rel="noopener" class="whatsapp-float hoverable" aria-label="Chat on WhatsApp"><iconify-icon icon="logos:whatsapp-icon" width="30" height="30"></iconify-icon></a>
@@ -340,28 +440,25 @@ function renderPortfolio(d) {
         const ic = s.type === 'upload'
             ? `<img src="${s.icon}" width="34" height="34" class="inline-block rounded-md object-contain" alt="${s.name}">`
             : (s.type === 'img' ? `<iconify-icon icon="${s.icon}" width="34" height="34" class="inline-block"></iconify-icon>` : `<iconify-icon icon="${s.icon}" width="34" height="34" style="color:${s.color||'rgba(255,255,255,0.65)'}" class="inline-block"></iconify-icon>`);
-        return `<div class="tilt-card reveal relative overflow-hidden"><div class="tilt-shine rounded-2xl"></div><div class="tilt-inner glass rounded-2xl p-5 md:p-6 text-center group hover:border-white/15 transition-colors cursor-default relative z-10"><div class="text-3xl md:text-4xl mb-3 transition-transform duration-300 group-hover:scale-115">${ic}</div><span class="text-[11px] font-medium text-white/60">${s.name}</span></div></div>`;
+        return `<div class="tilt-card skill-tile reveal relative overflow-hidden"><div class="tilt-shine rounded-2xl"></div><div class="tilt-inner glass rounded-2xl p-5 md:p-6 text-center group hover:border-white/15 transition-colors cursor-default relative z-10"><div class="text-3xl md:text-4xl mb-3 transition-transform duration-300 group-hover:scale-115">${ic}</div><span class="text-[11px] font-medium text-white/60">${s.name}</span></div></div>`;
     }).join('');
 
-    // Projects
-    document.getElementById('projectsGrid').innerHTML = d.projects.map(p => {
+    // Projects — classic gallery cards; tap/click opens the in-page viewer
+    window.__projects = d.projects;
+    document.getElementById('projectsGrid').innerHTML = d.projects.map((p, i) => {
         const wc = p.wide ? 'md:col-span-2' : '';
-        const overlayIcons = `<div class="project-overlay absolute inset-0 bg-black/60 flex items-center justify-center gap-4">${p.liveUrl ? `<span class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center"><iconify-icon icon="lucide:external-link" width="18" style="color:#fff"></iconify-icon></span>` : ''}</div>`;
-        const inner = p.wide ? `<div class="grid md:grid-cols-2"><div class="relative overflow-hidden rounded-t-3xl md:rounded-l-3xl md:rounded-tr-none" style="aspect-ratio:8/5"><img src="${p.image}" alt="${p.title}" class="project-img w-full h-full object-cover" style="filter:grayscale(85%)">${overlayIcons}</div><div class="p-6 md:p-8 flex flex-col justify-center"><div class="flex items-center gap-2 mb-3"><span class="w-2 h-2 rounded-full bg-white/35"></span><span class="text-[10px] uppercase tracking-widest text-white/35">${p.category}</span></div><h3 class="font-serif text-xl md:text-2xl font-medium mb-3">${p.title}</h3><p class="text-sm text-white/45 font-light leading-relaxed mb-4">${p.description}</p><div class="flex flex-wrap gap-2">${p.tags.map(t=>`<span class="text-[10px] px-2.5 py-1 rounded-full border border-white/8 text-white/45">${t}</span>`).join('')}</div></div></div>` : `<div class="relative overflow-hidden rounded-t-3xl" style="aspect-ratio:8/5"><img src="${p.image}" alt="${p.title}" class="project-img w-full h-full object-cover" style="filter:grayscale(85%)">${overlayIcons}</div><div class="p-6 md:p-8"><div class="flex items-center gap-2 mb-3"><span class="w-2 h-2 rounded-full bg-white/35"></span><span class="text-[10px] uppercase tracking-widest text-white/35">${p.category}</span></div><h3 class="font-serif text-xl md:text-2xl font-medium mb-3">${p.title}</h3><p class="text-sm text-white/45 font-light leading-relaxed mb-4">${p.description}</p><div class="flex flex-wrap gap-2">${p.tags.map(t=>`<span class="text-[10px] px-2.5 py-1 rounded-full border border-white/8 text-white/45">${t}</span>`).join('')}</div></div>`;
-        const clickable = p.liveUrl ? 'style="cursor:pointer"' : '';
-        return `<div ${p.liveUrl ? `data-live-url="${p.liveUrl}"` : ''} ${clickable} class="project-card glass rounded-3xl overflow-hidden group hoverable ${wc} reveal">${inner}</div>`;
+        const num = String(i + 1).padStart(2, '0');
+        const tags = (p.tags||[]).map(t=>`<span class="text-[10px] px-2.5 py-1 rounded-full border border-white/8 text-white/45">${t}</span>`).join('');
+        const body = `<div class="${p.wide ? 'p-6 md:p-10 flex flex-col justify-center' : 'p-6 pb-7'}"><div class="flex items-center justify-between mb-4"><span class="pnum">No. ${num}</span><span class="text-[10px] uppercase tracking-[0.25em] text-white/35">${p.category}</span></div><h3 class="font-serif text-2xl md:text-3xl font-medium mb-3 tracking-tight">${p.title}</h3><p class="text-sm text-white/45 font-light leading-relaxed mb-5">${p.description}</p><div class="flex flex-wrap gap-2 mb-6">${tags}</div><span class="pview">View project <iconify-icon icon="lucide:arrow-up-right" width="14"></iconify-icon></span></div>`;
+        const frame = `<div class="pframe"><img class="pimg" src="${p.image}" alt="${p.title}" loading="lazy"><span class="pbadge"><iconify-icon icon="lucide:eye" width="12"></iconify-icon>Open</span></div>`;
+        const inner = p.wide ? `<div class="grid md:grid-cols-2 gap-0 md:gap-4 items-center">${frame}${body}</div>` : frame + body;
+        return `<article class="pcard hoverable ${wc} reveal" data-idx="${i}" tabindex="0" role="button" aria-label="Open ${p.title}">${inner}</article>`;
     }).join('');
-
-    // Make clicking anywhere on a project card (that has a live link) open it —
-    // uses a plain click handler rather than relying solely on native <a> nesting,
-    // so it can't be swallowed by any hover/overlay effect above it.
-    const projectsGridEl = document.getElementById('projectsGrid');
-    if (!projectsGridEl.dataset.clickBound) {
-        projectsGridEl.dataset.clickBound = '1';
-        projectsGridEl.addEventListener('click', function(e) {
-            const card = e.target.closest('[data-live-url]');
-            if (card) window.open(card.dataset.liveUrl, '_blank', 'noopener');
-        });
+    const pg = document.getElementById('projectsGrid');
+    if (!pg.dataset.clickBound) {
+        pg.dataset.clickBound = '1';
+        pg.addEventListener('click', e => { const c = e.target.closest('.pcard'); if (c) openProject(+c.dataset.idx); });
+        pg.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('pcard')) { e.preventDefault(); openProject(+e.target.dataset.idx); } });
     }
 
     // Timeline
@@ -390,7 +487,96 @@ function renderPortfolio(d) {
         return `<a href="${c.href}" target="_blank" rel="noopener" class="${cls} transition-colors hoverable"><iconify-icon icon="${c.icon}" width="20"></iconify-icon></a>`;
     }).join('');
 
-    setTimeout(() => { initScrollAnimations(); initTiltCards(); }, 100);
+    setTimeout(() => { initScrollAnimations(); initTiltCards(); initPolish(); }, 100);
+}
+
+
+// ─── PROJECT VIEWER ─────────────────────────────────────
+(function(){
+    const $=id=>document.getElementById(id);
+    const pm=$('pm'),dev=$('pmDev'),screen=$('pmScreen'),stage=$('pmStage'),info=$('pmInfo'),hint=$('pmHint');
+    let cur=0,mode='desktop',hintT,lastFocus=null;
+    const DESK_W=1280;
+    function layout(){
+        const w=stage.clientWidth-(innerWidth<900?16:44),h=stage.clientHeight-(innerWidth<900?16:44);
+        let W,H;
+        if(mode==='desktop'){W=DESK_W;H=Math.max(560,Math.round(DESK_W*h/w));if(H>900)H=900;}
+        else{W=390;H=800;}
+        const sc=Math.min(w/W,h/H,mode==='desktop'?1:1.1);
+        dev.style.width=W+'px';dev.style.height=H+'px';
+        dev.style.transform=`translate(${-W*sc/2}px,${-H*sc/2}px) scale(${sc})`;
+    }
+    function pill(){const b=document.querySelector('#pmSeg button.on'),pl=$('pmPill');pl.style.left=b.offsetLeft+'px';pl.style.width=b.offsetWidth+'px'}
+    function setMode(m,instant){
+        mode=m;dev.className='dev '+m;
+        document.querySelectorAll('#pmSeg button').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));
+        pill();layout();
+    }
+    function render(i,dir){
+        const P=window.__projects||[];const p=P[i];if(!p)return;cur=i;
+        $('pmCount').textContent=String(i+1).padStart(2,'0')+' / '+String(P.length).padStart(2,'0');
+        const tags=(p.tags||[]).map(t=>`<span class="text-[10px] px-2.5 py-1 rounded-full border border-white/10 text-white/55">${t}</span>`).join('');
+        info.innerHTML=`<div class="pm-in"><span class="text-[10px] uppercase tracking-[0.3em] text-white/35">${p.category}</span><h3 class="font-serif text-3xl md:text-4xl font-medium tracking-tight mt-3 mb-5 gradient-text">${p.title}</h3><div class="h-px w-12 bg-white/25 mb-5"></div><p class="text-sm text-white/55 font-light leading-[1.8] mb-6">${p.description}</p><div class="flex flex-wrap gap-2 mb-8">${tags}</div>${p.liveUrl?`<a href="${p.liveUrl}" target="_blank" rel="noopener" class="btn-shine inline-flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full text-[11px] font-semibold uppercase tracking-[0.15em]">Visit live site <iconify-icon icon="lucide:arrow-up-right" width="14"></iconify-icon></a>`:`<span class="text-[11px] text-white/30 italic font-serif">Preview image — live link coming soon.</span>`}</div>`;
+        const open=$('pmOpen');if(p.liveUrl){open.href=p.liveUrl;open.style.display=''}else{open.style.display='none'}
+        $('pmUrl').textContent=p.liveUrl?p.liveUrl.replace(/^https?:\/\//,''):'preview';
+        clearTimeout(hintT);hint.classList.remove('show');
+        screen.innerHTML=`<div class="dev-load" id="pmLoad"><div class="spin"></div>Loading</div>`;
+        if(p.liveUrl){
+            const f=document.createElement('iframe');f.src=p.liveUrl;f.title=p.title;f.loading='eager';f.referrerPolicy='no-referrer';
+            f.onload=()=>{clearTimeout(hintT);fade()};screen.prepend(f);
+            hintT=setTimeout(()=>{hint.innerHTML='Not loading? Some sites block embedding — <a href="'+p.liveUrl+'" target="_blank" rel="noopener">open it in a new tab</a>.';hint.classList.add('show')},6000);
+        }else{
+            const im=new Image();im.src=p.image;im.alt=p.title;im.onload=fade;im.onerror=fade;screen.prepend(im);
+        }
+        function fade(){const l=$('pmLoad');if(l){l.style.opacity=0;setTimeout(()=>l.remove(),500)}}
+        const x=dir?(dir>0?40:-40):0;
+        gsap.fromTo('.pm-in > *',{opacity:0,y:24,x},{opacity:1,y:0,x:0,duration:.8,stagger:.07,ease:'power3.out',delay:.1});
+        gsap.fromTo(dev,{opacity:0,y:30},{opacity:1,y:0,duration:.8,ease:'power3.out',overwrite:'auto',onStart:layout});
+    }
+    window.openProject=function(i){
+        lastFocus=document.activeElement;pm.classList.add('open');document.body.style.overflow='hidden';document.documentElement.classList.add('pm-on');
+        const cr=$('cursorRing'),cd=$('cursorDot');if(cr){cr.style.display='none';cd.style.display='none'}
+        gsap.fromTo(pm,{opacity:0},{opacity:1,duration:.4,ease:'power2.out'});
+        gsap.fromTo('.pm-bar',{y:-30,opacity:0},{y:0,opacity:1,duration:.7,ease:'power3.out',delay:.1});
+        gsap.fromTo('#pmStage',{clipPath:'inset(8% 8% 8% 8% round 24px)'},{clipPath:'inset(0% 0% 0% 0% round 0px)',duration:.9,ease:'expo.out'});
+        setMode('desktop');render(i,0);setTimeout(()=>{pill();layout()},60);$('pmClose').focus();
+    };
+    function close(){
+        gsap.to(pm,{opacity:0,duration:.3,onComplete:()=>{pm.classList.remove('open');screen.innerHTML='';document.body.style.overflow='';const cr=$('cursorRing'),cd=$('cursorDot');if(cr){cr.style.display='';cd.style.display=''}if(lastFocus)lastFocus.focus({preventScroll:true})}});
+        clearTimeout(hintT);
+    }
+    function step(d){const n=(window.__projects||[]).length;if(n)render((cur+d+n)%n,d)}
+    $('pmClose').onclick=close;$('pmPrev').onclick=()=>step(-1);$('pmNext').onclick=()=>step(1);
+    document.querySelectorAll('#pmSeg button').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
+    addEventListener('keydown',e=>{if(!pm.classList.contains('open'))return;if(e.key==='Escape')close();if(e.key==='ArrowRight')step(1);if(e.key==='ArrowLeft')step(-1)});
+    addEventListener('resize',()=>{if(pm.classList.contains('open')){layout();pill()}});
+})();
+
+// ─── EXTRA POLISH: progress bar, headline reveals, magnetic buttons ───
+function initPolish(){
+    gsap.registerPlugin(ScrollTrigger);
+    const bar=document.getElementById('progressBar');
+    ScrollTrigger.create({start:0,end:'max',onUpdate:s=>{bar.style.transform='scaleX('+s.progress+')'}});
+    document.querySelectorAll('section h2 .gradient-text').forEach(h=>{
+        if(h.dataset.split)return;h.dataset.split=1;
+        const words=h.textContent.trim().split(/\s+/);
+        h.classList.remove('gradient-text');h.innerHTML=words.map(w=>`<span class="h-line"><span class="gradient-text">${w}</span></span>`).join(' ');
+        gsap.to(h.querySelectorAll('.h-line>span'),{y:0,duration:1,stagger:.12,ease:'expo.out',scrollTrigger:{trigger:h,start:'top 90%'}});
+    });
+    document.querySelectorAll('section span.reveal.uppercase').forEach(l=>{
+        l.classList.add('sec-label');ScrollTrigger.create({trigger:l,start:'top 90%',onEnter:()=>l.classList.add('in'),once:true});
+    });
+    gsap.utils.toArray('.pcard .pframe').forEach(f=>{
+        gsap.fromTo(f,{clipPath:'inset(0 0 100% 0)'},{clipPath:'inset(0 0 0% 0)',duration:1.3,ease:'expo.out',scrollTrigger:{trigger:f,start:'top 88%'}});
+    });
+    gsap.from('#skillsGrid .skill-tile',{scale:.7,opacity:0,y:30,duration:.8,stagger:{each:.04,from:'center'},ease:'back.out(1.6)',scrollTrigger:{trigger:'#skillsGrid',start:'top 85%'}});
+    if(innerWidth>=768){
+        document.querySelectorAll('.btn-shine,.whatsapp-float').forEach(b=>{
+            b.classList.add('magnetic');
+            b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();gsap.to(b,{x:(e.clientX-r.left-r.width/2)*.25,y:(e.clientY-r.top-r.height/2)*.35,duration:.4,ease:'power3.out'})});
+            b.addEventListener('mouseleave',()=>gsap.to(b,{x:0,y:0,duration:.8,ease:'elastic.out(1,.4)'}));
+        });
+    }
 }
 
 // ─── LOADER ──────────────────────────────────────────────
