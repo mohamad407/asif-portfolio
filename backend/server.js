@@ -474,6 +474,104 @@ app.delete('/api/contact/:id', authMiddleware, async (req, res) => {
     } catch (e) { console.error(e); res.status(500).json({ error: 'Failed to delete contact' }); }
 });
 
+// ── EMBED CHECK ──
+// Browsers never tell a page whether an <iframe> was blocked (X-Frame-Options /
+// CSP frame-ancestors), so the project viewer asks the server instead. Only URLs
+// that are saved as a project's liveUrl can be checked (no open proxy / SSRF).
+const embedCache = new Map();
+const EMBED_TTL_OK = 10 * 60 * 1000;
+const EMBED_TTL_BAD = 60 * 1000;
+
+function frameAncestorsAllows(cspHeader, parentOrigin) {
+    // A response can carry several policies (comma-joined); every one must allow the parent.
+    const policies = String(cspHeader || '').split(',');
+    for (const policy of policies) {
+        const dir = policy.split(';').map(s => s.trim())
+            .find(s => s.toLowerCase().startsWith('frame-ancestors'));
+        if (!dir) continue;
+        const sources = dir.split(/\s+/).slice(1).map(s => s.toLowerCase());
+        if (!sources.length || sources.includes("'none'")) return false;
+        if (sources.includes('*')) continue;
+        if (!parentOrigin) return false;
+        const parent = new URL(parentOrigin);
+        const ok = sources.some(src => {
+            if (src === parent.protocol) return true;                       // e.g. https:
+            if (src === parentOrigin.toLowerCase()) return true;            // exact origin
+            const m = src.match(/^(https?:\/\/)?\*\.([^/:]+)(:\d+)?$/);     // https://*.example.com
+            if (m) return parent.hostname.endsWith('.' + m[2]) && (!m[1] || src.startsWith(parent.protocol + '//'));
+            return false;
+        });
+        if (!ok) return false;
+    }
+    return true;
+}
+
+async function checkEmbeddable(url, parentOrigin) {
+    if (typeof fetch !== 'function') return { embeddable: null, reason: 'unsupported' };
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 8000);
+    try {
+        const r = await fetch(url, {
+            method: 'GET',
+            redirect: 'follow',
+            signal: ctrl.signal,
+            headers: {
+                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36',
+                'accept': 'text/html,application/xhtml+xml'
+            }
+        });
+        try { await r.body?.cancel(); } catch {}
+
+        const xfo = (r.headers.get('x-frame-options') || '').toLowerCase();
+        if (/\b(deny|sameorigin)\b/.test(xfo)) {
+            return { embeddable: false, reason: 'x-frame-options', status: r.status };
+        }
+        if (!frameAncestorsAllows(r.headers.get('content-security-policy'), parentOrigin)) {
+            return { embeddable: false, reason: 'csp', status: r.status };
+        }
+        if (r.status >= 500) return { embeddable: false, reason: 'unreachable', status: r.status };
+        // 4xx can be a bot-challenge page that real browsers never see — don't guess.
+        return { embeddable: r.status < 400 ? true : null, reason: 'ok', status: r.status };
+    } catch (err) {
+        // Timeout = slow/cold site: let the browser keep trying. DNS/refused = really down.
+        if (err.name === 'AbortError') return { embeddable: null, reason: 'timeout' };
+        return { embeddable: false, reason: 'unreachable' };
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
+app.get('/api/embed-check', async (req, res) => {
+    try {
+        let target;
+        try { target = new URL(String(req.query.url || '')); }
+        catch { return res.status(400).json({ error: 'Invalid URL' }); }
+        if (!/^https?:$/.test(target.protocol)) return res.status(400).json({ error: 'Invalid URL' });
+
+        const d = await readData();
+        const known = (d.projects || []).some(p => {
+            try { return p.liveUrl && new URL(p.liveUrl).href === target.href; } catch { return false; }
+        });
+        if (!known) return res.status(403).json({ error: 'URL is not a saved project link' });
+
+        let parent = null;
+        try { parent = new URL(String(req.query.parent || '')).origin; } catch {}
+
+        const key = target.href + '|' + parent;
+        const hit = embedCache.get(key);
+        if (hit && Date.now() - hit.at < (hit.result.embeddable === true ? EMBED_TTL_OK : EMBED_TTL_BAD)) {
+            return res.json(hit.result);
+        }
+        const result = await checkEmbeddable(target.href, parent);
+        if (embedCache.size > 200) embedCache.delete(embedCache.keys().next().value);
+        embedCache.set(key, { at: Date.now(), result });
+        res.json(result);
+    } catch (e) {
+        console.error('embed-check error:', e);
+        res.json({ embeddable: null, reason: 'error' });
+    }
+});
+
 // ── RESET ──
 app.post('/api/reset', authMiddleware, async (req, res) => {
     try { await getDefaults(); res.json({ success: true, message: 'Portfolio reset to defaults' }); }
