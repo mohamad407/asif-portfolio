@@ -23,12 +23,36 @@
         ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#050505}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.12);border-radius:3px}
         body{font-family:'Inter',sans-serif;background:#050505;color:#fff;overflow-x:hidden;cursor:none}
 
-        #loader{position:fixed;inset:0;z-index:9999;background:#050505;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px}
-        #loader .letter{display:inline-block;opacity:0;transform:translateY(50px) rotateX(90deg);font-family:'Playfair Display',serif;font-size:clamp(26px,5vw,54px);font-weight:600;color:#fff;letter-spacing:0.12em}
-        #loader .subtitle-loader{opacity:0;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(255,255,255,0.35)}
-        .loader-bar{width:100px;height:1px;background:rgba(255,255,255,0.08);position:relative;overflow:hidden;opacity:0}
-        .loader-bar::after{content:'';position:absolute;left:0;top:0;height:100%;width:0;background:#fff;animation:loaderFill 2.2s ease forwards}
-        @keyframes loaderFill{to{width:100%}}
+        /* ===== INTRO SCREEN ===== */
+        #loader{position:fixed;inset:0;z-index:9999;overflow:hidden;color:#f4efe6}
+        .ld-panel{position:absolute;left:0;right:0;background:#070707;will-change:transform}
+        .ld-panel.top{top:0;height:50.3%}
+        .ld-panel.bot{bottom:0;height:50.3%}
+        .ld-grid{position:absolute;inset:0;opacity:0;background-image:linear-gradient(rgba(201,169,110,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(201,169,110,.06) 1px,transparent 1px);background-size:72px 72px;-webkit-mask-image:radial-gradient(circle at 50% 50%,#000 0,transparent 60%);mask-image:radial-gradient(circle at 50% 50%,#000 0,transparent 60%)}
+        .ld-glow{position:absolute;left:50%;top:50%;width:min(86vw,780px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;opacity:0;background:radial-gradient(circle,rgba(201,169,110,.17),rgba(201,169,110,.04) 40%,transparent 68%);animation:ldBreath 5s ease-in-out infinite alternate}
+        @keyframes ldBreath{from{transform:translate(-50%,-50%) scale(.92)}to{transform:translate(-50%,-50%) scale(1.08)}}
+        .ld-c{position:absolute;width:18px;height:18px;border:0 solid rgba(201,169,110,.5);opacity:0}
+        .ld-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:24px;text-align:center}
+        .ld-mark{width:clamp(84px,14vw,118px);height:auto;overflow:visible}
+        .ld-mark circle{fill:none;stroke:#c9a96e;stroke-linecap:round}
+        .ld-mark .r1{stroke-width:1.3;stroke-dasharray:340;stroke-dashoffset:340}
+        .ld-mark .r2{stroke-width:.6;stroke-dasharray:290;stroke-dashoffset:290;opacity:.7}
+        .ld-mark text{opacity:0}
+        .ld-name{font-family:'Playfair Display',serif;font-size:clamp(28px,6.2vw,62px);font-weight:600;letter-spacing:.14em;line-height:1.15;display:flex;flex-wrap:wrap;justify-content:center;gap:0 .45em}
+        .ld-word{display:inline-flex;overflow:hidden;padding:.1em .04em}
+        .ld-word:nth-child(2){color:#e6cf9f}
+        .ld-l{display:inline-block;will-change:transform}
+        .ld-role{font-size:11px;letter-spacing:.7em;text-transform:uppercase;color:rgba(244,239,230,.5);opacity:0;margin-right:-.7em}
+        .ld-status{min-height:1.4em;font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:rgba(201,169,110,.85);opacity:0}
+        .ld-line{position:absolute;left:0;right:0;top:50%;height:1px;opacity:0;transform:scaleX(0);background:linear-gradient(90deg,transparent,#e6cf9f 30%,#e6cf9f 70%,transparent);box-shadow:0 0 18px rgba(201,169,110,.6)}
+        .ld-foot{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:flex-end;justify-content:space-between;padding:0 clamp(20px,4vw,48px) clamp(22px,4vh,38px);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:rgba(244,239,230,.4)}
+        .ld-skip{color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;background:none;border:0;border-bottom:1px solid rgba(201,169,110,.35);padding:0 0 3px;cursor:inherit;transition:color .3s,border-color .3s}
+        .ld-skip:hover{color:#e6cf9f;border-color:#e6cf9f}
+        .ld-count{font-family:'Playfair Display',serif;font-size:clamp(30px,5vw,46px);letter-spacing:0;line-height:1;color:#e6cf9f;font-variant-numeric:tabular-nums}
+        .ld-count small{font-size:.38em;letter-spacing:.1em;color:rgba(244,239,230,.4);margin-left:4px}
+        .ld-bar{position:absolute;left:0;right:0;bottom:0;height:2px;background:rgba(201,169,110,.1)}
+        .ld-bar i{display:block;height:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,#c9a96e,#e6cf9f)}
+        @media(max-width:768px){#loader .ld-skip{cursor:pointer}.ld-role{letter-spacing:.5em;margin-right:-.5em;font-size:10px}}
 
         .cursor-dot{width:5px;height:5px;background:#fff;border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:10000;mix-blend-mode:difference}
         .cursor-ring{width:44px;height:44px;border:1px solid rgba(255,255,255,0.35);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:10000;transition:width .35s cubic-bezier(.23,1,.32,1),height .35s cubic-bezier(.23,1,.32,1),border-color .3s,background .3s;mix-blend-mode:difference}
@@ -199,6 +223,17 @@
             .pm-bar{padding:10px 14px}.pm-btn span.lbl{display:none}.pm-seg button{padding:0 12px}
         }
 
+        .dev-screen img.bgshot{filter:brightness(.38) blur(2px);transform:scale(1.03)}
+        .dev-fb{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;padding:28px;background:linear-gradient(180deg,rgba(7,7,7,.3),rgba(7,7,7,.8))}
+        .dev-fb-card{max-width:460px;text-align:center;color:#f4efe6;display:flex;flex-direction:column;align-items:center;gap:14px}
+        .dev-fb-card .ic{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(201,169,110,.45);color:#e6cf9f;background:rgba(201,169,110,.08)}
+        .dev-fb-card h4{font-family:'Playfair Display',serif;font-size:26px;font-weight:500;line-height:1.25}
+        .dev-fb-card p{font-size:15px;line-height:1.7;color:rgba(244,239,230,.65);font-weight:300}
+        .fb-btn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 20px;border-radius:99px;border:1px solid rgba(201,169,110,.45);color:#e6cf9f;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;background:transparent;transition:all .3s}
+        .fb-btn:hover{background:rgba(201,169,110,.14);border-color:#c9a96e}
+        .fb-btn.gold{background:linear-gradient(135deg,#e6cf9f,#c9a96e);color:#0a0a0a;border-color:transparent}
+        .fb-btn.gold:hover{filter:brightness(1.08)}
+
         /* ===== DARK LUXURY THEME ===== */
         :root{--gold:#c9a96e;--gold-2:#e6cf9f;--ivory:#f4efe6}
         body{background:#070707;color:var(--ivory)}
@@ -276,10 +311,29 @@
 <div class="cursor-ring" id="cursorRing"></div>
 <a href="https://wa.me/919677988241" target="_blank" rel="noopener" class="whatsapp-float hoverable" aria-label="Chat on WhatsApp"><iconify-icon icon="logos:whatsapp-icon" width="30" height="30"></iconify-icon></a>
 
-<div id="loader">
-    <div><span class="letter">M</span><span class="letter">O</span><span class="letter">H</span><span class="letter">A</span><span class="letter">M</span><span class="letter">M</span><span class="letter">E</span><span class="letter">D</span><span style="display:inline-block;width:18px"></span><span class="letter">A</span><span class="letter">S</span><span class="letter">I</span><span class="letter">F</span></div>
-    <div class="subtitle-loader">Full Stack & AI Developer</div>
-    <div class="loader-bar"></div>
+<div id="loader" role="status" aria-live="polite" aria-label="Loading portfolio">
+    <div class="ld-panel top"></div><div class="ld-panel bot"></div>
+    <div class="ld-grid"></div><div class="ld-glow"></div>
+    <span class="ld-c" style="top:22px;left:22px;border-width:1px 0 0 1px"></span>
+    <span class="ld-c" style="top:22px;right:22px;border-width:1px 1px 0 0"></span>
+    <span class="ld-c" style="bottom:22px;left:22px;border-width:0 0 1px 1px"></span>
+    <span class="ld-c" style="bottom:22px;right:22px;border-width:0 1px 1px 0"></span>
+    <div class="ld-content" id="ldContent">
+        <svg class="ld-mark" viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="r1" cx="60" cy="60" r="54" transform="rotate(-90 60 60)"/>
+            <circle class="r2" cx="60" cy="60" r="46" transform="rotate(-90 60 60)"/>
+            <text x="60" y="71" text-anchor="middle" font-family="Playfair Display,serif" font-size="32" font-weight="600" letter-spacing="2" fill="#e6cf9f">MA</text>
+        </svg>
+        <div class="ld-name" id="ldName" aria-label="Mohammed Asif"></div>
+        <div class="ld-role">Full Stack &amp; AI Developer</div>
+        <div class="ld-status" id="ldStatus"></div>
+    </div>
+    <div class="ld-line" id="ldLine"></div>
+    <div class="ld-foot" id="ldFoot">
+        <button type="button" class="ld-skip" id="ldSkip">Skip intro</button>
+        <div class="ld-count"><span id="ldCount">000</span><small>%</small></div>
+    </div>
+    <div class="ld-bar" id="ldBarWrap"><i id="ldBar"></i></div>
 </div>
 
 <canvas id="three-canvas"></canvas>
@@ -440,14 +494,19 @@ const API_BASE = (window.PORTFOLIO_API_BASE || window.location.origin) + '/api';
 let portfolioData = null;
 
 async function fetchPortfolio() {
+    // Free hosts (e.g. Render) can take a while to wake up — wait for them, but not forever.
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 25000);
     try {
-        const res = await fetch(API_BASE + '/portfolio');
+        const res = await fetch(API_BASE + '/portfolio', { signal: ctrl.signal });
         if (!res.ok) throw new Error('API error');
         portfolioData = await res.json();
         console.log('✅ Loaded portfolio data from API');
     } catch (err) {
         console.warn('⚠️ API unavailable, using fallback defaults');
         portfolioData = getFallbackData();
+    } finally {
+        clearTimeout(timer);
     }
     return portfolioData;
 }
@@ -578,6 +637,70 @@ function renderPortfolio(d) {
         document.querySelectorAll('#pmSeg button').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));
         pill();layout();
     }
+    // ── live-preview loading, with blocked-embed detection ──
+    const API=(window.PORTFOLIO_API_BASE||location.origin)+'/api';
+    const embedCache=new Map();
+    let token=0;
+    const esc=t=>String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    function checkEmbed(url){
+        if(embedCache.has(url))return embedCache.get(url);
+        const ctrl=new AbortController(),t=setTimeout(()=>ctrl.abort(),6000);
+        const pr=fetch(API+'/embed-check?url='+encodeURIComponent(url)+'&parent='+encodeURIComponent(location.origin),{signal:ctrl.signal})
+            .then(r=>r.ok?r.json():{embeddable:null})
+            .catch(()=>({embeddable:null,reason:'offline'}))
+            .finally(()=>clearTimeout(t));
+        embedCache.set(url,pr);
+        pr.then(r=>{if(r.embeddable!==true&&r.embeddable!==false)embedCache.delete(url)});   // only remember definite answers
+        return pr;
+    }
+    function showHint(html){hint.innerHTML=html;hint.classList.add('show')}
+    function showFallback(p,v){
+        clearTimeout(hintT);hint.classList.remove('show');
+        const blocked=v&&(v.reason==='x-frame-options'||v.reason==='csp');
+        const url=esc(p.liveUrl);
+        screen.innerHTML=`<img class="bgshot" src="${esc(p.image)}" alt=""><div class="dev-fb"><div class="dev-fb-card">
+            <div class="ic"><iconify-icon icon="lucide:${blocked?'shield-off':'wifi-off'}" width="20"></iconify-icon></div>
+            <h4>${blocked?'This site can’t be previewed here':'This site isn’t responding right now'}</h4>
+            <p>${blocked?'Its security settings don’t allow it to be shown inside another page. The live site works normally in its own tab.':'It may be waking up or temporarily down. Give it a moment, then retry — or open it directly.'}</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+                <a class="fb-btn gold" href="${url}" target="_blank" rel="noopener">Open live site <iconify-icon icon="lucide:arrow-up-right" width="14"></iconify-icon></a>
+                ${blocked?'':'<button type="button" class="fb-btn" id="pmRetry"><iconify-icon icon="lucide:rotate-cw" width="13"></iconify-icon> Retry</button>'}
+            </div></div></div>`;
+        const r=$('pmRetry');if(r)r.onclick=()=>{embedCache.delete(p.liveUrl);loadScreen(p)};
+    }
+    function loadScreen(p){
+        const my=++token;
+        clearTimeout(hintT);hint.classList.remove('show');
+        screen.innerHTML=`<div class="dev-load" id="pmLoad"><div class="spin"></div>Loading</div>`;
+        const fade=()=>{const l=$('pmLoad');if(l){l.style.opacity=0;setTimeout(()=>l.remove(),500)}};
+        if(!p.liveUrl){
+            const im=new Image();im.src=p.image;im.alt=p.title;im.onload=fade;im.onerror=fade;screen.prepend(im);return;
+        }
+        let loaded=false,verdict;                       // verdict: undefined = still checking
+        const f=document.createElement('iframe');
+        f.title=p.title;f.loading='eager';f.referrerPolicy='no-referrer';f.allow='fullscreen; clipboard-write';
+        const settle=()=>{
+            if(my!==token||!loaded||verdict===undefined)return;
+            if(verdict.embeddable===false){showFallback(p,verdict);return}
+            fade();clearTimeout(hintT);
+            // couldn't verify (server asleep / bot-protected site): keep an escape hatch visible
+            if(verdict.embeddable!==true)hintT=setTimeout(()=>{if(my===token)showHint('Seeing a blank page? <a href="'+esc(p.liveUrl)+'" target="_blank" rel="noopener">Open it in a new tab</a>.')},2500);
+        };
+        f.onload=()=>{loaded=true;settle()};
+        screen.prepend(f);f.src=p.liveUrl;
+        checkEmbed(p.liveUrl).then(v=>{
+            if(my!==token)return;
+            verdict=v||{embeddable:null};
+            if(verdict.embeddable===false)showFallback(p,verdict);   // don't wait for onload on a known-bad site
+            else settle();
+        });
+        // very slow site: stop showing a spinner forever
+        setTimeout(()=>{
+            if(my!==token||loaded)return;
+            showHint('Still loading… <a href="'+esc(p.liveUrl)+'" target="_blank" rel="noopener">open in a new tab</a> or <a href="#" id="pmHintRetry">retry</a>.');
+            const r=$('pmHintRetry');if(r)r.onclick=e=>{e.preventDefault();embedCache.delete(p.liveUrl);loadScreen(p)};
+        },12000);
+    }
     function render(i,dir){
         const P=window.__projects||[];const p=P[i];if(!p)return;cur=i;
         $('pmCount').textContent=String(i+1).padStart(2,'0')+' / '+String(P.length).padStart(2,'0');
@@ -586,19 +709,10 @@ function renderPortfolio(d) {
         info.innerHTML=`<div class="pm-in"><span class="text-[10px] uppercase tracking-[0.3em] text-white/35">${p.category}</span><h3 class="font-serif text-3xl md:text-4xl font-medium tracking-tight mt-3 mb-5 gradient-text">${p.title}</h3><div class="h-px w-12 bg-white/25 mb-5"></div><p class="text-sm text-white/55 font-light leading-[1.8] mb-6">${p.description}</p>${cs}<div class="flex flex-wrap gap-2 mb-8">${tags}</div>${p.liveUrl?`<a href="${p.liveUrl}" target="_blank" rel="noopener" class="btn-shine inline-flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full text-[11px] font-semibold uppercase tracking-[0.15em]">Visit live site <iconify-icon icon="lucide:arrow-up-right" width="14"></iconify-icon></a>`:`<span class="text-[11px] text-white/30 italic font-serif">Preview image — live link coming soon.</span>`}</div>`;
         const open=$('pmOpen');if(p.liveUrl){open.href=p.liveUrl;open.style.display=''}else{open.style.display='none'}
         $('pmUrl').textContent=p.liveUrl?p.liveUrl.replace(/^https?:\/\//,''):'preview';
-        clearTimeout(hintT);hint.classList.remove('show');
-        screen.innerHTML=`<div class="dev-load" id="pmLoad"><div class="spin"></div>Loading</div>`;
-        if(p.liveUrl){
-            const f=document.createElement('iframe');f.src=p.liveUrl;f.title=p.title;f.loading='eager';f.referrerPolicy='no-referrer';
-            f.onload=()=>{clearTimeout(hintT);fade()};screen.prepend(f);
-            hintT=setTimeout(()=>{hint.innerHTML='Not loading? Some sites block embedding — <a href="'+p.liveUrl+'" target="_blank" rel="noopener">open it in a new tab</a>.';hint.classList.add('show')},6000);
-        }else{
-            const im=new Image();im.src=p.image;im.alt=p.title;im.onload=fade;im.onerror=fade;screen.prepend(im);
-        }
-        function fade(){const l=$('pmLoad');if(l){l.style.opacity=0;setTimeout(()=>l.remove(),500)}}
+        loadScreen(p);
         const x=dir?(dir>0?40:-40):0;
         gsap.fromTo('.pm-in > *',{opacity:0,y:24,x},{opacity:1,y:0,x:0,duration:.8,stagger:.07,ease:'power3.out',delay:.1});
-        gsap.fromTo(dev,{opacity:0,y:30},{opacity:1,y:0,duration:.8,ease:'power3.out',overwrite:'auto',onStart:layout});
+        gsap.fromTo(dev,{opacity:0},{opacity:1,duration:.8,ease:'power3.out',overwrite:'auto',onStart:layout});   // opacity only: tweening y would wipe the CSS translate that centres the frame
     }
     window.openProject=function(i){
         lastFocus=document.activeElement;pm.classList.add('open');document.body.style.overflow='hidden';document.documentElement.classList.add('pm-on');
@@ -610,7 +724,7 @@ function renderPortfolio(d) {
     };
     function close(){
         gsap.to(pm,{opacity:0,duration:.3,onComplete:()=>{pm.classList.remove('open');screen.innerHTML='';document.body.style.overflow='';const cr=$('cursorRing'),cd=$('cursorDot');if(cr){cr.style.display='';cd.style.display=''}if(lastFocus)lastFocus.focus({preventScroll:true})}});
-        clearTimeout(hintT);
+        clearTimeout(hintT);token++;
     }
     function step(d){const n=(window.__projects||[]).length;if(n)render((cur+d+n)%n,d)}
     $('pmClose').onclick=close;$('pmPrev').onclick=()=>step(-1);$('pmNext').onclick=()=>step(1);
@@ -647,26 +761,78 @@ function initPolish(){
     }
 }
 
-// ─── LOADER ──────────────────────────────────────────────
-(async function(){
-    const data = await fetchPortfolio();
-    const letters=document.querySelectorAll('#loader .letter');
-    const sub=document.querySelector('#loader .subtitle-loader');
-    const bar=document.querySelector('.loader-bar');
-    const loader=document.getElementById('loader');
-    const main=document.getElementById('mainContent');
-    const nav=document.getElementById('navbar');
+// ─── INTRO ───────────────────────────────────────────────
+// Starts animating immediately (no more blank screen while the API wakes up),
+// loads data in parallel, and only opens the curtain when BOTH are ready.
+(function(){
+    const $=id=>document.getElementById(id);
+    const loader=$('loader'),main=$('mainContent'),nav=$('navbar'),statusEl=$('ldStatus');
+    const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let seen=false;try{seen=sessionStorage.getItem('intro-seen')==='1'}catch(e){}
+    document.body.style.overflow='hidden';
 
-    gsap.timeline()
-    .to(letters,{opacity:1,y:0,rotateX:0,duration:0.6,stagger:0.05,ease:'back.out(1.7)'})
-    .to(sub,{opacity:1,duration:0.8,ease:'power2.out'},'-=0.3')
-    .to(bar,{opacity:1,duration:0.3},'-=0.5')
-    .to({},({duration:2.2}))
-    .to(loader,{clipPath:'inset(0 0 100% 0)',duration:1,ease:'power4.inOut'})
-    .set(loader,{display:'none'})
-    .to(nav,{opacity:1,duration:0.6,ease:'power2.out'},'-=0.4')
-    .to(main,{opacity:1,duration:1,ease:'power2.out'},'-=0.5')
-    .call(()=>{renderPortfolio(data);initTypingAnimation()});
+    // build the name as masked letters
+    $('ldName').innerHTML='Mohammed Asif'.split(' ').map(w=>'<span class="ld-word" aria-hidden="true">'+[...w].map(c=>'<span class="ld-l">'+c+'</span>').join('')+'</span>').join('');
+    gsap.set('.ld-l',{yPercent:115});
+
+    const dataP=fetchPortfolio();
+    let dataReady=false;dataP.then(()=>{dataReady=true});
+    const slowT=setTimeout(()=>{
+        if(dataReady)return;
+        statusEl.textContent='Waking up the server — the first load can take a few seconds…';
+        gsap.to(statusEl,{opacity:1,duration:.6});
+    },3800);
+
+    const prog={v:0};
+    const paint=()=>{$('ldCount').textContent=String(Math.round(prog.v)).padStart(3,'0');$('ldBar').style.transform='scaleX('+(prog.v/100)+')'};
+
+    let resolveAnim;const animDone=new Promise(r=>resolveAnim=r);
+    const tl=gsap.timeline({defaults:{ease:'power3.out'},onComplete:()=>resolveAnim()});
+    tl.to('.ld-grid,.ld-glow',{opacity:1,duration:1.4},0)
+      .to('.ld-c',{opacity:1,duration:.8,stagger:.08},.2)
+      .to('.ld-mark .r1',{strokeDashoffset:0,duration:1.5,ease:'power2.inOut'},.2)
+      .to('.ld-mark .r2',{strokeDashoffset:0,duration:1.3,ease:'power2.inOut'},.45)
+      .to('.ld-mark text',{opacity:1,duration:.8},.95)
+      .to('.ld-l',{yPercent:0,duration:.95,stagger:.045,ease:'expo.out'},1.1)
+      .to('.ld-role',{opacity:1,letterSpacing:'.4em',marginRight:'-.4em',duration:1.3,ease:'power2.out'},1.7)
+      .to(prog,{v:92,duration:2.7,ease:'power1.inOut',onUpdate:paint},.2);
+    if(seen)tl.timeScale(1.7);
+    if(reduce){tl.progress(1);resolveAnim()}
+
+    function skip(){tl.progress(1);resolveAnim()}
+    $('ldSkip').addEventListener('click',skip);
+    const onKey=e=>{if(e.key==='Escape')skip()};addEventListener('keydown',onKey);
+
+    let exited=false;
+    function reveal(data){
+        gsap.set(main,{opacity:1});
+        renderPortfolio(data);initTypingAnimation();
+    }
+    function exit(data){
+        if(exited)return;exited=true;
+        clearTimeout(slowT);removeEventListener('keydown',onKey);
+        try{sessionStorage.setItem('intro-seen','1')}catch(e){}
+        const finish=()=>{loader.style.display='none';document.body.style.overflow=''};
+        gsap.to(prog,{v:100,duration:.45,ease:'power2.out',onUpdate:paint});
+        gsap.to(statusEl,{opacity:0,duration:.3});
+        if(reduce){
+            gsap.timeline({delay:.5,onComplete:finish}).call(()=>reveal(data)).to(loader,{opacity:0,duration:.4}).to(nav,{opacity:1,duration:.4},'<');
+            return;
+        }
+        gsap.timeline({delay:.55,onComplete:finish})
+            .to('#ldContent',{y:-26,opacity:0,duration:.65,ease:'power2.in'})
+            .to('#ldFoot,#ldBarWrap,.ld-c,.ld-grid,.ld-glow',{opacity:0,duration:.45},'<')
+            .set('#ldLine',{opacity:1})
+            .to('#ldLine',{scaleX:1,duration:.75,ease:'expo.inOut'},'-=.15')
+            .call(()=>reveal(data))
+            .to('.ld-panel.top',{yPercent:-101,duration:1.1,ease:'expo.inOut'},'+=.05')
+            .to('.ld-panel.bot',{yPercent:101,duration:1.1,ease:'expo.inOut'},'<')
+            .to('#ldLine',{opacity:0,duration:.5},'<.25')
+            .to(nav,{opacity:1,duration:.6,ease:'power2.out'},'-=.55');
+    }
+    Promise.all([animDone,dataP]).then(([_,data])=>exit(data));
+    // last-resort failsafe: never leave a visitor stuck behind the intro
+    setTimeout(()=>exit(portfolioData||getFallbackData()),32000);
 })();
 
 // ─── THREE.JS ────────────────────────────────────────────
