@@ -586,7 +586,7 @@ connectDB()
         app.listen(PORT, () => {
             console.log(`
   ╔═══════════════════════════════════════════════════════╗
-  ║   Mohammed Asif Portfolio Server                       ║
+  ║   Mohammad Asihf Portfolio Server                       ║
   ╠═══════════════════════════════════════════════════════╣
   ║   Portfolio:  http://localhost:${PORT}                     ║
   ║   Admin:      http://localhost:${PORT}/admin               ║
