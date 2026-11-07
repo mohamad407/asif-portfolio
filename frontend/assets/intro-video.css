@@ -1,0 +1,56 @@
+/* ===== AI-narrated intro (overlay) ===== */
+#ivWrap{position:fixed;inset:0;z-index:9700;display:none;background:#050505;color:#f4efe6;overflow:hidden;font-family:'Inter',sans-serif}
+#ivWrap.open{display:block}
+#ivWrap, #ivWrap *{cursor:auto}
+#ivWrap button{cursor:pointer}
+
+.iv-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,169,110,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(201,169,110,.06) 1px,transparent 1px);background-size:72px 72px;-webkit-mask-image:radial-gradient(circle at 50% 50%,#000 0,transparent 65%);mask-image:radial-gradient(circle at 50% 50%,#000 0,transparent 65%);opacity:.8}
+.iv-glow{position:absolute;left:50%;top:50%;width:min(90vw,820px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.2),rgba(201,169,110,.04) 40%,transparent 68%);animation:ivBreath 6s ease-in-out infinite alternate}
+@keyframes ivBreath{from{transform:translate(-50%,-50%) scale(.9)}to{transform:translate(-50%,-50%) scale(1.1)}}
+
+/* cinematic letterbox bars slide in once the intro plays */
+.iv-bar{position:absolute;left:0;right:0;height:9vh;background:#000;z-index:3;transition:transform 1s cubic-bezier(.77,0,.18,1)}
+.iv-bar.top{top:0;transform:translateY(-100%)}
+.iv-bar.bot{bottom:0;transform:translateY(100%)}
+#ivWrap.playing .iv-bar{transform:none}
+
+.iv-stage{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12vh 24px;z-index:2}
+.iv-kicker{font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:rgba(244,239,230,.5);margin-bottom:18px}
+.iv-big{font-family:'Playfair Display',serif;font-weight:600;font-size:clamp(36px,8.5vw,104px);line-height:1.05;letter-spacing:.02em;background:linear-gradient(135deg,#fbf7ee 0%,#e6cf9f 55%,#c9a96e 120%);-webkit-background-clip:text;background-clip:text;color:transparent;transition:opacity .5s,transform .8s cubic-bezier(.23,1,.32,1),filter .8s}
+.iv-big.out{opacity:0;transform:translateY(-22px) scale(1.03);filter:blur(8px)}
+.iv-big.in-from{opacity:0;transform:translateY(30px);filter:blur(8px);transition:none}
+.iv-sub{margin-top:16px;font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(15px,2.4vw,22px);color:#e6cf9f}
+
+.iv-cap{position:absolute;left:0;right:0;bottom:13vh;margin:0 auto;max-width:720px;padding:0 24px;font-size:clamp(14px,1.8vw,18px);line-height:1.7;color:rgba(244,239,230,.8);font-weight:300;text-align:center;z-index:4;min-height:3.4em}
+
+.iv-prog{position:absolute;left:0;bottom:0;height:2px;width:0;background:linear-gradient(90deg,#c9a96e,#e6cf9f);box-shadow:0 0 14px rgba(201,169,110,.6);transition:width .6s ease;z-index:5}
+.iv-dots{position:absolute;left:0;right:0;bottom:4vh;display:flex;justify-content:center;gap:8px;z-index:4}
+.iv-dots i{width:22px;height:2px;background:rgba(201,169,110,.2);transition:background .4s}
+.iv-dots i.on{background:#e6cf9f}
+
+.iv-top{position:absolute;top:0;right:0;padding:calc(16px + env(safe-area-inset-top,0px)) 16px 0;display:flex;gap:10px;z-index:6}
+.iv-icon-btn{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:rgba(10,10,10,.6);color:#f4efe6;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.iv-icon-btn:hover{border-color:#c9a96e;color:#e6cf9f}
+
+/* start screen (also satisfies the browser rule that sound needs a tap) */
+.iv-start{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;transition:opacity .5s}
+.iv-start.hide{opacity:0;pointer-events:none}
+.iv-start-inner{display:flex;flex-direction:column;align-items:center;gap:14px;max-width:440px}
+.iv-start-title{font-family:'Playfair Display',serif;font-size:clamp(30px,6vw,52px);font-weight:500;line-height:1.15}
+.iv-start-note{font-size:13px;line-height:1.6;color:rgba(244,239,230,.5);font-weight:300}
+.iv-btn{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 24px;margin-top:8px;border-radius:99px;border:1px solid rgba(201,169,110,.45);background:linear-gradient(135deg,#e6cf9f,#c9a96e);color:#0a0a0a;font:600 11px/1 'Inter',sans-serif;letter-spacing:.16em;text-transform:uppercase;border-color:transparent;box-shadow:0 8px 30px rgba(201,169,110,.25)}
+.iv-btn:hover{filter:brightness(1.08)}
+.iv-link{background:none;border:0;color:rgba(244,239,230,.45);font-size:11px;letter-spacing:.15em;text-transform:uppercase;border-bottom:1px solid rgba(201,169,110,.3);padding:0 0 3px}
+.iv-link:hover{color:#e6cf9f}
+
+#ivVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;z-index:2;display:none}
+
+/* button on the hero section */
+.iv-hero-btn{display:inline-flex;align-items:center;gap:8px;padding:16px 24px;border-radius:99px;border:1px solid rgba(201,169,110,.35);color:#e6cf9f;font-size:11px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;background:transparent;transition:all .3s}
+.iv-hero-btn:hover{background:rgba(201,169,110,.12);border-color:#c9a96e}
+
+@media (max-width:768px){
+  .iv-cap{bottom:12vh;font-size:14px}
+  .iv-stage{padding:14vh 22px 22vh}
+  .iv-dots{bottom:5vh}
+}
