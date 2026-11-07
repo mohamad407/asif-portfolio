@@ -277,6 +277,8 @@
 
         @media(max-width:768px){body{cursor:auto}.cursor-dot,.cursor-ring{display:none}.profile-3d-system{width:240px;height:240px}.floating-tag{display:none}.whatsapp-float{cursor:pointer}}
     </style>
+    <link rel="stylesheet" href="assets/mobile-projects.css">
+    <link rel="stylesheet" href="assets/intro-video.css">
 </head>
 <body>
 <div id="progressBar"></div>
@@ -872,5 +874,7 @@ function setNav(id){document.querySelectorAll('.nav-link').forEach(l=>{l.classLi
 // ─── SMOOTH SCROLL ─────────────────────────────────────
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',function(e){e.preventDefault();const t=document.querySelector(this.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})})});
 </script>
+<script src="assets/intro-video.js"></script>
+<script src="assets/mobile-projects.js"></script>
 </body>
 </html>
