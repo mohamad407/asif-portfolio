@@ -1,12 +1,13 @@
 /* AI-narrated intro for the portfolio.
  *
  * Works with NO video file: it plays animated scenes and speaks the script with the
- * browser's built-in voice (it picks a deep male English voice when one is installed).
+ * browser's built-in voice. It prefers a deep British male voice (assistant style) when
+ * the device has one installed.
  *
  * Optional settings (put in config.js, before the other scripts):
- *   window.PORTFOLIO_INTRO_VIDEO  = "intro.mp4";     // play a real recorded video instead
- *   window.PORTFOLIO_INTRO_SCENES = [ {kicker, big, sub, say, ...}, ... ]; // change the script
- *   window.PORTFOLIO_INTRO_AUTO   = false;           // don't open automatically on first visit
+ *   window.PORTFOLIO_INTRO_VIDEO  = "intro.mp4";                 // play a recorded narration video instead
+ *   window.PORTFOLIO_INTRO_SCENES = [ {kicker, big, sub, say}, ... ]; // change the script
+ *   window.PORTFOLIO_INTRO_AUTO   = false;                       // don't open automatically on first visit
  */
 (function () {
   'use strict';
@@ -34,7 +35,7 @@
 
   function $(id) { return document.getElementById(id); }
 
-  // ---- voice selection: prefer deep, bold male English voices ----
+  // ---- voice: deep British male first (assistant style), then any deep male English voice ----
   function pickVoice() {
     if (!synth) return;
     var all = synth.getVoices() || [];
@@ -42,13 +43,17 @@
     var pool = en.length ? en : all;
     var prefs = [
       /google uk english male/i,
-      /microsoft (guy|davis|ryan|mark|david|ravi)/i,
-      /\b(daniel|alex|fred|george|tom|rishi|david|mark)\b/i,
+      /microsoft (george|ryan)/i,
+      /\bdaniel\b/i,
+      /\b(oliver|arthur)\b/i,
+      /microsoft (guy|davis|mark|david|ravi)/i,
+      /\b(alex|fred|tom|rishi|george)\b/i,
       /\bmale\b/i
     ];
     var found = null;
     for (var i = 0; i < prefs.length && !found; i++) {
-      found = pool.find(function (v) { return prefs[i].test(v.name); }) || null;
+      var re = prefs[i];
+      found = pool.find(function (v) { return re.test(v.name); }) || null;
     }
     voice = found || pool[0] || null;
   }
@@ -78,7 +83,7 @@
       '<button type="button" class="iv-link" id="ivSkipStart">Skip to portfolio</button>' +
     '</div></div>' +
     '<div class="iv-top">' +
-      '<button type="button" class="iv-icon-btn" id="ivMute" aria-label="Mute narration"></button>' +
+      '<button type="button" class="iv-icon-btn" id="ivMute"></button>' +
       '<button type="button" class="iv-icon-btn" id="ivClose" aria-label="Close intro"><iconify-icon icon="lucide:x" width="16"></iconify-icon></button>' +
     '</div>' +
     '<div class="iv-dots" id="ivDots"></div>' +
@@ -89,9 +94,10 @@
   SCENES.forEach(function () { dots.appendChild(document.createElement('i')); });
 
   function setMuteIcon() {
-    $('ivMute').innerHTML = '<iconify-icon icon="lucide:' + (muted ? 'volume-x' : 'volume-2') + '" width="16"></iconify-icon>';
-    $('ivMute').setAttribute('aria-label', muted ? 'Unmute narration' : 'Mute narration');
-    if (!CAN_SPEAK && !VIDEO) $('ivMute').style.display = 'none';
+    var b = $('ivMute');
+    b.innerHTML = '<iconify-icon icon="lucide:' + (muted ? 'volume-x' : 'volume-2') + '" width="16"></iconify-icon>';
+    b.setAttribute('aria-label', muted ? 'Unmute narration' : 'Mute narration');
+    b.style.display = (!CAN_SPEAK && !VIDEO) ? 'none' : '';
   }
   setMuteIcon();
 
@@ -115,7 +121,7 @@
     $('ivProg').style.width = ((i + 1) / SCENES.length * 100) + '%';
   }
 
-  // ---- playback (speech + timing, scene by scene) ----
+  // ---- playback ----
   function queue(fn, ms) { timers.push(setTimeout(fn, ms)); }
   function clearTimers() { timers.forEach(clearTimeout); timers = []; }
 
@@ -125,8 +131,7 @@
     curIdx = i;
     showScene(i);
     var my = ++tok;
-    var s = SCENES[i];
-    var text = s.say || '';
+    var text = SCENES[i].say || '';
     var advance = function () {
       if (my !== tok || !running) return;
       queue(function () { playScene(i + 1); }, 600);
@@ -134,27 +139,19 @@
 
     if (synth) synth.cancel();
     if (!CAN_SPEAK || muted) {
-      queue(advance, Math.max(3800, text.length * 60));   // silent: read at a comfortable pace
+      queue(advance, Math.max(3800, text.length * 60));
       return;
     }
     var u = new SpeechSynthesisUtterance(text);
-    if (voice) { u.voice = voice; u.lang = voice.lang; } else { u.lang = 'en-US'; }
-    u.pitch = 0.72;   // lower = deeper, bolder
-    u.rate = 0.94;    // a touch slower = more authority
+    if (voice) { u.voice = voice; u.lang = voice.lang; } else { u.lang = 'en-GB'; }
+    u.pitch = 0.7;    // lower = deeper
+    u.rate = 0.92;    // measured, authoritative pace
     u.volume = 1;
     u.onend = advance;
     u.onerror = advance;
-    keepUtterance = u;                                     // keep a reference so the engine doesn't drop it
+    keepUtterance = u;                                  // keep a reference so the engine doesn't drop it
     synth.speak(u);
-    queue(advance, Math.max(6000, text.length * 90));      // safety net if the engine never reports an end
-  }
-
-  function startPlayback() {
-    $('ivStart').classList.add('hide');
-    wrap.classList.add('playing');
-    if (VIDEO) return playVideo();
-    running = true;
-    playScene(0);
+    queue(advance, Math.max(6000, text.length * 90));   // safety net if the engine never reports an end
   }
 
   function playVideo() {
@@ -173,31 +170,39 @@
     if (p && p.catch) p.catch(function () {});
   }
 
-  function resetUI() {
+  function startPlayback() {
+    $('ivStart').classList.add('hide');
+    wrap.classList.add('playing');
+    if (VIDEO) return playVideo();
+    running = true;
+    playScene(0);
+  }
+
+  // Single place that returns the overlay to a clean, ready-to-open state.
+  function resetAll() {
+    running = false; tok++; clearTimers();
+    if (synth) synth.cancel();
     $('ivStart').classList.remove('hide');
     wrap.classList.remove('playing');
     $('ivStage').style.display = '';
     $('ivCap').style.display = '';
     $('ivDots').style.display = '';
     $('ivProg').style.width = '0';
-    var v = $('ivVideo');
-    if (v) { v.pause(); v.style.display = 'none'; }
+    $('ivCap').textContent = '';
     Array.prototype.forEach.call(dots.children, function (d) { d.classList.remove('on'); });
+    var v = $('ivVideo');
+    if (v) { v.pause(); v.removeAttribute('src'); v.load(); v.style.display = 'none'; }
   }
 
   function open() {
-    running = false; tok++; clearTimers();
-    if (synth) synth.cancel();
-    resetUI();
+    resetAll();
     wrap.classList.add('open');
     document.body.style.overflow = 'hidden';
-    setTimeout(function () { $('ivPlay').focus(); }, 50);
+    setTimeout(function () { var p = $('ivPlay'); if (p) p.focus(); }, 50);
   }
 
   function close() {
-    running = false; tok++; clearTimers();
-    if (synth) synth.cancel();
-    resetUI();
+    resetAll();
     wrap.classList.remove('open');
     document.body.style.overflow = '';
     try { sessionStorage.setItem('iv-seen', '1'); } catch (e) {}
@@ -217,11 +222,10 @@
     setMuteIcon();
     var v = $('ivVideo');
     if (v) v.muted = muted;
-    // switching mute mid-line: cut the current speech; playback continues silently or with voice
-    if (muted && synth) synth.cancel();
-    else if (!muted && running && synth) {
-      // restart the current scene with the voice
-      tok++; clearTimers();
+    if (muted && synth) {
+      synth.cancel();           // the scene's timer will move on silently
+    } else if (!muted && running) {
+      tok++; clearTimers();     // replay the current line with voice
       playScene(curIdx);
     }
   });
@@ -229,20 +233,26 @@
     if (wrap.classList.contains('open') && e.key === 'Escape') close();
   });
 
-  // ---- entry points ----
-  // 1) a button in the hero so visitors can replay it any time
+  // Hero "Watch intro" button: delegated at document level so it always works,
+  // even if the hero content is re-rendered.
+  document.addEventListener('click', function (e) {
+    var btn = e.target && e.target.closest ? e.target.closest('#ivOpen') : null;
+    if (!btn) return;
+    e.preventDefault();
+    open();
+  });
+
   var ctas = $('heroCtas');
-  if (ctas) {
+  if (ctas && !$('ivOpen')) {
     var b = document.createElement('button');
     b.type = 'button';
     b.id = 'ivOpen';
     b.className = 'iv-hero-btn hoverable';
     b.innerHTML = '<iconify-icon icon="lucide:play" width="14"></iconify-icon> Watch intro';
-    b.addEventListener('click', open);
     ctas.appendChild(b);
   }
 
-  // 2) open automatically once per visit, right after the loading screen finishes
+  // Open automatically once per visit, right after the loading screen finishes.
   var autoOn = window.PORTFOLIO_INTRO_AUTO !== false;
   var alreadyShown = false;
   try { alreadyShown = sessionStorage.getItem('iv-seen') === '1' || sessionStorage.getItem('iv-auto') === '1'; } catch (e) {}
