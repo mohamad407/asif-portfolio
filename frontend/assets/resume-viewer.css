@@ -45,3 +45,11 @@
 @media (prefers-reduced-motion:reduce){
   #rvWrap,#rvWrap *,.rv-hero-btn::after{animation:none!important;transition:none!important}
 }
+
+/* ===== Click-blocking fix =====
+ * Decorative layers (glow, orbit rings, floating tags/shapes) must never catch clicks,
+ * and the hero button row always sits above neighbouring columns. */
+.profile-glow,.orbit-ring,.orbit-dot,.floating-tag,.float-shape,.profile-3d-system{pointer-events:none}
+.profile-3d-system .profile-img-wrap{pointer-events:auto}
+#heroCtas{position:relative;z-index:20}
+#heroCtas a,#heroCtas button{position:relative;z-index:21;pointer-events:auto}
