@@ -1,8 +1,9 @@
 /* Resume viewer: "My Resume" button in the hero opens an animated modal with the PDF.
  * Put the PDF at frontend/assets/Mohamad_Asihf_Resume.pdf
  * (or set window.PORTFOLIO_RESUME_URL in config.js to another path/link).
- * On touch devices (phones/tablets) the PDF is opened with a button, since many
- * mobile browsers can't show PDFs inside a frame.
+ * - On phones/tablets the PDF is opened with a button (many mobile browsers can't show PDFs in a frame).
+ * - On desktop, if the browser can't display the PDF, a link to open it in a new tab sits behind the frame.
+ * - If the intro narration is open when the button is pressed, the intro is closed first.
  */
 (function () {
   'use strict';
@@ -31,12 +32,19 @@
         (touch
           ? '<div class="rv-fallback"><p>Tap below to view the resume.</p>' +
             '<a class="rv-btn" href="' + RESUME_URL + '" target="_blank" rel="noopener">View resume</a></div>'
-          : '<iframe id="rvFrame" title="Mohamad Asihf resume"></iframe>') +
+          : '<div class="rv-fallback"><p>Trouble seeing the PDF?</p>' +
+            '<a class="rv-btn" href="' + RESUME_URL + '" target="_blank" rel="noopener">Open resume in a new tab</a></div>' +
+            '<iframe id="rvFrame" title="Mohamad Asihf resume"></iframe>') +
       '</div>' +
     '</div>';
   document.body.appendChild(wrap);
 
   function open() {
+    // close the intro narration first if it is showing, so it can't cover the resume
+    var iv = document.getElementById('ivWrap');
+    if (iv && iv.classList.contains('open')) {
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+    }
     var frame = document.getElementById('rvFrame');
     if (frame && !frame.getAttribute('src')) frame.src = RESUME_URL;   // load the PDF only when needed
     wrap.classList.add('open');
