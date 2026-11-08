@@ -319,7 +319,7 @@
 <a href="https://wa.me/919677988241" target="_blank" rel="noopener" class="whatsapp-float hoverable" aria-label="Chat on WhatsApp"><iconify-icon icon="logos:whatsapp-icon" width="30" height="30"></iconify-icon></a>
 
 <div id="loader" role="status" aria-live="polite" aria-label="Loading portfolio">
-    <div class="ld-panel top"></div><div class="ld-panel bot"></div>
+    <div class="ld-panel top"><i class="ld-handle"></i></div><div class="ld-panel bot"><i class="ld-handle"></i></div>
     <div class="ld-grid"></div><div class="ld-glow"></div><div class="ld-beam"></div>
     <span class="ld-c" style="top:22px;left:22px;border-width:1px 0 0 1px"></span>
     <span class="ld-c" style="top:22px;right:22px;border-width:1px 1px 0 0"></span>
@@ -336,6 +336,36 @@
         <div class="ld-status" id="ldStatus"></div>
     </div>
     <div class="ld-line" id="ldLine"></div>
+    <div class="ld-hero" id="ldHero" aria-hidden="true">
+        <div class="ld-say" id="ldSay">Let me open this for you!</div>
+        <svg class="ld-ck" viewBox="0 0 120 170">
+            <ellipse cx="60" cy="165" rx="30" ry="4" fill="rgba(0,0,0,.45)"/>
+            <g id="ckLegL"><rect x="45" y="116" width="11" height="36" rx="5" fill="#25252d"/><ellipse cx="49" cy="156" rx="12" ry="6" fill="#0f0f12"/><rect x="38" y="159" width="23" height="2.5" rx="1.2" fill="#c9a96e"/></g>
+            <g id="ckLegR"><rect x="64" y="116" width="11" height="36" rx="5" fill="#25252d"/><ellipse cx="71" cy="156" rx="12" ry="6" fill="#0f0f12"/><rect x="60" y="159" width="23" height="2.5" rx="1.2" fill="#c9a96e"/></g>
+            <g id="ckBob"><g id="ckLean">
+                <path d="M36 98 Q36 84 50 84 H70 Q84 84 84 98 V122 Q84 128 78 128 H42 Q36 128 36 122 Z" fill="#1c1c24"/>
+                <path d="M52 84 L60 106 L68 84 Z" fill="#f4efe6"/>
+                <path d="M58 90 h4 l1.5 18 l-3.5 4 l-3.5 -4 z" fill="#c9a96e"/>
+                <path d="M51 84 L60 99 L55 84z M69 84 L60 99 L65 84z" fill="#2b2b35"/>
+                <g id="ckArmL"><rect x="31" y="88" width="10" height="32" rx="5" fill="#1c1c24"/><circle cx="36" cy="122" r="5.5" fill="#c68a5e"/></g>
+                <g id="ckArmR"><rect x="79" y="88" width="10" height="32" rx="5" fill="#1c1c24"/><circle cx="84" cy="122" r="5.5" fill="#c68a5e"/></g>
+                <rect x="54" y="76" width="12" height="11" rx="4" fill="#b87d52"/>
+                <g id="ckHead">
+                    <circle cx="31" cy="58" r="5.5" fill="#c68a5e"/><circle cx="89" cy="58" r="5.5" fill="#c68a5e"/>
+                    <ellipse cx="60" cy="54" rx="29" ry="27" fill="#d09566"/>
+                    <path d="M38 22 L33 6 L50 17Z M56 17 L62 0 L70 16Z M74 18 L90 7 L86 26Z" fill="#14100e"/>
+                    <path d="M29 52 C25 24 46 14 60 15 C76 14 95 24 91 52 C88 44 84 38 78 36 L72 46 L64 32 L56 46 L48 34 L42 46 L36 38 C32 42 30 47 29 52 Z" fill="#14100e"/>
+                    <path d="M42 24 Q56 16 70 20" stroke="#55555f" stroke-width="2" fill="none" stroke-linecap="round" opacity=".7"/>
+                    <g id="ckBrows" fill="none" stroke="#14100e" stroke-width="2.4" stroke-linecap="round"><path d="M40 47 Q47 43 54 46"/><path d="M66 46 Q73 43 80 47"/></g>
+                    <g id="ckEyes"><ellipse cx="47" cy="60" rx="7" ry="9" fill="#120d0b"/><ellipse cx="47" cy="61" rx="5" ry="7" fill="#5a3826"/><circle cx="45" cy="57" r="2.8" fill="#fff"/><circle cx="49.5" cy="64" r="1.3" fill="#fff"/>
+                        <ellipse cx="73" cy="60" rx="7" ry="9" fill="#120d0b"/><ellipse cx="73" cy="61" rx="5" ry="7" fill="#5a3826"/><circle cx="71" cy="57" r="2.8" fill="#fff"/><circle cx="75.5" cy="64" r="1.3" fill="#fff"/></g>
+                    <ellipse cx="39" cy="71" rx="5" ry="3" fill="#ff7d7d" opacity=".35"/><ellipse cx="81" cy="71" rx="5" ry="3" fill="#ff7d7d" opacity=".35"/>
+                    <path id="ckMouthS" d="M54 72 Q60 78 66 72" stroke="#5a2a22" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <ellipse id="ckMouthO" cx="60" cy="74" rx="4.5" ry="4" fill="#5a1e1e" opacity="0"/>
+                </g>
+            </g></g>
+        </svg>
+    </div>
     <div class="ld-foot" id="ldFoot">
         <button type="button" class="ld-skip" id="ldSkip">Skip intro</button>
         <span class="ld-lab">Crafting experience</span>
@@ -810,6 +840,82 @@ function initPolish(){
     $('ldSkip').addEventListener('click',skip);
     const onKey=e=>{if(e.key==='Escape')skip()};addEventListener('keydown',onKey);
 
+    // A small anime character walks in, grabs the two door handles and pulls the screen open.
+    function charExit(data,finish){
+        const hero=$('ldHero'),say=$('ldSay'),W=innerWidth,loop=[];
+        const O={L:'50 118',R:'70 118',AL:'36 93',AR:'84 93'};
+        gsap.set(hero,{display:'flex',xPercent:-50,x:-(W/2+220)});
+        gsap.set(say,{xPercent:-50,scale:0});
+        gsap.set('#ldLine',{scaleX:1,scaleY:0,opacity:1});
+        const blink=gsap.timeline({repeat:-1,repeatDelay:2.2});
+        blink.to('#ckEyes',{scaleY:.1,svgOrigin:'60 60',duration:.07,yoyo:true,repeat:1});
+        const startWalk=()=>{
+            const o={ease:'sine.inOut',yoyo:true,repeat:-1};
+            loop.push(
+              gsap.fromTo('#ckLegL',{rotation:-26,svgOrigin:O.L},{rotation:26,svgOrigin:O.L,duration:.24,...o}),
+              gsap.fromTo('#ckLegR',{rotation:26,svgOrigin:O.R},{rotation:-26,svgOrigin:O.R,duration:.24,...o}),
+              gsap.fromTo('#ckArmL',{rotation:22,svgOrigin:O.AL},{rotation:-22,svgOrigin:O.AL,duration:.24,...o}),
+              gsap.fromTo('#ckArmR',{rotation:-22,svgOrigin:O.AR},{rotation:22,svgOrigin:O.AR,duration:.24,...o}),
+              gsap.fromTo('#ckBob',{y:0},{y:-4,duration:.12,...o}));
+        };
+        const stopWalk=()=>{
+            loop.splice(0).forEach(t=>t.kill());
+            gsap.to('#ckLegL',{rotation:0,svgOrigin:O.L,duration:.2});gsap.to('#ckLegR',{rotation:0,svgOrigin:O.R,duration:.2});
+            gsap.to('#ckArmL',{rotation:0,svgOrigin:O.AL,duration:.2});gsap.to('#ckArmR',{rotation:0,svgOrigin:O.AR,duration:.2});
+            gsap.to('#ckBob',{y:0,duration:.2});
+        };
+        const face=o=>{gsap.set('#ckMouthS',{opacity:o?0:1});gsap.set('#ckMouthO',{opacity:o?1:0})};
+        const sparks=()=>{
+            const r=hero.getBoundingClientRect();
+            for(let i=0;i<16;i++){
+                const s=document.createElement('i');s.className='ld-spark';loader.appendChild(s);
+                gsap.set(s,{x:r.left+r.width/2,y:r.top+r.height*.45});
+                gsap.to(s,{x:'+='+gsap.utils.random(-170,170),y:'+='+gsap.utils.random(-150,60),opacity:0,scale:gsap.utils.random(.4,1.6),duration:gsap.utils.random(.7,1.3),ease:'power3.out',onComplete:()=>s.remove()});
+            }
+        };
+        const tl=gsap.timeline({delay:.45,onComplete:()=>{blink.kill();finish()}});
+        if(seen)tl.timeScale(1.5);
+        tl.to('#ldContent',{y:-26,opacity:0,duration:.6,ease:'power2.in'},0)
+          .to('#ldFoot,#ldBarWrap,.ld-c,.ld-grid,.ld-glow',{opacity:0,duration:.45},0)
+          .to('#ldLine',{scaleY:1,duration:.7,ease:'expo.inOut'},.1)
+          .to('.ld-handle',{opacity:1,duration:.4},.5)
+          .call(startWalk,null,.2)
+          .to(hero,{x:0,duration:1.8,ease:'none'},.2)
+          .call(()=>{stopWalk();say.textContent='Let me open this for you!'},null,2)
+          .to(say,{scale:1,duration:.35,ease:'back.out(2.4)'},2.05)
+          .to('#ckArmL',{rotation:96,svgOrigin:O.AL,duration:.4,ease:'back.out(1.6)'},2.5)
+          .to('#ckArmR',{rotation:-96,svgOrigin:O.AR,duration:.4,ease:'back.out(1.6)'},2.5)
+          .to(say,{scale:0,duration:.25,ease:'power2.in'},2.7)
+          .call(()=>face(true),null,3.0)
+          .to('#ckLean',{rotation:-7,svgOrigin:'60 126',duration:.3},3.0)
+          .to('#ckHead',{rotation:-5,svgOrigin:'60 80',duration:.3},3.0)
+          .to('#ckBrows',{y:3,duration:.2},3.0)
+          .fromTo(hero,{x:-3},{x:3,duration:.06,repeat:15,yoyo:true,ease:'none'},3.05)
+          .to('.ld-panel.top',{xPercent:-4,duration:1,ease:'power1.in'},3.05)
+          .to('.ld-panel.bot',{xPercent:4,duration:1,ease:'power1.in'},3.05)
+          .to(hero,{x:0,duration:.05},4.05)
+          .call(()=>{reveal(data);sparks();loader.style.pointerEvents='none';document.body.style.overflow='';},null,4.1)
+          .to('.ld-panel.top',{xPercent:-101,duration:1.2,ease:'power4.inOut'},4.1)
+          .to('.ld-panel.bot',{xPercent:101,duration:1.2,ease:'power4.inOut'},4.1)
+          .to('#ldLine',{opacity:0,duration:.4},4.1)
+          .to('#ckArmL',{rotation:150,svgOrigin:O.AL,duration:.3,ease:'power2.out'},4.1)
+          .to('#ckArmR',{rotation:-150,svgOrigin:O.AR,duration:.3,ease:'power2.out'},4.1)
+          .to('#ckLean',{rotation:9,svgOrigin:'60 126',duration:.25,ease:'power2.out'},4.1)
+          .to(hero,{y:-26,duration:.22,yoyo:true,repeat:1,ease:'power2.out'},4.15)
+          .to(nav,{opacity:1,duration:.6,ease:'power2.out'},4.7)
+          .call(()=>{say.textContent='Enjoy the portfolio!';face(false)},null,5)
+          .to('#ckLean,#ckHead',{rotation:0,duration:.3},5)
+          .to('#ckBrows',{y:0,duration:.3},5)
+          .to(say,{scale:1,duration:.35,ease:'back.out(2.4)'},5.05)
+          .to('#ckArmL',{rotation:0,svgOrigin:O.AL,duration:.3},5)
+          .to('#ckArmR',{rotation:-145,svgOrigin:O.AR,duration:.3},5)
+          .to('#ckArmR',{rotation:-120,svgOrigin:O.AR,duration:.18,yoyo:true,repeat:5,ease:'sine.inOut'},5.35)
+          .to(say,{scale:0,duration:.25,ease:'power2.in'},6.35)
+          .to('#ckArmR',{rotation:0,svgOrigin:O.AR,duration:.25},6.4)
+          .call(startWalk,null,6.5)
+          .to(hero,{x:W/2+240,duration:1.2,ease:'none'},6.5)
+          .call(stopWalk,null,7.7);
+    }
     let exited=false;
     function reveal(data){
         gsap.set(main,{opacity:1});
@@ -828,16 +934,7 @@ function initPolish(){
             gsap.timeline({delay:.5,onComplete:finish}).call(()=>reveal(data)).to(loader,{opacity:0,duration:.4}).to(nav,{opacity:1,duration:.4},'<');
             return;
         }
-        gsap.timeline({delay:.55,onComplete:finish})
-            .to('#ldContent',{y:-26,opacity:0,duration:.65,ease:'power2.in'})
-            .to('#ldFoot,#ldBarWrap,.ld-c,.ld-grid,.ld-glow',{opacity:0,duration:.45},'<')
-            .set('#ldLine',{opacity:1})
-            .to('#ldLine',{scaleX:1,duration:.75,ease:'expo.inOut'},'-=.15')
-            .call(()=>reveal(data))
-            .to('.ld-panel.top',{yPercent:-101,duration:1.1,ease:'expo.inOut'},'+=.05')
-            .to('.ld-panel.bot',{yPercent:101,duration:1.1,ease:'expo.inOut'},'<')
-            .to('#ldLine',{opacity:0,duration:.5},'<.25')
-            .to(nav,{opacity:1,duration:.6,ease:'power2.out'},'-=.55');
+        charExit(data,finish);
     }
     // Never keep visitors behind the curtain for long: wait for the data at most 6 seconds
     const dataWait=Promise.race([dataP,new Promise(r=>setTimeout(()=>r(null),6000))]);
@@ -845,7 +942,7 @@ function initPolish(){
     // last-resort failsafe: never leave a visitor stuck behind the intro
     setTimeout(()=>exit(portfolioData||getFallbackData()),32000);
     // hard safety: never leave an invisible loading layer over the buttons
-    setTimeout(()=>{if(loader.style.display!=='none'){loader.style.display='none';document.body.style.overflow=''}},14000);
+    setTimeout(()=>{if(loader.style.display!=='none'){loader.style.display='none';document.body.style.overflow=''}},24000);
 })();
 
 // ─── CURSOR ─────────────────────────────────────────────
