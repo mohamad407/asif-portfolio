@@ -15,3 +15,19 @@
     if(por){var x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;por.style.setProperty('--tx',(x*14)+'deg');por.style.setProperty('--ty',(-y*10)+'deg')}
   });
 })();
+
+/* "Available for work" button: ripple on click, then glide to the contact section */
+(function(){
+  var b=document.getElementById('hxBadge'); if(!b) return;
+  b.addEventListener('click',function(e){
+    e.preventDefault();
+    var r=b.getBoundingClientRect(),s=Math.max(r.width,r.height)*2.2,d=document.createElement('span');
+    d.className='rp';d.style.cssText='width:'+s+'px;height:'+s+'px;left:'+(e.clientX-r.left-s/2)+'px;top:'+(e.clientY-r.top-s/2)+'px';
+    b.appendChild(d);setTimeout(function(){d.remove()},750);
+    var c=document.getElementById('contact'); if(c) setTimeout(function(){c.scrollIntoView({behavior:'smooth'})},180);
+  });
+  if(window.matchMedia('(pointer:fine)').matches){
+    b.addEventListener('mousemove',function(e){var r=b.getBoundingClientRect();b.style.transform='translate('+((e.clientX-r.left-r.width/2)*.12)+'px,'+((e.clientY-r.top-r.height/2)*.25-2)+'px)'});
+    b.addEventListener('mouseleave',function(){b.style.transform=''});
+  }
+})();
