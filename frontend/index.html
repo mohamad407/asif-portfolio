@@ -406,7 +406,7 @@
                 </div>
             </div>
         </div>
-        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 reveal">
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 reveal pointer-events-none">
             <span class="text-[9px] uppercase tracking-[0.25em] text-white/25">Scroll</span>
             <div class="w-5 h-9 rounded-full border border-white/15 flex justify-center pt-2"><div class="w-0.5 h-2 bg-white/35 rounded-full" style="animation:scrollDot 2s ease-in-out infinite"></div></div>
         </div>
@@ -842,6 +842,8 @@ function initPolish(){
     Promise.all([animDone,dataWait]).then(([_,data])=>exit(data));
     // last-resort failsafe: never leave a visitor stuck behind the intro
     setTimeout(()=>exit(portfolioData||getFallbackData()),32000);
+    // hard safety: never leave an invisible loading layer over the buttons
+    setTimeout(()=>{if(loader.style.display!=='none'){loader.style.display='none';document.body.style.overflow=''}},14000);
 })();
 
 // ─── THREE.JS ────────────────────────────────────────────
