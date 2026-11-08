@@ -28,8 +28,8 @@
 .rv-close:hover{border-color:#c9a96e;color:#e6cf9f;transform:rotate(90deg)}
 
 .rv-body{position:relative;flex:1;min-height:0;background:#1a1a1a}
-#rvFrame{width:100%;height:100%;border:0;display:block;background:#1a1a1a}
-.rv-fallback{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:24px;color:rgba(244,239,230,.7);font-size:14px}
+#rvFrame{position:relative;z-index:1;width:100%;height:100%;border:0;display:block;background:transparent}
+.rv-fallback{position:absolute;inset:0;z-index:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:24px;color:rgba(244,239,230,.7);font-size:14px}
 
 /* hero button: primary gold, with a moving shine */
 .rv-hero-btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:8px;padding:16px 24px;border-radius:99px;border:1px solid transparent;background:linear-gradient(135deg,#e6cf9f,#c9a96e);color:#0a0a0a;font-size:11px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;box-shadow:0 10px 30px rgba(201,169,110,.2);transition:transform .3s,box-shadow .3s}
