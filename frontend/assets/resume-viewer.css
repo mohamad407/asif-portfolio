@@ -53,3 +53,9 @@
 .profile-3d-system .profile-img-wrap{pointer-events:auto}
 #heroCtas{position:relative;z-index:20}
 #heroCtas a,#heroCtas button{position:relative;z-index:21;pointer-events:auto}
+
+/* ===== Root-cause fix: 3D context broke hit-testing =====
+ * .depth-section used perspective + transform-style:preserve-3d, so clicks on the hero
+ * landed on the grid container instead of the buttons. Flatten it. */
+.depth-section{perspective:none!important;transform-style:flat!important}
+#home h1{transform-style:flat!important}
