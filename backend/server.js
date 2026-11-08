@@ -169,7 +169,7 @@ async function getDefaults() {
             { id: uuidv4(), icon: 'lucide:mail', label: 'Email', value: 'asihfibrahim600@gmail.com', href: 'mailto:asihfibrahim600@gmail.com', isWhatsApp: false },
             { id: uuidv4(), icon: 'logos:whatsapp-icon', label: 'WhatsApp', value: '+91 96779 88241', href: 'https://wa.me/919677988241', isWhatsApp: true },
             { id: uuidv4(), icon: 'lucide:linkedin', label: 'LinkedIn', value: 'mohamad-asif', href: 'https://www.linkedin.com/in/mohamad-asif', isWhatsApp: false },
-            { id: uuidv4(), icon: 'lucide:github', label: 'GitHub', value: 'mohammed-asif', href: 'https://github.com/mohammed-asif', isWhatsApp: false }
+            { id: uuidv4(), icon: 'lucide:github', label: 'GitHub', value: 'mohamad407', href: 'https://github.com/mohamad407', isWhatsApp: false }
         ]
     };
     await writeData(defaults);
