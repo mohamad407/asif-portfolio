@@ -14,15 +14,15 @@
 
   var DEFAULT_SCENES = [
     { kicker: 'Welcome', big: 'Welcome',
-      say: 'Welcome. You have entered the portfolio of Mohammad Asihf.' },
+      say: 'Welcome. I am Mohammad Asihf, and this is my portfolio.' },
     { kicker: 'Meet', big: 'Mohammad Asihf', sub: 'Full Stack & AI Developer',
-      say: 'Meet a developer who builds complete web applications, from pixel-perfect interfaces to powerful Node dot js backends.' },
+      say: 'I am a full stack developer who builds complete web applications, from pixel-perfect interfaces to powerful Node dot js backends.' },
     { kicker: 'Intelligence', big: 'Smart Systems', sub: 'LangChain · RAG · Gemini AI',
-      say: 'He goes further. Using LangChain, RAG pipelines, vector databases and Gemini AI, he builds systems that understand questions and give real answers.' },
+      say: 'I go further. Using LangChain, RAG pipelines, vector databases and Gemini AI, I build systems that understand questions and give real answers.' },
     { kicker: 'Track record', big: 'Built to Ship', sub: 'Full stack · AI · Web design',
       say: 'Over twenty projects. From AI document assistants to full stack marketplaces, each one built with clean code and sharp design.' },
     { kicker: 'Next', big: "Let's Build", sub: 'Explore the work below',
-      say: 'Explore the work below. Have an idea worth building? Let us connect.' }
+      say: 'Explore my work below. Have an idea worth building? Let us connect.' }
   ];
 
   var SCENES = (Array.isArray(window.PORTFOLIO_INTRO_SCENES) && window.PORTFOLIO_INTRO_SCENES.length)
@@ -30,6 +30,11 @@
   var VIDEO = window.PORTFOLIO_INTRO_VIDEO || '';
   var synth = ('speechSynthesis' in window) ? window.speechSynthesis : null;
   var CAN_SPEAK = !!(synth && window.SpeechSynthesisUtterance);
+
+  // Your own voice: put recordings at assets/voice/1.mp3 ... 5.mp3 (one per scene). Missing files fall back to the browser voice.
+  var VOICE = (window.PORTFOLIO_INTRO_VOICE === undefined) ? 'assets/voice/' : window.PORTFOLIO_INTRO_VOICE;
+  var curAudio = null;
+  function stopAudio() { if (curAudio) { curAudio.onended = curAudio.onerror = null; curAudio.pause(); curAudio = null; } }
 
   var voice = null, muted = false, running = false, tok = 0, timers = [], keepUtterance = null, curIdx = 0;
 
@@ -138,20 +143,31 @@
     };
 
     if (synth) synth.cancel();
+    stopAudio();
     if (!CAN_SPEAK || muted) {
       queue(advance, Math.max(3800, text.length * 60));
       return;
     }
-    var u = new SpeechSynthesisUtterance(text);
-    if (voice) { u.voice = voice; u.lang = voice.lang; } else { u.lang = 'en-GB'; }
-    u.pitch = 0.7;    // lower = deeper
-    u.rate = 0.92;    // measured, authoritative pace
-    u.volume = 1;
-    u.onend = advance;
-    u.onerror = advance;
-    keepUtterance = u;                                  // keep a reference so the engine doesn't drop it
-    synth.speak(u);
-    queue(advance, Math.max(6000, text.length * 90));   // safety net if the engine never reports an end
+    var speakTTS = function () {
+      if (my !== tok || !running) return;
+      var u = new SpeechSynthesisUtterance(text);
+      if (voice) { u.voice = voice; u.lang = voice.lang; } else { u.lang = 'en-GB'; }
+      u.pitch = 0.7; u.rate = 0.92; u.volume = 1;
+      u.onend = advance; u.onerror = advance;
+      keepUtterance = u;
+      synth.speak(u);
+      queue(advance, Math.max(6000, text.length * 90));
+    };
+    if (VOICE) {                                         // play the owner's recorded voice first
+      var a = new Audio(VOICE + (i + 1) + '.mp3'), done = false;
+      curAudio = a;
+      var fallback = function () { if (done || my !== tok) return; done = true; stopAudio(); speakTTS(); };
+      a.onended = function () { if (done) return; done = true; advance(); };
+      a.onerror = fallback;
+      var pr = a.play(); if (pr && pr.catch) pr.catch(fallback);
+      return;
+    }
+    speakTTS();
   }
 
   function playVideo() {
@@ -182,6 +198,7 @@
   function resetAll() {
     running = false; tok++; clearTimers();
     if (synth) synth.cancel();
+    stopAudio();
     $('ivStart').classList.remove('hide');
     wrap.classList.remove('playing');
     $('ivStage').style.display = '';
@@ -223,7 +240,7 @@
     var v = $('ivVideo');
     if (v) v.muted = muted;
     if (muted && synth) {
-      synth.cancel();           // the scene's timer will move on silently
+      stopAudio(); synth.cancel();           // the scene's timer will move on silently
     } else if (!muted && running) {
       tok++; clearTimers();     // replay the current line with voice
       playScene(curIdx);
