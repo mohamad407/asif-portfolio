@@ -1,5 +1,5 @@
 /* Resume viewer: "My Resume" button in the hero opens an animated modal with the PDF.
- * Put the PDF at frontend/assets/Mohamad_Asihf_Resume.pdf
+ * Put the PDF at frontend/assets/resume.pdf
  * (or set window.PORTFOLIO_RESUME_URL in config.js to another path/link).
  * - On phones/tablets the PDF is opened with a button (many mobile browsers can't show PDFs in a frame).
  * - On desktop, if the browser can't display the PDF, a link to open it in a new tab sits behind the frame.
@@ -8,7 +8,7 @@
 (function () {
   'use strict';
 
-  var RESUME_URL = window.PORTFOLIO_RESUME_URL || 'assets/Mohamad_Asihf_Resume.pdf';
+  var RESUME_URL = window.PORTFOLIO_RESUME_URL || 'assets/resume.pdf';
   var RESUME_NAME = 'Mohamad_Asihf_Resume.pdf';
   var touch = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
 
