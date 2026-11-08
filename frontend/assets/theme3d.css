@@ -22,3 +22,18 @@
 .ld-lab{font-size:10px;letter-spacing:.4em;color:rgba(244,239,230,.3);align-self:center}
 @media(max-width:640px){.ld-lab{display:none}.ld-ring.r-c{display:none}}
 @media(prefers-reduced-motion:reduce){.ld-ring,.ld-beam,.ld-l{animation:none!important}}
+
+/* ===== Anime character opens the screen ===== */
+#loader{--ch:170px;--s:1}
+@media(max-width:640px),(max-height:620px){#loader{--ch:128px;--s:.753}}
+#loader .ld-panel.top{top:0;bottom:0;height:auto;left:0;right:49.8%;background:linear-gradient(90deg,#060606,#0d0c0a);border-right:1px solid rgba(201,169,110,.28)}
+#loader .ld-panel.bot{top:0;bottom:0;height:auto;right:0;left:49.8%;background:linear-gradient(270deg,#060606,#0d0c0a);border-left:1px solid rgba(201,169,110,.28)}
+.ld-handle{position:absolute;bottom:calc(9vh + 78px*var(--s) - 36px);width:7px;height:72px;border-radius:4px;background:linear-gradient(180deg,#f6e7c1,#c9a96e);box-shadow:0 0 16px rgba(201,169,110,.55);opacity:0}
+.ld-panel.top .ld-handle{right:calc(50px*var(--s))}
+.ld-panel.bot .ld-handle{left:calc(50px*var(--s))}
+#loader .ld-line{left:50%;right:auto;top:0;bottom:0;width:2px;height:auto;margin-left:-1px;transform-origin:50% 100%;background:linear-gradient(180deg,transparent,#e6cf9f 25%,#e6cf9f 75%,transparent)}
+.ld-hero{position:absolute;left:50%;bottom:9vh;display:none;flex-direction:column;align-items:center;z-index:6;pointer-events:none}
+.ld-ck{height:var(--ch);width:auto;overflow:visible;filter:drop-shadow(0 8px 14px rgba(0,0,0,.5))}
+.ld-say{position:absolute;left:50%;bottom:calc(100% + 4px);white-space:nowrap;padding:9px 16px;border-radius:14px;background:#f4efe6;color:#14110f;font:600 12px/1 'Inter',sans-serif;letter-spacing:.04em;transform-origin:50% 100%;box-shadow:0 10px 26px rgba(0,0,0,.45)}
+.ld-say::after{content:"";position:absolute;left:50%;bottom:-6px;margin-left:-6px;border:6px solid transparent;border-top-color:#f4efe6;border-bottom:0}
+.ld-spark{position:absolute;left:0;top:0;z-index:7;width:7px;height:7px;border-radius:50%;background:#f6e7c1;box-shadow:0 0 12px 3px rgba(230,207,159,.8);pointer-events:none}
