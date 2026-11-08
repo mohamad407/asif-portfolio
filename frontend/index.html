@@ -811,7 +811,9 @@ function initPolish(){
     let exited=false;
     function reveal(data){
         gsap.set(main,{opacity:1});
-        renderPortfolio(data);initTypingAnimation();
+        if(data){renderPortfolio(data);initTypingAnimation();}
+        // slow server: the hero is already usable; fill the sections in when the data arrives
+        else{dataP.then(d=>{renderPortfolio(d);initTypingAnimation();});}
     }
     function exit(data){
         if(exited)return;exited=true;
@@ -835,7 +837,9 @@ function initPolish(){
             .to('#ldLine',{opacity:0,duration:.5},'<.25')
             .to(nav,{opacity:1,duration:.6,ease:'power2.out'},'-=.55');
     }
-    Promise.all([animDone,dataP]).then(([_,data])=>exit(data));
+    // Never keep visitors behind the curtain for long: wait for the data at most 6 seconds
+    const dataWait=Promise.race([dataP,new Promise(r=>setTimeout(()=>r(null),6000))]);
+    Promise.all([animDone,dataWait]).then(([_,data])=>exit(data));
     // last-resort failsafe: never leave a visitor stuck behind the intro
     setTimeout(()=>exit(portfolioData||getFallbackData()),32000);
 })();
