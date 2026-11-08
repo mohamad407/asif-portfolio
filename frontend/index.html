@@ -281,6 +281,7 @@
     <link rel="stylesheet" href="assets/intro-video.css">
     <link rel="stylesheet" href="assets/resume-viewer.css">
     <link rel="stylesheet" href="assets/hero.css">
+    <link rel="stylesheet" href="assets/theme3d.css">
 </head>
 <body>
 <div id="progressBar"></div>
@@ -319,17 +320,17 @@
 
 <div id="loader" role="status" aria-live="polite" aria-label="Loading portfolio">
     <div class="ld-panel top"></div><div class="ld-panel bot"></div>
-    <div class="ld-grid"></div><div class="ld-glow"></div>
+    <div class="ld-grid"></div><div class="ld-glow"></div><div class="ld-beam"></div>
     <span class="ld-c" style="top:22px;left:22px;border-width:1px 0 0 1px"></span>
     <span class="ld-c" style="top:22px;right:22px;border-width:1px 1px 0 0"></span>
     <span class="ld-c" style="bottom:22px;left:22px;border-width:0 0 1px 1px"></span>
     <span class="ld-c" style="bottom:22px;right:22px;border-width:0 1px 1px 0"></span>
     <div class="ld-content" id="ldContent">
-        <svg class="ld-mark" viewBox="0 0 120 120" aria-hidden="true">
+        <div class="ld-orb"><i class="ld-ring r-a"></i><i class="ld-ring r-b"></i><i class="ld-ring r-c"></i><svg class="ld-mark" viewBox="0 0 120 120" aria-hidden="true">
             <circle class="r1" cx="60" cy="60" r="54" transform="rotate(-90 60 60)"/>
             <circle class="r2" cx="60" cy="60" r="46" transform="rotate(-90 60 60)"/>
             <text x="60" y="71" text-anchor="middle" font-family="Playfair Display,serif" font-size="32" font-weight="600" letter-spacing="2" fill="#e6cf9f">MA</text>
-        </svg>
+        </svg></div>
         <div class="ld-name" id="ldName" aria-label="Mohammad Asihf"></div>
         <div class="ld-role">Full Stack &amp; AI Developer</div>
         <div class="ld-status" id="ldStatus"></div>
@@ -337,6 +338,7 @@
     <div class="ld-line" id="ldLine"></div>
     <div class="ld-foot" id="ldFoot">
         <button type="button" class="ld-skip" id="ldSkip">Skip intro</button>
+        <span class="ld-lab">Crafting experience</span>
         <div class="ld-count"><span id="ldCount">000</span><small>%</small></div>
     </div>
     <div class="ld-bar" id="ldBarWrap"><i id="ldBar"></i></div>
@@ -401,8 +403,8 @@
             </div>
             <div class="hx-in" style="--d:500">
                 <div class="hx-portrait">
-                    <div class="hx-halo"></div><div class="hx-ring"></div>
-                    <div class="hx-frame"><img id="profileImage" src="https://z-cdn-media.chatglm.cn/files/100e83a3-16b3-45bb-8005-8a02944e5564.jpg?auth_key=1880335580-2b4a6a8e5f94407faa08f6e6b010af63-0-c7e6577984afce8874453df81bcd8291" alt="Mohammad Asihf"></div>
+                    <div class="hx-halo"></div><div class="hx-back"></div>
+                    <div class="hx-frame"><img id="profileImage" src="https://z-cdn-media.chatglm.cn/files/100e83a3-16b3-45bb-8005-8a02944e5564.jpg?auth_key=1880335580-2b4a6a8e5f94407faa08f6e6b010af63-0-c7e6577984afce8874453df81bcd8291" alt="Mohammad Asihf"><div class="hx-cap"><b>Mohammad Asihf</b><span>Full Stack &amp; AI Developer</span></div><i class="hx-cn tl"></i><i class="hx-cn tr"></i><i class="hx-cn bl"></i><i class="hx-cn br"></i></div>
                     <div class="hx-chip c1"><i></i>React.js</div><div class="hx-chip c2"><i></i>Gemini AI</div>
                     <div class="hx-chip c3"><i></i>Node.js</div><div class="hx-chip c4"><i></i>LangChain · RAG</div>
                 </div>
@@ -848,19 +850,6 @@ function initPolish(){
     setTimeout(()=>{if(loader.style.display!=='none'){loader.style.display='none';document.body.style.overflow=''}},14000);
 })();
 
-// ─── THREE.JS ────────────────────────────────────────────
-(function(){
-    const canvas=document.getElementById('three-canvas');const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(70,innerWidth/innerHeight,0.1,1000);const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-    const p1c=innerWidth<768?900:2500,p1g=new THREE.BufferGeometry(),p1p=new Float32Array(p1c*3);for(let i=0;i<p1c*3;i+=3){p1p[i]=(Math.random()-.5)*28;p1p[i+1]=(Math.random()-.5)*28;p1p[i+2]=(Math.random()-.5)*28;}p1g.setAttribute('position',new THREE.BufferAttribute(p1p,3));scene.add(new THREE.Points(p1g,new THREE.PointsMaterial({color:0xffffff,size:0.012,transparent:true,opacity:0.3,sizeAttenuation:true})));
-    const p2c=innerWidth<768?300:700,p2g=new THREE.BufferGeometry(),p2p=new Float32Array(p2c*3);for(let i=0;i<p2c*3;i+=3){p2p[i]=(Math.random()-.5)*50;p2p[i+1]=(Math.random()-.5)*50;p2p[i+2]=(Math.random()-.5)*50-15;}p2g.setAttribute('position',new THREE.BufferAttribute(p2p,3));const pts2=new THREE.Points(p2g,new THREE.PointsMaterial({color:0xffffff,size:0.005,transparent:true,opacity:0.12,sizeAttenuation:true}));scene.add(pts2);
-    const shapes=[];[{g:new THREE.IcosahedronGeometry(0.8,0),p:[-7,4,-8],o:0.06},{g:new THREE.OctahedronGeometry(0.6,0),p:[8,-3,-6],o:0.055},{g:new THREE.TetrahedronGeometry(0.5,0),p:[-5,-6,-9],o:0.05},{g:new THREE.TorusGeometry(0.55,0.18,8,24),p:[6,5,-10],o:0.04},{g:new THREE.IcosahedronGeometry(0.4,1),p:[-9,-1,-7],o:0.055},{g:new THREE.OctahedronGeometry(0.7,0),p:[4,-7,-11],o:0.03},{g:new THREE.TorusKnotGeometry(0.35,0.1,60,8),p:[-3,8,-12],o:0.025},{g:new THREE.DodecahedronGeometry(0.45,0),p:[9,2,-9],o:0.04}].forEach(c=>{const m=new THREE.Mesh(c.g,new THREE.MeshBasicMaterial({color:0xffffff,wireframe:true,transparent:true,opacity:c.o}));m.position.set(...c.p);m.userData={rx:(Math.random()-.5)*.007,ry:(Math.random()-.5)*.007,rz:(Math.random()-.5)*.004,fs:Math.random()*.002+.001,fo:Math.random()*Math.PI*2,by:c.p[1]};scene.add(m);shapes.push(m)});
-    const gridH=new THREE.GridHelper(40,40,0x111111,0x080808);gridH.position.y=-10;gridH.material.transparent=true;gridH.material.opacity=0.3;scene.add(gridH);
-    const oc=new THREE.EllipseCurve(0,0,4,4,0,Math.PI*2,false,0),op=oc.getPoints(80);const ol1=new THREE.Line(new THREE.BufferGeometry().setFromPoints(op.map(p=>new THREE.Vector3(p.x,0,p.y))),new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:0.04}));ol1.rotation.x=Math.PI*0.35;ol1.rotation.z=Math.PI*0.1;scene.add(ol1);
-    camera.position.z=5;let mx=0,my=0;document.addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*.7;my=(e.clientY/innerHeight-.5)*.7});
-    function animate(){requestAnimationFrame(animate);const t=Date.now()*.001;scene.children[0].rotation.y+=.0002;scene.children[0].rotation.x+=.0001;pts2.rotation.y-=.00012;pts2.rotation.z+=.00005;shapes.forEach(s=>{s.rotation.x+=s.userData.rx;s.rotation.y+=s.userData.ry;s.rotation.z+=s.userData.rz;s.position.y=s.userData.by+Math.sin(t+s.userData.fo)*.9});ol1.rotation.y+=.001;camera.position.x+=(mx*.7-camera.position.x)*.012;camera.position.y+=(-my*.7-camera.position.y)*.012;camera.lookAt(scene.position);renderer.render(scene,camera)}
-    animate();addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
-})();
-
 // ─── CURSOR ─────────────────────────────────────────────
 (function(){const d=document.getElementById('cursorDot'),r=document.getElementById('cursorRing');if(!d||!r||innerWidth<768)return;let mx=0,my=0,rx=0,ry=0;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;d.style.transform=`translate(${mx-2.5}px,${my-2.5}px)`});(function loop(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;r.style.transform=`translate(${rx-22}px,${ry-22}px)`;requestAnimationFrame(loop)})();function bind(){document.querySelectorAll('.hoverable,a,button').forEach(el=>{if(!el.dataset.cb){el.dataset.cb='1';el.addEventListener('mouseenter',()=>r.classList.add('hover'));el.addEventListener('mouseleave',()=>r.classList.remove('hover'))}})}bind();new MutationObserver(bind).observe(document.body,{childList:true,subtree:true})})();
 
@@ -887,5 +876,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
 <script src="assets/mobile-projects.js"></script>
 <script src="assets/resume-viewer.js"></script>
 <script src="assets/hero.js"></script>
+<script src="assets/bg3d.js"></script>
 </body>
 </html>
