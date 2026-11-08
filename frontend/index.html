@@ -280,6 +280,7 @@
     <link rel="stylesheet" href="assets/mobile-projects.css">
     <link rel="stylesheet" href="assets/intro-video.css">
     <link rel="stylesheet" href="assets/resume-viewer.css">
+    <link rel="stylesheet" href="assets/hero.css">
 </head>
 <body>
 <div id="progressBar"></div>
@@ -378,38 +379,39 @@
 
 <main id="mainContent" style="opacity:0">
 
-    <section id="home" class="relative min-h-screen flex items-center justify-center px-6 md:px-12 pt-20 depth-section" style="z-index:2">
-        <div class="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div class="order-2 lg:order-1 text-center lg:text-left parallax-layer" data-speed="0.02">
-                <div class="mb-5"><span class="inline-block text-[10px] md:text-xs font-medium uppercase tracking-[0.3em] text-white/35 reveal" id="heroSubtitle">Full Stack & AI Developer</span></div>
-                <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-semibold tracking-tight leading-[1.05] mb-6 reveal" style="transform-style:preserve-3d">
-                    <span class="gradient-text block">MOHAMMAD</span><span class="gradient-text block">ASIHF</span>
-                </h1>
-                <div class="flex flex-wrap justify-center lg:justify-start gap-2 mb-8 reveal" id="heroTags"></div>
-                <div class="h-8 mb-10 reveal"><span id="typingText" class="text-sm md:text-base text-white/50 font-light"></span><span class="typing-cursor"></span></div>
-                <div class="flex flex-wrap gap-4 justify-center lg:justify-start reveal" id="heroCtas">
+    <section id="home" class="hx depth-section" style="z-index:2">
+        <div class="hx-aurora"><i></i><i></i><i></i></div>
+        <div class="hx-grid"></div><div class="hx-spot"></div>
+        <div class="hx-wrap">
+            <div class="hx-copy">
+                <div class="hx-in" style="--d:0"><span class="hx-badge"><b></b>Available for work</span></div>
+                <div class="hx-sub hx-in" style="--d:120" id="heroSubtitle">Full Stack &amp; AI Developer</div>
+                <h1 class="hx-name" aria-label="Mohammad Asihf"><span class="ln one">MOHAMMAD</span><span class="ln two">ASIHF</span></h1>
+                <div id="heroTags" class="hx-in" style="--d:900"></div>
+                <div class="hx-type hx-in" style="--d:1050"><span id="typingText"></span><span class="typing-cursor"></span></div>
+                <div id="heroCtas" class="hx-in" style="--d:1200">
                     <a href="#projects" class="btn-shine inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-full text-[11px] font-semibold uppercase tracking-[0.15em] hover:bg-white/90 transition-colors hoverable">View Work <iconify-icon icon="lucide:arrow-right" width="14"></iconify-icon></a>
                     <a href="https://wa.me/919677988241?text=Hi%20Mohammad%20Asihf%2C%20I%20visited%20your%20portfolio!" target="_blank" class="inline-flex items-center gap-2 px-8 py-4 rounded-full text-[11px] font-semibold uppercase tracking-[0.15em] border border-green-500/30 text-green-400/80 hover:bg-green-500/10 hover:border-green-500/50 transition-all hoverable"><iconify-icon icon="logos:whatsapp-icon" width="18"></iconify-icon> Get in Touch</a>
                 </div>
+                <div class="hx-stats hx-in" style="--d:1400">
+                    <div><strong>20+</strong><span>Projects</span></div>
+                    <div><strong>MERN</strong><span>Full Stack</span></div>
+                    <div><strong>RAG</strong><span>AI &amp; LLMs</span></div>
+                </div>
             </div>
-            <div class="order-1 lg:order-2 flex justify-center reveal-scale parallax-layer" data-speed="-0.03">
-                <div class="profile-3d-system">
-                    <div class="profile-glow"></div>
-                    <div class="orbit-ring orbit-ring-1"><div class="orbit-dot"></div><div class="orbit-dot"></div></div>
-                    <div class="orbit-ring orbit-ring-2"><div class="orbit-dot"></div><div class="orbit-dot"></div></div>
-                    <div class="orbit-ring orbit-ring-3"><div class="orbit-dot"></div></div>
-                    <div class="orbit-ring orbit-ring-4"></div>
-                    <div class="floating-tag">React.js</div><div class="floating-tag">Gemini AI</div><div class="floating-tag">RAG</div><div class="floating-tag">Node.js</div>
-                    <div class="profile-img-wrap hoverable">
-                        <img id="profileImage" src="https://z-cdn-media.chatglm.cn/files/100e83a3-16b3-45bb-8005-8a02944e5564.jpg?auth_key=1880335580-2b4a6a8e5f94407faa08f6e6b010af63-0-c7e6577984afce8874453df81bcd8291" alt="Mohammad Asihf" class="w-full h-full object-cover object-center" style="filter:grayscale(100%) contrast(1.08) brightness(1.08);">
-                    </div>
+            <div class="hx-in" style="--d:500">
+                <div class="hx-portrait">
+                    <div class="hx-halo"></div><div class="hx-ring"></div>
+                    <div class="hx-frame"><img id="profileImage" src="https://z-cdn-media.chatglm.cn/files/100e83a3-16b3-45bb-8005-8a02944e5564.jpg?auth_key=1880335580-2b4a6a8e5f94407faa08f6e6b010af63-0-c7e6577984afce8874453df81bcd8291" alt="Mohammad Asihf"></div>
+                    <div class="hx-chip c1"><i></i>React.js</div><div class="hx-chip c2"><i></i>Gemini AI</div>
+                    <div class="hx-chip c3"><i></i>Node.js</div><div class="hx-chip c4"><i></i>LangChain · RAG</div>
                 </div>
             </div>
         </div>
-        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 reveal pointer-events-none">
-            <span class="text-[9px] uppercase tracking-[0.25em] text-white/25">Scroll</span>
-            <div class="w-5 h-9 rounded-full border border-white/15 flex justify-center pt-2"><div class="w-0.5 h-2 bg-white/35 rounded-full" style="animation:scrollDot 2s ease-in-out infinite"></div></div>
-        </div>
+        <div class="hx-marquee" aria-hidden="true"><div class="hx-track">
+            <span>React</span><span>Node.js</span><span>MongoDB</span><span>Express</span><span>LangChain</span><span>RAG</span><span>Gemini AI</span><span>Tailwind</span>
+            <span>React</span><span>Node.js</span><span>MongoDB</span><span>Express</span><span>LangChain</span><span>RAG</span><span>Gemini AI</span><span>Tailwind</span>
+        </div></div>
     </section>
     <div class="section-divider max-w-4xl mx-auto"></div>
 
@@ -884,5 +886,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click'
 <script src="assets/intro-video.js"></script>
 <script src="assets/mobile-projects.js"></script>
 <script src="assets/resume-viewer.js"></script>
+<script src="assets/hero.js"></script>
 </body>
 </html>
