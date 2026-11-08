@@ -67,3 +67,8 @@
   .pm-info .mb-2 { margin-bottom: 4px !important; }
   .pm-hint { bottom: 8px; font-size: 10px; }
 }
+
+/* ---- phones: keep the floating WhatsApp button out of the hero buttons ---- */
+@media (max-width: 768px) {
+  .whatsapp-float { width: 46px; height: 46px; right: 12px; bottom: 12px; }
+}
