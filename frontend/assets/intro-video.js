@@ -13,18 +13,18 @@
   'use strict';
 
   var DEFAULT_SCENES = [
-    { kicker: 'Welcome', big: 'Welcome',
+    { kicker: 'Welcome', big: 'Welcome', tag: 'Hello!',
       say: 'Welcome. I am Mohammad Asihf, and this is my portfolio.' },
-    { kicker: 'Meet', big: 'Mohammad Asihf', sub: 'Full Stack & AI Developer',
+    { kicker: 'Meet', big: 'Mohammad Asihf', tag: 'Full Stack', sub: 'Full Stack & AI Developer',
       chips: [{t:'React',tip:'Fast, component-driven interfaces'},{t:'Node.js',tip:'APIs and real-time backends'},{t:'MongoDB',tip:'Flexible, scalable data models'},{t:'Express',tip:'Clean, secure REST services'}],
       say: 'I am a full stack developer who builds complete web applications, from pixel-perfect interfaces to powerful Node dot js backends.' },
-    { kicker: 'Intelligence', big: 'Smart Systems', sub: 'LangChain · RAG · Gemini AI',
+    { kicker: 'Intelligence', big: 'Smart Systems', tag: 'AI Builder', sub: 'LangChain · RAG · Gemini AI',
       chips: [{t:'LangChain',tip:'Chains models with tools and data'},{t:'RAG',tip:'Answers grounded in your own documents'},{t:'Vector DB',tip:'Semantic search over embeddings'},{t:'Gemini AI',tip:'Multimodal reasoning and generation'}],
       say: 'I go further. Using LangChain, RAG pipelines, vector databases and Gemini AI, I build systems that understand questions and give real answers.' },
-    { kicker: 'Track record', big: 'Built to Ship', sub: 'Full stack · AI · Web design',
+    { kicker: 'Track record', big: 'Built to Ship', tag: '20+ Projects', sub: 'Full stack · AI · Web design',
       stats: [{n:20,s:'+',l:'Projects'},{n:14,s:'',l:'Technologies'},{n:10,s:'+',l:'Happy clients'}],
       say: 'Over twenty projects. From AI document assistants to full stack marketplaces, each one built with clean code and sharp design.' },
-    { kicker: 'Next', big: "Let's Build", sub: 'Where would you like to go?',
+    { kicker: 'Next', big: "Let's Build", tag: "Let's talk", sub: 'Where would you like to go?',
       cta: true,
       say: 'Explore my work below. Have an idea worth building? Let us connect.' }
   ];
@@ -71,6 +71,13 @@
   // ---- build the overlay ----
   var wrap = document.createElement('div');
   wrap.id = 'ivWrap';
+  // the presenter: your photo, tilting in 3D, "speaking" while each scene plays
+  function ME(withTag) {
+    return '<div class="iv-me"><div class="iv-me-aura"></div><i class="iv-me-ring r1"></i><i class="iv-me-ring r2"></i>' +
+      '<div class="iv-me-card"><div class="iv-me-frame"><img alt="Mohammad Asihf"></div>' +
+      '<div class="iv-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>' +
+      '<div class="iv-me-tag' + (withTag ? '' : ' pop') + '">' + (withTag ? '' : "Hi, I'm Asihf") + '</div></div>';
+  }
   wrap.setAttribute('role', 'dialog');
   wrap.setAttribute('aria-modal', 'true');
   wrap.setAttribute('aria-label', 'Introduction');
@@ -78,20 +85,22 @@
     '<div class="iv-grid"></div><div class="iv-glow"></div><div class="iv-spot" id="ivSpot"></div>' +
     '<div class="iv-bar top"></div><div class="iv-bar bot"></div>' +
     (VIDEO ? '<video id="ivVideo" playsinline preload="metadata"></video>' : '') +
-    '<div class="iv-stage" id="ivStage">' +
-      '<div class="iv-kicker" id="ivKicker"></div>' +
-      '<div class="iv-big" id="ivBig"></div>' +
-      '<div class="iv-sub" id="ivSub"></div>' +
-      '<div class="iv-viz" id="ivViz"></div>' +
+    '<div class="iv-stage has-me" id="ivStage">' + ME(true) +
+      '<div class="iv-copy">' +
+        '<div class="iv-kicker" id="ivKicker"></div>' +
+        '<div class="iv-big" id="ivBig"></div>' +
+        '<div class="iv-sub" id="ivSub"></div>' +
+        '<div class="iv-viz" id="ivViz"></div>' +
+      '</div>' +
     '</div>' +
     '<div class="iv-cap" id="ivCap" aria-live="polite"></div>' +
-    '<div class="iv-start" id="ivStart"><div class="iv-start-inner">' +
+    '<div class="iv-start" id="ivStart"><div class="iv-start-inner">' + ME(false) + '<div class="iv-start-text">' +
       '<div class="iv-kicker">A short introduction</div>' +
       '<h2 class="iv-start-title">Meet Mohammad Asihf</h2>' +
       '<p class="iv-start-note">A narrated, interactive intro. Sound on for the full experience. Use the controls, arrow keys or swipe.</p>' +
       '<button type="button" class="iv-btn" id="ivPlay"><iconify-icon icon="lucide:play" width="14"></iconify-icon> Play intro</button>' +
       '<button type="button" class="iv-link" id="ivSkipStart">Skip to portfolio</button>' +
-    '</div></div>' +
+    '</div></div></div>' +
     '<div class="iv-top">' +
       '<button type="button" class="iv-icon-btn" id="ivMute"></button>' +
       '<button type="button" class="iv-icon-btn" id="ivClose" aria-label="Close intro"><iconify-icon icon="lucide:x" width="16"></iconify-icon></button>' +
@@ -137,8 +146,24 @@
     });
   }
 
+  function setMe() {
+    var im = document.getElementById('profileImage'), src = im && (im.currentSrc || im.getAttribute('src'));
+    Array.prototype.forEach.call(wrap.querySelectorAll('.iv-me'), function (m) {
+      var img = m.querySelector('img');
+      m.style.display = src ? '' : 'none';
+      if (src && img.getAttribute('src') !== src) img.src = src;
+      img.onerror = function () { m.style.display = 'none'; };
+    });
+  }
+  function reactMe(s) {
+    var tg = wrap.querySelector('#ivStage .iv-me-tag'), cd = wrap.querySelector('#ivStage .iv-me-card');
+    if (tg) { tg.classList.remove('pop'); void tg.offsetWidth; tg.textContent = s.tag || ''; if (s.tag) tg.classList.add('pop'); }
+    if (cd) { cd.classList.remove('nod'); void cd.offsetWidth; cd.classList.add('nod'); }
+  }
+
   function showScene(i) {
     var s = SCENES[i];
+    reactMe(s);
     if (window.IV3D) IV3D.scene(i);
     var big = $('ivBig');
     $('ivViz').innerHTML = '';
@@ -224,6 +249,7 @@
     if (i >= SCENES.length) return endIntro();
     curIdx = i;
     showScene(i);
+    wrap.classList.add('speaking');
     var my = ++tok;
     var text = SCENES[i].say || '';
     var advance = function () {
@@ -306,6 +332,7 @@
   function open() {
     resetAll();
     wrap.classList.add('open');
+    setMe();
     if (window.IV3D) IV3D.start();
     document.body.style.overflow = 'hidden';
     setTimeout(function () { var p = $('ivPlay'); if (p) p.focus(); }, 50);
@@ -313,7 +340,7 @@
 
   function close() {
     resetAll();
-    wrap.classList.remove('open');
+    wrap.classList.remove('open', 'speaking');
     if (window.IV3D) IV3D.stop();
     document.body.style.overflow = '';
     try { sessionStorage.setItem('iv-seen', '1'); } catch (e) {}
@@ -321,6 +348,7 @@
 
   function endIntro() {
     running = false;
+    wrap.classList.remove('speaking');
     $('ivProg').style.width = '100%';
     if (SCENES[SCENES.length - 1].cta) return;      // stay open so the visitor can pick where to go
     queue(close, 900);
@@ -334,7 +362,7 @@
     b.setAttribute('aria-label', paused ? 'Resume' : 'Pause');
   }
   setPauseIcon();
-  function stopSpeech() { tok++; clearTimers(); if (synth) synth.cancel(); stopAudio(); }
+  function stopSpeech() { wrap.classList.remove('speaking'); tok++; clearTimers(); if (synth) synth.cancel(); stopAudio(); }
   function goTo(i) {
     i = Math.max(0, Math.min(SCENES.length - 1, i));
     paused = false; setPauseIcon(); stopSpeech();
