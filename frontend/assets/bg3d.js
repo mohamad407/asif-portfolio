@@ -60,5 +60,5 @@
     renderer.render(scene,cam);
   }
   if(reduce){frame(0);return}
-  (function loop(t){requestAnimationFrame(loop); if(!document.hidden) frame(t)})(0);
+  (function loop(t){requestAnimationFrame(loop); if(!document.hidden&&!window.__bgPause) frame(t)})(0);
 })();
