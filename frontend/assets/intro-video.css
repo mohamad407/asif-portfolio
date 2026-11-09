@@ -101,3 +101,61 @@
 .iv-stage{text-shadow:0 2px 30px rgba(0,0,0,.7)}
 .iv-cap{text-shadow:0 2px 18px rgba(0,0,0,.9)}
 @media(prefers-reduced-motion:reduce){.ivl,.iv-kicker,.iv-sub{animation:none}}
+
+/* ===== presenter: my photo explains the intro ===== */
+.iv-me{position:relative;flex:none;width:clamp(190px,23vw,280px);aspect-ratio:256/340;perspective:900px}
+.iv-me-card{position:absolute;inset:0;transform:rotateY(calc(var(--px,0)*16deg)) rotateX(calc(var(--py,0)*-12deg));transition:transform .2s ease-out}
+.iv-me-frame{position:absolute;inset:0;border-radius:26px;overflow:hidden;background:#cfcfcf;border:1px solid rgba(230,207,159,.65);box-shadow:0 30px 70px rgba(0,0,0,.65),0 0 60px rgba(201,169,110,.2)}
+/* only the photo area of the uploaded image (its screenshot bars are cropped away) */
+.iv-me-frame img{position:absolute;display:block;max-width:none;width:104%;left:-2%;height:165.5%;top:-32.3%}
+.iv-me-frame::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(201,169,110,.1),transparent 40%,rgba(5,5,5,.35))}
+.iv-me-aura{position:absolute;inset:-60px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,.32),transparent 65%);filter:blur(28px);opacity:.55}
+.iv-me-ring{position:absolute;border-radius:40px;border:1px solid rgba(201,169,110,.4);pointer-events:none}
+.iv-me-ring.r1{inset:-18px;animation:ivSway 6s ease-in-out infinite alternate}
+.iv-me-ring.r2{inset:-38px;border-style:dashed;border-color:rgba(201,169,110,.22);animation:ivSway 9s ease-in-out infinite alternate-reverse}
+@keyframes ivSway{from{transform:rotate(-3deg) scale(.99)}to{transform:rotate(3deg) scale(1.01)}}
+.iv-wave{position:absolute;left:50%;bottom:-40px;transform:translateX(-50%);display:flex;align-items:flex-end;gap:5px;height:26px}
+.iv-wave i{width:4px;height:100%;border-radius:3px;background:linear-gradient(180deg,#f6e7c1,#c9a96e);transform:scaleY(.14);transform-origin:50% 100%;opacity:.55;transition:opacity .3s}
+#ivWrap.speaking .iv-wave i{opacity:1;animation:ivWave .8s ease-in-out infinite alternate}
+.iv-wave i:nth-child(2){animation-delay:-.2s!important}.iv-wave i:nth-child(3){animation-delay:-.45s!important}.iv-wave i:nth-child(4){animation-delay:-.1s!important}
+.iv-wave i:nth-child(5){animation-delay:-.6s!important}.iv-wave i:nth-child(6){animation-delay:-.3s!important}.iv-wave i:nth-child(7){animation-delay:-.5s!important}
+@keyframes ivWave{from{transform:scaleY(.18)}to{transform:scaleY(1)}}
+#ivWrap.speaking .iv-me-aura{animation:ivAura 1.7s ease-in-out infinite}
+@keyframes ivAura{0%,100%{transform:scale(.95);opacity:.5}50%{transform:scale(1.12);opacity:.95}}
+#ivWrap.speaking .iv-me-ring.r1{border-color:rgba(230,207,159,.75)}
+.iv-me-tag{position:absolute;right:-12%;top:7%;z-index:3;padding:9px 16px;border-radius:99px;background:#f4efe6;color:#14110f;font:600 11px/1 'Inter',sans-serif;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;box-shadow:0 12px 30px rgba(0,0,0,.5);transform-origin:0 100%;opacity:0}
+.iv-me-tag.pop{opacity:1;animation:ivTag .7s cubic-bezier(.16,1,.3,1) backwards}
+@keyframes ivTag{from{opacity:0;transform:scale(.3) rotate(-12deg)}}
+.iv-me-card.nod{animation:ivNod .8s cubic-bezier(.16,1,.3,1)}
+@keyframes ivNod{0%{translate:0 0}30%{translate:0 -16px}100%{translate:0 0}}
+
+/* stage: photo on the left, scene text on the right */
+.iv-stage.has-me{flex-direction:row;gap:clamp(36px,6vw,84px)}
+.iv-copy{display:flex;flex-direction:column;align-items:flex-start;text-align:left;max-width:600px}
+.iv-stage.has-me .iv-big{font-size:clamp(30px,4.7vw,66px)}
+.iv-stage.has-me .iv-viz{align-items:flex-start}
+.iv-stage.has-me .iv-chips,.iv-stage.has-me .iv-stats,.iv-stage.has-me .iv-cta{justify-content:flex-start}
+.iv-stage.has-me .iv-tip{text-align:left}
+/* start screen: photo + intro text side by side */
+.iv-start-inner{flex-direction:row;max-width:920px;gap:clamp(36px,6vw,80px);text-align:left}
+.iv-start-text{display:flex;flex-direction:column;align-items:flex-start;gap:14px;max-width:440px}
+.iv-start .iv-me{width:clamp(180px,22vw,260px)}
+.iv-start .iv-me-tag{right:-10%}
+.iv-start-title{font-size:clamp(30px,4.6vw,54px)}
+@media(max-width:899px){
+  .iv-stage.has-me{flex-direction:column;gap:46px;padding:10vh 20px 24vh}
+  .iv-copy{align-items:center;text-align:center}
+  .iv-stage.has-me .iv-viz{align-items:center}
+  .iv-stage.has-me .iv-chips,.iv-stage.has-me .iv-stats,.iv-stage.has-me .iv-cta{justify-content:center}
+  .iv-stage.has-me .iv-tip{text-align:center}
+  .iv-me{width:clamp(110px,30vw,170px)}
+  .iv-me-tag{right:-18%;font-size:10px;padding:7px 12px}
+  .iv-start-inner{flex-direction:column;text-align:center}
+  .iv-start-text{align-items:center}
+  .iv-start .iv-me{width:clamp(130px,38vw,190px)}
+}
+@media(max-height:680px) and (max-width:899px){.iv-me{width:96px}.iv-wave{display:none}.iv-stage.has-me{gap:26px}}
+@media(prefers-reduced-motion:reduce){.iv-me-ring,.iv-me-aura,.iv-wave i,.iv-me-tag,.iv-me-card{animation:none!important}}
+/* the stage (and its presenter) only appears once playback starts; the start screen has its own */
+.iv-stage{transition:opacity .6s ease,transform .25s ease-out}
+#ivWrap:not(.playing) .iv-stage{opacity:0;visibility:hidden;pointer-events:none}
