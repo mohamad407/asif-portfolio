@@ -124,15 +124,29 @@
   setMuteIcon();
 
   // ---- scene drawing ----
+  function splitBig(el, text) {
+    el.textContent = ''; el.classList.add('split'); el.setAttribute('aria-label', text);
+    var n = 0, words = text.split(' ');
+    words.forEach(function (w, wi) {
+      var word = document.createElement('span'); word.className = 'ivw';
+      w.split('').forEach(function (ch) {
+        var l = document.createElement('span'); l.className = 'ivl'; l.style.setProperty('--i', n++); l.textContent = ch; word.appendChild(l);
+      });
+      el.appendChild(word);
+      if (wi < words.length - 1) el.appendChild(document.createTextNode(' '));
+    });
+  }
+
   function showScene(i) {
     var s = SCENES[i];
+    if (window.IV3D) IV3D.scene(i);
     var big = $('ivBig');
     $('ivViz').innerHTML = '';
     $('ivStage').classList.toggle('has-viz', !!(s.chips || s.stats || s.cta));
     big.classList.add('out');
     setTimeout(function () {
       $('ivKicker').textContent = s.kicker || '';
-      big.textContent = s.big || '';
+      splitBig(big, s.big || '');
       $('ivSub').textContent = s.sub || '';
       $('ivCap').textContent = s.say || '';
       renderViz(s);
@@ -251,6 +265,7 @@
     $('ivCap').style.display = 'none';
     $('ivDots').style.display = 'none';
     $('ivCtrl').style.display = 'none';
+    if (window.IV3D) IV3D.stop();
     v.style.display = 'block';
     if (!v.getAttribute('src')) v.src = VIDEO;
     v.muted = muted;
@@ -291,6 +306,7 @@
   function open() {
     resetAll();
     wrap.classList.add('open');
+    if (window.IV3D) IV3D.start();
     document.body.style.overflow = 'hidden';
     setTimeout(function () { var p = $('ivPlay'); if (p) p.focus(); }, 50);
   }
@@ -298,6 +314,7 @@
   function close() {
     resetAll();
     wrap.classList.remove('open');
+    if (window.IV3D) IV3D.stop();
     document.body.style.overflow = '';
     try { sessionStorage.setItem('iv-seen', '1'); } catch (e) {}
   }
