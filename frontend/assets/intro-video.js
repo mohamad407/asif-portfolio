@@ -16,12 +16,16 @@
     { kicker: 'Welcome', big: 'Welcome',
       say: 'Welcome. I am Mohammad Asihf, and this is my portfolio.' },
     { kicker: 'Meet', big: 'Mohammad Asihf', sub: 'Full Stack & AI Developer',
+      chips: [{t:'React',tip:'Fast, component-driven interfaces'},{t:'Node.js',tip:'APIs and real-time backends'},{t:'MongoDB',tip:'Flexible, scalable data models'},{t:'Express',tip:'Clean, secure REST services'}],
       say: 'I am a full stack developer who builds complete web applications, from pixel-perfect interfaces to powerful Node dot js backends.' },
     { kicker: 'Intelligence', big: 'Smart Systems', sub: 'LangChain · RAG · Gemini AI',
+      chips: [{t:'LangChain',tip:'Chains models with tools and data'},{t:'RAG',tip:'Answers grounded in your own documents'},{t:'Vector DB',tip:'Semantic search over embeddings'},{t:'Gemini AI',tip:'Multimodal reasoning and generation'}],
       say: 'I go further. Using LangChain, RAG pipelines, vector databases and Gemini AI, I build systems that understand questions and give real answers.' },
     { kicker: 'Track record', big: 'Built to Ship', sub: 'Full stack · AI · Web design',
+      stats: [{n:20,s:'+',l:'Projects'},{n:14,s:'',l:'Technologies'},{n:10,s:'+',l:'Happy clients'}],
       say: 'Over twenty projects. From AI document assistants to full stack marketplaces, each one built with clean code and sharp design.' },
-    { kicker: 'Next', big: "Let's Build", sub: 'Explore the work below',
+    { kicker: 'Next', big: "Let's Build", sub: 'Where would you like to go?',
+      cta: true,
       say: 'Explore my work below. Have an idea worth building? Let us connect.' }
   ];
 
@@ -71,19 +75,20 @@
   wrap.setAttribute('aria-modal', 'true');
   wrap.setAttribute('aria-label', 'Introduction');
   wrap.innerHTML =
-    '<div class="iv-grid"></div><div class="iv-glow"></div>' +
+    '<div class="iv-grid"></div><div class="iv-glow"></div><div class="iv-spot" id="ivSpot"></div>' +
     '<div class="iv-bar top"></div><div class="iv-bar bot"></div>' +
     (VIDEO ? '<video id="ivVideo" playsinline preload="metadata"></video>' : '') +
     '<div class="iv-stage" id="ivStage">' +
       '<div class="iv-kicker" id="ivKicker"></div>' +
       '<div class="iv-big" id="ivBig"></div>' +
       '<div class="iv-sub" id="ivSub"></div>' +
+      '<div class="iv-viz" id="ivViz"></div>' +
     '</div>' +
     '<div class="iv-cap" id="ivCap" aria-live="polite"></div>' +
     '<div class="iv-start" id="ivStart"><div class="iv-start-inner">' +
       '<div class="iv-kicker">A short introduction</div>' +
       '<h2 class="iv-start-title">Meet Mohammad Asihf</h2>' +
-      '<p class="iv-start-note">A narrated intro, about 30 seconds. Sound on for the full experience.</p>' +
+      '<p class="iv-start-note">A narrated, interactive intro. Sound on for the full experience. Use the controls, arrow keys or swipe.</p>' +
       '<button type="button" class="iv-btn" id="ivPlay"><iconify-icon icon="lucide:play" width="14"></iconify-icon> Play intro</button>' +
       '<button type="button" class="iv-link" id="ivSkipStart">Skip to portfolio</button>' +
     '</div></div>' +
@@ -91,12 +96,24 @@
       '<button type="button" class="iv-icon-btn" id="ivMute"></button>' +
       '<button type="button" class="iv-icon-btn" id="ivClose" aria-label="Close intro"><iconify-icon icon="lucide:x" width="16"></iconify-icon></button>' +
     '</div>' +
+    '<div class="iv-ctrl" id="ivCtrl">' +
+      '<button type="button" class="iv-icon-btn sm" id="ivPrev" aria-label="Previous scene"><iconify-icon icon="lucide:skip-back" width="15"></iconify-icon></button>' +
+      '<button type="button" class="iv-icon-btn" id="ivPause"></button>' +
+      '<button type="button" class="iv-icon-btn sm" id="ivNext" aria-label="Next scene"><iconify-icon icon="lucide:skip-forward" width="15"></iconify-icon></button>' +
+    '</div>' +
     '<div class="iv-dots" id="ivDots"></div>' +
     '<div class="iv-prog" id="ivProg"></div>';
   document.body.appendChild(wrap);
 
   var dots = $('ivDots');
-  SCENES.forEach(function () { dots.appendChild(document.createElement('i')); });
+  SCENES.forEach(function (sc, k) {
+    var d = document.createElement('button');
+    d.type = 'button'; d.className = 'iv-dot';
+    d.setAttribute('aria-label', 'Go to scene ' + (k + 1) + ': ' + (sc.kicker || ''));
+    d.title = sc.kicker || ('Scene ' + (k + 1));
+    d.addEventListener('click', function () { if (wrap.classList.contains('playing')) goTo(k); });
+    dots.appendChild(d);
+  });
 
   function setMuteIcon() {
     var b = $('ivMute');
@@ -110,12 +127,15 @@
   function showScene(i) {
     var s = SCENES[i];
     var big = $('ivBig');
+    $('ivViz').innerHTML = '';
+    $('ivStage').classList.toggle('has-viz', !!(s.chips || s.stats || s.cta));
     big.classList.add('out');
     setTimeout(function () {
       $('ivKicker').textContent = s.kicker || '';
       big.textContent = s.big || '';
       $('ivSub').textContent = s.sub || '';
       $('ivCap').textContent = s.say || '';
+      renderViz(s);
       big.classList.remove('out');
       big.classList.add('in-from');
       requestAnimationFrame(function () {
@@ -124,6 +144,61 @@
     }, i === 0 ? 0 : 380);
     Array.prototype.forEach.call(dots.children, function (d, k) { d.classList.toggle('on', k <= i); });
     $('ivProg').style.width = ((i + 1) / SCENES.length * 100) + '%';
+  }
+
+
+  // ---- interactive visuals for each scene ----
+  function goSection(sel) {
+    close();
+    setTimeout(function () { var el = document.querySelector(sel); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 380);
+  }
+  function renderViz(s) {
+    var v = $('ivViz'); v.innerHTML = '';
+    if (s.chips) {
+      var row = document.createElement('div'); row.className = 'iv-chips';
+      var tip = document.createElement('div'); tip.className = 'iv-tip'; tip.textContent = 'Tap or hover a technology';
+      s.chips.forEach(function (c, k) {
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'iv-chip';
+        b.style.animationDelay = (k * 90) + 'ms'; b.textContent = c.t;
+        var show = function () {
+          tip.textContent = c.tip; tip.classList.add('show');
+          Array.prototype.forEach.call(row.children, function (x) { x.classList.remove('active'); });
+          b.classList.add('active');
+        };
+        b.addEventListener('mouseenter', show); b.addEventListener('click', show); b.addEventListener('focus', show);
+        row.appendChild(b);
+      });
+      v.appendChild(row); v.appendChild(tip);
+    }
+    if (s.stats) {
+      var sr = document.createElement('div'); sr.className = 'iv-stats';
+      s.stats.forEach(function (st, k) {
+        var d = document.createElement('div'); d.className = 'iv-stat'; d.style.animationDelay = (k * 120) + 'ms';
+        d.innerHTML = '<b>0</b><span>' + st.l + '</span>'; sr.appendChild(d);
+        var el = d.firstChild, t0 = null;
+        (function step(ts) {
+          if (t0 === null) t0 = ts + k * 120;
+          var p = Math.min(1, Math.max(0, (ts - t0) / 1300));
+          el.textContent = Math.round(st.n * (1 - Math.pow(1 - p, 3))) + (p >= 1 ? (st.s || '') : '');
+          if (p < 1) requestAnimationFrame(step);
+        })(performance.now());
+      });
+      v.appendChild(sr);
+    }
+    if (s.cta) {
+      var cr = document.createElement('div'); cr.className = 'iv-cta';
+      [ { i: 'lucide:briefcase', t: 'View my work', f: function () { goSection('#projects'); } },
+        { i: 'lucide:file-text', t: 'My resume', f: function () { close(); setTimeout(function () { var r = $('resumeOpen'); if (r) r.click(); }, 380); } },
+        { i: 'lucide:message-circle', t: "Let's talk", f: function () { goSection('#contact'); } },
+        { i: 'lucide:rotate-ccw', t: 'Replay', ghost: true, f: function () { goTo(0); } }
+      ].forEach(function (a, k) {
+        var b = document.createElement('button'); b.type = 'button';
+        b.className = 'iv-cbtn' + (a.ghost ? ' ghost' : ''); b.style.animationDelay = (k * 100) + 'ms';
+        b.innerHTML = '<iconify-icon icon="' + a.i + '" width="15"></iconify-icon> ' + a.t;
+        b.addEventListener('click', a.f); cr.appendChild(b);
+      });
+      v.appendChild(cr);
+    }
   }
 
   // ---- playback ----
@@ -175,6 +250,7 @@
     $('ivStage').style.display = 'none';
     $('ivCap').style.display = 'none';
     $('ivDots').style.display = 'none';
+    $('ivCtrl').style.display = 'none';
     v.style.display = 'block';
     if (!v.getAttribute('src')) v.src = VIDEO;
     v.muted = muted;
@@ -206,6 +282,7 @@
     $('ivDots').style.display = '';
     $('ivProg').style.width = '0';
     $('ivCap').textContent = '';
+    $('ivViz').innerHTML = ''; $('ivCtrl').style.display = ''; paused = false; setPauseIcon();
     Array.prototype.forEach.call(dots.children, function (d) { d.classList.remove('on'); });
     var v = $('ivVideo');
     if (v) { v.pause(); v.removeAttribute('src'); v.load(); v.style.display = 'none'; }
@@ -227,8 +304,48 @@
 
   function endIntro() {
     running = false;
+    $('ivProg').style.width = '100%';
+    if (SCENES[SCENES.length - 1].cta) return;      // stay open so the visitor can pick where to go
     queue(close, 900);
   }
+
+  // ---- navigation: jump, pause, swipe, keys ----
+  var paused = false;
+  function setPauseIcon() {
+    var b = $('ivPause');
+    b.innerHTML = '<iconify-icon icon="lucide:' + (paused ? 'play' : 'pause') + '" width="16"></iconify-icon>';
+    b.setAttribute('aria-label', paused ? 'Resume' : 'Pause');
+  }
+  setPauseIcon();
+  function stopSpeech() { tok++; clearTimers(); if (synth) synth.cancel(); stopAudio(); }
+  function goTo(i) {
+    i = Math.max(0, Math.min(SCENES.length - 1, i));
+    paused = false; setPauseIcon(); stopSpeech();
+    running = true; playScene(i);
+  }
+  function togglePause() {
+    if (!running) return;
+    paused = !paused; setPauseIcon();
+    if (paused) stopSpeech(); else playScene(curIdx);
+  }
+  $('ivPrev').addEventListener('click', function () { goTo(curIdx - 1); });
+  $('ivNext').addEventListener('click', function () { goTo(curIdx + 1); });
+  $('ivPause').addEventListener('click', togglePause);
+
+  // pointer parallax + spotlight
+  wrap.addEventListener('mousemove', function (e) {
+    var x = e.clientX / innerWidth - .5, y = e.clientY / innerHeight - .5;
+    wrap.style.setProperty('--px', x.toFixed(3)); wrap.style.setProperty('--py', y.toFixed(3));
+    wrap.style.setProperty('--mx', e.clientX + 'px'); wrap.style.setProperty('--my', e.clientY + 'px');
+  });
+  // swipe on touch screens
+  var tx = null;
+  wrap.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; }, { passive: true });
+  wrap.addEventListener('touchend', function (e) {
+    if (tx === null || !wrap.classList.contains('playing')) return;
+    var dx = e.changedTouches[0].clientX - tx; tx = null;
+    if (Math.abs(dx) > 70) goTo(curIdx + (dx < 0 ? 1 : -1));
+  }, { passive: true });
 
   // ---- controls ----
   $('ivPlay').addEventListener('click', startPlayback);
@@ -247,7 +364,12 @@
     }
   });
   document.addEventListener('keydown', function (e) {
-    if (wrap.classList.contains('open') && e.key === 'Escape') close();
+    if (!wrap.classList.contains('open')) return;
+    if (e.key === 'Escape') return close();
+    if (!wrap.classList.contains('playing') || VIDEO) return;
+    if (e.key === 'ArrowRight') goTo(curIdx + 1);
+    else if (e.key === 'ArrowLeft') goTo(curIdx - 1);
+    else if (e.key === ' ' && !/^(BUTTON|A)$/.test((document.activeElement || {}).tagName || '')) { e.preventDefault(); togglePause(); }
   });
 
   // Hero "Watch intro" button: delegated at document level so it always works,
