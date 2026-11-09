@@ -322,8 +322,17 @@
 <a href="https://wa.me/919677988241" target="_blank" rel="noopener" class="whatsapp-float hoverable" aria-label="Chat on WhatsApp"><iconify-icon icon="logos:whatsapp-icon" width="30" height="30"></iconify-icon></a>
 
 <div id="loader" role="status" aria-live="polite" aria-label="Loading portfolio">
-    <div class="ld-panel top"><i class="ld-handle"></i></div><div class="ld-panel bot"><i class="ld-handle"></i></div>
+    <div class="ld-panel top"><div class="ld-emb"><b>MA</b></div><i class="ld-handle"></i></div><div class="ld-panel bot"><div class="ld-emb"><b>MA</b></div><i class="ld-handle"></i></div>
     <div class="ld-line" id="ldLine"></div>
+    <div class="ld-fx" id="ldFx"></div>
+    <i class="ld-lamp l"></i><i class="ld-lamp r"></i>
+    <div class="ld-top" id="ldTop">
+        <div class="ld-nm">Mohammad Asihf</div>
+        <div class="ld-pc"><span id="ldPct">0</span><small>%</small></div>
+        <div class="ld-pbar"><i id="ldPbar"></i></div>
+        <div class="ld-tick" id="ldTick">Setting the stage</div>
+    </div>
+    <div class="ld-flash" id="ldFlash"></div>
     <div class="ld-hero" id="ldHero" aria-hidden="true">
         <div class="ld-say" id="ldSay">Let me open this for you!</div>
         <svg class="ld-ck" viewBox="0 0 120 170">
@@ -810,6 +819,24 @@ function initPolish(){
     gsap.set(hero,{display:'flex',xPercent:-50,x:-(W/2+220)});
     gsap.set(say,{xPercent:-50,scale:0});
     gsap.set('#ldLine',{scaleX:1,scaleY:0,opacity:1});
+    // ---- extra atmosphere: golden dust, floating tech icons, progress, status lines ----
+    const fx=$('ldFx'),pct=$('ldPct'),pbar=$('ldPbar'),tick=$('ldTick');
+    for(let i=0;i<(innerWidth<640?18:38);i++){
+        const d=document.createElement('i');d.className='ld-dust';
+        d.style.cssText='left:'+Math.random()*100+'%;top:'+(30+Math.random()*70)+'%;width:'+(2+Math.random()*3)+'px;height:'+(2+Math.random()*3)+'px;animation-duration:'+(5+Math.random()*7)+'s;animation-delay:-'+Math.random()*9+'s';
+        fx.appendChild(d);
+    }
+    ['logos:react','logos:nodejs-icon','logos:mongodb-icon','logos:javascript','logos:html-5','logos:css-3'].forEach((ic,i)=>{
+        const f=document.createElement('span');f.className='ld-fi';
+        f.style.cssText='--x:'+[9,19,27,73,81,91][i]+'%;--y:'+[26,50,22,24,48,28][i]+'%;animation-delay:-'+i*1.1+'s';
+        f.innerHTML='<iconify-icon icon="'+ic+'" width="22" height="22"></iconify-icon>';fx.appendChild(f);
+    });
+    const prog={v:0};
+    const paint=()=>{pct.textContent=Math.round(prog.v);pbar.style.transform='scaleX('+prog.v/100+')'};
+    const lines=['Setting the stage','Polishing the pixels','Waking up the AI','Brewing some coffee','Aligning the gold','Almost ready'];
+    let li=0;const tickT=setInterval(()=>{li=(li+1)%lines.length;gsap.fromTo(tick,{opacity:0,y:6},{opacity:1,y:0,duration:.35});tick.textContent=lines[li]},1500);
+    gsap.fromTo('#ldTop',{opacity:0,y:-14},{opacity:1,y:0,duration:.9,delay:.2,ease:'power3.out'});
+    gsap.to(prog,{v:68,duration:1.9,ease:'power1.out',onUpdate:paint});
     const blink=gsap.timeline({repeat:-1,repeatDelay:2.2});
     blink.to('#ckEyes',{scaleY:.1,svgOrigin:'60 60',duration:.07,yoyo:true,repeat:1});
 
@@ -841,7 +868,7 @@ function initPolish(){
     // phase 1: the character walks in and waits by the doors
     let resolveArrive;const arrived=new Promise(r=>resolveArrive=r);
     let idle=null;
-    const p1=gsap.timeline({onComplete:()=>{idle=gsap.to('#ckBob',{y:-2.5,duration:.9,yoyo:true,repeat:-1,ease:'sine.inOut'});resolveArrive()}});
+    const p1=gsap.timeline({onComplete:()=>{gsap.to(prog,{v:93,duration:8,ease:'power1.out',onUpdate:paint,overwrite:true});idle=gsap.to('#ckBob',{y:-2.5,duration:.9,yoyo:true,repeat:-1,ease:'sine.inOut'});resolveArrive()}});
     p1.to('#ldLine',{scaleY:1,duration:.7,ease:'expo.inOut'},0)
       .to('.ld-handle',{opacity:1,duration:.4},.35)
       .call(startWalk,null,.15)
@@ -868,6 +895,7 @@ function initPolish(){
         clearTimeout(slowT);removeEventListener('keydown',onKey);
         try{sessionStorage.setItem('intro-seen','1')}catch(e){}
         if(idle)idle.kill();gsap.set('#ckBob',{y:0});
+        clearInterval(tickT);tick.textContent='Opening…';gsap.to(prog,{v:100,duration:.6,ease:'power2.out',onUpdate:paint,overwrite:true});
         gsap.to('#ldSkip',{opacity:0,duration:.3});
         const tl=gsap.timeline({delay:.15,onComplete:()=>{blink.kill();finish()}});
         if(seen)tl.timeScale(1.5);
@@ -885,7 +913,9 @@ function initPolish(){
           .call(()=>{reveal(data);sparks();loader.style.pointerEvents='none';document.body.style.overflow='';},null,1.6)
           .to('.ld-panel.top',{xPercent:-101,duration:1.2,ease:'power4.inOut'},1.6)
           .to('.ld-panel.bot',{xPercent:101,duration:1.2,ease:'power4.inOut'},1.6)
-          .to('#ldLine,.ld-floor',{opacity:0,duration:.4},1.6)
+          .to('#ldLine,.ld-floor,#ldTop,#ldFx,.ld-lamp',{opacity:0,duration:.5},1.6)
+          .fromTo('#ldFlash',{opacity:0,scaleX:.02},{opacity:.7,scaleX:1,duration:.35,ease:'power2.out'},1.6)
+          .to('#ldFlash',{opacity:0,duration:.9,ease:'power2.in'},1.95)
           .to('#ckArmL',{rotation:150,svgOrigin:O.AL,duration:.3,ease:'power2.out'},1.6)
           .to('#ckArmR',{rotation:-150,svgOrigin:O.AR,duration:.3,ease:'power2.out'},1.6)
           .to('#ckLean',{rotation:9,svgOrigin:'60 126',duration:.25,ease:'power2.out'},1.6)
