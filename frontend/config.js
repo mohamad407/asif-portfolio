@@ -13,5 +13,13 @@ window.PORTFOLIO_API_BASE = "https://asif-portfolio-egl8.onrender.com";
 
 // Optional: path or URL of your résumé PDF. When set, a "Download CV" button appears in the hero.
 // Example: window.PORTFOLIO_RESUME = "resume.pdf";
-window.PORTFOLIO_RESUME = "assets/resume.pdf";
-window.PORTFOLIO_INTRO_AUTO = false
+window.PORTFOLIO_RESUME = "";
+
+// The anime character is the site's intro. The narrated "Play intro" overlay no longer opens by itself
+// (visitors can still open it with the "Watch intro" button). Set to true to bring the auto-open back.
+window.PORTFOLIO_INTRO_AUTO = false;
+
+// Contact form. Messages are sent through your backend (/api/message, needs RESEND_API_KEY on the server).
+// Optional no-server backup: if the backend can't email, the form falls back to FormSubmit (https://formsubmit.co)
+// using this address. The first message triggers a one-time confirmation email to this inbox, click it once.
+window.PORTFOLIO_FORMSUBMIT = "asihfibrahim600@gmail.com";
