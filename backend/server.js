@@ -32,7 +32,7 @@ if (!MONGODB_URI || !MONGODB_URI.trim()) {
 }
 
 let mongoClient;
-let portfolioCol, adminsCol, configCol;
+let portfolioCol, adminsCol, configCol, messagesCol;
 
 async function connectDB() {
     mongoClient = new MongoClient(MONGODB_URI);
@@ -41,6 +41,7 @@ async function connectDB() {
     portfolioCol = db.collection('portfolio');
     adminsCol = db.collection('admins');
     configCol = db.collection('config');
+    messagesCol = db.collection('messages');
     console.log('✅ Connected to MongoDB Atlas');
 }
 
@@ -335,6 +336,72 @@ app.post('/api/admin/logout', authMiddleware, (req, res) => {
 app.get('/api/portfolio', async (req, res) => {
     try { res.json(await readData()); }
     catch (err) { console.error(err); res.status(500).json({ error: 'Failed to read portfolio data' }); }
+});
+
+
+// ─── CONTACT FORM: visitors send you a message, it is saved and emailed ───
+// Email goes out through Resend (https://resend.com, free). Set in backend/.env or your host's environment:
+//   RESEND_API_KEY = re_xxxxxxxx          (required to get the email)
+//   MAIL_TO        = you@example.com      (default: asihfibrahim600@gmail.com)
+//   MAIL_FROM      = "Portfolio <onboarding@resend.dev>"   (default; only sends to your own Resend account email)
+// Every message is also stored in MongoDB ("messages"), so nothing is lost if email fails.
+const MAIL_TO = (process.env.MAIL_TO || 'asihfibrahim600@gmail.com').trim();
+const msgHits = new Map();
+const cleanLine = (v, n) => String(v || '').replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, n);
+const escHtml = (v) => String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+async function sendMessageMail(m) {
+    const key = (process.env.RESEND_API_KEY || '').trim();
+    if (!key) return false;
+    const subject = `New portfolio message from ${m.name}` + (m.topic ? ` · ${m.topic}` : '');
+    const html = `<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;border:1px solid #e6cf9f;border-radius:12px;overflow:hidden">
+<div style="background:#0a0a0a;color:#e6cf9f;padding:18px 22px;font-size:18px">New message from your portfolio</div>
+<div style="padding:22px;color:#222;line-height:1.6">
+<p><b>Name:</b> ${escHtml(m.name)}<br><b>Email:</b> <a href="mailto:${escHtml(m.email)}">${escHtml(m.email)}</a><br><b>Topic:</b> ${escHtml(m.topic || '—')}</p>
+<div style="background:#faf7f0;border-left:3px solid #c9a96e;padding:14px 16px;white-space:pre-wrap">${escHtml(m.message)}</div>
+<p style="color:#888;font-size:12px;margin-top:18px">Just hit Reply to answer ${escHtml(m.name)} directly.</p></div></div>`;
+    const text = `Name: ${m.name}\nEmail: ${m.email}\nTopic: ${m.topic || '-'}\n\n${m.message}`;
+    const r = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { Authorization: 'Bearer ' + key, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ from: process.env.MAIL_FROM || 'Portfolio <onboarding@resend.dev>', to: [MAIL_TO], reply_to: m.email, subject, html, text })
+    });
+    if (!r.ok) console.error('Resend error', r.status, await r.text().catch(() => ''));
+    return r.ok;
+}
+
+app.post('/api/message', async (req, res) => {
+    try {
+        const ip = String(req.headers['x-forwarded-for'] || req.ip || '').split(',')[0].trim();
+        const now = Date.now();
+        const hits = (msgHits.get(ip) || []).filter((t) => now - t < 3600e3);
+        if (hits.length >= 5) return res.status(429).json({ error: 'Too many messages from this connection. Please try again in a little while.' });
+        const b = req.body || {};
+        if (b.website) return res.json({ ok: true, emailed: false });                 // honeypot: bots fill this hidden field
+        const name = cleanLine(b.name, 80), email = cleanLine(b.email, 120), topic = cleanLine(b.topic, 60);
+        const message = String(b.message || '').replace(/\r/g, '').trim().slice(0, 3000);
+        if (name.length < 2 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || message.length < 10) {
+            return res.status(400).json({ error: 'Please enter your name, a valid email and a message of at least 10 characters.' });
+        }
+        hits.push(now); msgHits.set(ip, hits);
+        const doc = { _id: uuidv4(), name, email, topic, message, createdAt: new Date().toISOString(), emailed: false };
+        let emailed = false;
+        try { emailed = await sendMessageMail(doc); } catch (e) { console.error('Mail error:', e.message); }
+        doc.emailed = emailed;
+        try { await messagesCol.insertOne(doc); } catch (e) { console.error('Could not store message:', e.message); }
+        res.json({ ok: true, emailed });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Something went wrong. Please try again.' });
+    }
+});
+app.get('/api/admin/messages', authMiddleware, async (req, res) => {
+    try { res.json(await messagesCol.find({}).sort({ createdAt: -1 }).limit(200).toArray()); }
+    catch (e) { res.status(500).json({ error: 'Failed to read messages' }); }
+});
+app.delete('/api/admin/messages/:id', authMiddleware, async (req, res) => {
+    try { await messagesCol.deleteOne({ _id: req.params.id }); res.json({ ok: true }); }
+    catch (e) { res.status(500).json({ error: 'Failed to delete message' }); }
 });
 
 // ── ABOUT ──
