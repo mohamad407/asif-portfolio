@@ -148,7 +148,7 @@
       });
     }).catch(function () {}).then(function () {
       if (res.userError || res.emailed || !FS) return res;
-      return post('https://formsubmit.co/ajax/' + encodeURIComponent(FS), { name: data.name, email: data.email, topic: data.topic, message: data.message, _subject: 'New portfolio message from ' + data.name, _captcha: 'false', _template: 'table' }, 20000)
+      return post('https://formsubmit.co/ajax/' + encodeURIComponent(FS), { name: data.name, email: data.email, topic: data.topic, message: data.message, _replyto: data.email, _subject: 'New portfolio message from ' + data.name, _captcha: 'false', _template: 'table' }, 20000)
         .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (r.ok && (j.success === true || j.success === 'true')) res.emailed = true; }); })
         .catch(function () {}).then(function () { return res; });
     });
