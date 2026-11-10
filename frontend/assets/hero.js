@@ -24,7 +24,7 @@
     var r=b.getBoundingClientRect(),s=Math.max(r.width,r.height)*2.2,d=document.createElement('span');
     d.className='rp';d.style.cssText='width:'+s+'px;height:'+s+'px;left:'+(e.clientX-r.left-s/2)+'px;top:'+(e.clientY-r.top-s/2)+'px';
     b.appendChild(d);setTimeout(function(){d.remove()},750);
-    var c=document.getElementById('contact'); if(c) setTimeout(function(){c.scrollIntoView({behavior:'smooth'})},180);
+    var c=document.getElementById('message')||document.getElementById('contact'); if(c) setTimeout(function(){c.scrollIntoView({behavior:'smooth'})},180);
   });
   if(window.matchMedia('(pointer:fine)').matches){
     b.addEventListener('mousemove',function(e){var r=b.getBoundingClientRect();b.style.transform='translate('+((e.clientX-r.left-r.width/2)*.12)+'px,'+((e.clientY-r.top-r.height/2)*.25-2)+'px)'});
