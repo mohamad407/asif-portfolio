@@ -228,7 +228,7 @@
       var cr = document.createElement('div'); cr.className = 'iv-cta';
       [ { i: 'lucide:briefcase', t: 'View my work', f: function () { goSection('#projects'); } },
         { i: 'lucide:file-text', t: 'My resume', f: function () { close(); setTimeout(function () { var r = $('resumeOpen'); if (r) r.click(); }, 380); } },
-        { i: 'lucide:message-circle', t: "Let's talk", f: function () { goSection('#contact'); } },
+        { i: 'lucide:message-circle', t: "Let's talk", f: function () { goSection('#message'); } },
         { i: 'lucide:rotate-ccw', t: 'Replay', ghost: true, f: function () { goTo(0); } }
       ].forEach(function (a, k) {
         var b = document.createElement('button'); b.type = 'button';
