@@ -83,7 +83,8 @@
     if (i === 0) { data.name = $('cfName').value.trim(); if (data.name.length < 2) return err(0, 'Please tell me your name.'), false; }
     if (i === 1) { data.email = $('cfEmail').value.trim(); if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)) return err(1, 'That email does not look right. Please check it.'), false; }
     if (i === 2) { if (!data.topic) return err(2, 'Pick one so I know how to help.'), false; }
-    if (i === 3) { data.message = $('cfMsg').value.trim(); if (data.message.length < 10) return err(3, 'A few more words please (at least 10 characters).'), false; }
+    if (i === 3) { data.message = $('cfMsg').value.trim(); var own = data.message; STARTERS.forEach(function (t) { if (own.indexOf(t.trim()) === 0) own = own.slice(t.trim().length); });
+      if (own.trim().length < 8) return err(3, 'Add a few details of your own after the opener, so I know how to help.'), false; }
     err(i, ''); return true;
   }
 
